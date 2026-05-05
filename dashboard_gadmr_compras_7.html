@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GADMR · Compras Públicas 2023–2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root{
+  --navy:#0F3460;--navy-deep:#0A2447;--navy-soft:#E8ECF3;
+  --cream:#FAF8F3;--cream-2:#F4F0E6;--paper:#FFFFFF;
+  --gold:#C9A227;--gold-soft:#F5EBC9;
+  --red:#9B2C2C;--red-soft:#F5DDDD;
+  --green:#3F6B45;--green-soft:#DEEADF;
+  --amber:#9A6B16;--amber-soft:#F5EAD2;
+  --obra:#0F3460;--obra-soft:#dce8f4;
+  --adq:#3F6B45;--adq-soft:#DEEADF;
+  --serv:#9A6B16;--serv-soft:#F5EAD2;
+  --ink:#1A1F2C;--ink-2:#3B4252;--ink-3:#6B7280;--ink-4:#9AA1AD;
+  --line:#DCD6C8;--line-2:#E8E2D2;
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Inter",-apple-system,sans-serif;
+  --mono:"JetBrains Mono",monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+
+/* TOPSTRIP */
+.topstrip{background:var(--navy-deep);color:rgba(255,255,255,.8);font-size:10.5px;display:flex;align-items:center;justify-content:space-between;padding:7px 48px;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+.ts-r{font-family:var(--mono);font-size:10px;opacity:.7}
+
+/* HEADER */
+.mast{background:var(--paper);padding:22px 48px;display:flex;align-items:center;justify-content:space-between;gap:28px;border-bottom:1px solid var(--line)}
+.mast-l{display:flex;align-items:center;gap:24px}
+.mast-escudo{width:58px;height:58px;background:var(--navy-deep);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mast-info{border-left:1px solid var(--line);padding-left:20px}
+.mast-eyebrow{font-size:10px;text-transform:uppercase;letter-spacing:.22em;color:var(--ink-3);font-weight:600;margin-bottom:4px}
+.mast-title{font-family:var(--serif);font-size:22px;font-weight:300;font-style:italic;color:var(--ink);line-height:1.1}
+.mast-title em{font-style:normal;font-weight:400}
+.mast-sub{font-size:12px;color:var(--ink-3);margin-top:3px}
+.mast-r .tag{display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--green);background:var(--green-soft);padding:5px 12px}
+.mast-r .tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green)}
+.mast-r .total-proc{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:8px;text-align:right}
+
+/* TRICOLOR */
+.tricolor{height:4px;display:flex}
+.tricolor i{flex:1;display:block}
+.t-blue{background:var(--navy)}.t-red{background:#C0392B}.t-gold{background:var(--gold)}
+
+/* TABS */
+.tabnav{background:var(--paper);border-bottom:1px solid var(--line);padding:0 48px;display:flex;overflow-x:auto}
+.tabnav::-webkit-scrollbar{display:none}
+.tnav-btn{position:relative;padding:16px 22px 14px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--ink-3);white-space:nowrap;display:flex;align-items:center;gap:9px;transition:color .15s}
+.tnav-btn:hover{color:var(--ink)}
+.tnav-btn.active{color:var(--navy)}
+.tnav-btn.active::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--navy)}
+.tnav-badge{font-family:var(--mono);font-size:10px;background:var(--cream-2);color:var(--ink-4);padding:1px 8px}
+.tnav-btn.active .tnav-badge{background:var(--navy);color:#fff}
+
+/* MAIN */
+main{max-width:1480px;margin:0 auto;padding:32px 48px 64px}
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:fadeUp .22s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* EYEBROW */
+.sec-ey{font-size:10px;text-transform:uppercase;letter-spacing:.22em;color:var(--ink-3);font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.sec-ey::before{content:"";width:20px;height:1px;background:var(--ink-3)}
+.sec-ey::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* KPI TOTALES */
+.kpi-totales{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:28px}
+.kpi-tot-card{background:var(--paper);padding:18px 20px}
+.kpi-tot-label{font-size:9.5px;text-transform:uppercase;letter-spacing:.18em;color:var(--ink-4);font-weight:600;margin-bottom:5px}
+.kpi-tot-val{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--ink)}
+.kpi-tot-sub{font-size:10.5px;color:var(--ink-3);margin-top:3px}
+
+/* KPI CATEGORIAS */
+.cat-kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);background:var(--paper);margin-bottom:28px}
+.cat-card{padding:28px 30px;position:relative;overflow:hidden}
+.cat-card+.cat-card{border-left:1px solid var(--line)}
+.cat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px}
+.cat-card.c-obra::before{background:var(--obra)}
+.cat-card.c-adq::before{background:var(--adq)}
+.cat-card.c-serv::before{background:var(--serv)}
+.cat-icon{font-size:20px;margin-bottom:12px;display:block}
+.cat-label{font-size:10px;text-transform:uppercase;letter-spacing:.2em;font-weight:700;margin-bottom:8px}
+.c-obra .cat-label{color:var(--obra)}.c-adq .cat-label{color:var(--adq)}.c-serv .cat-label{color:var(--serv)}
+.cat-num{font-family:var(--serif);font-size:56px;line-height:.9;font-weight:300;letter-spacing:-.02em;margin-bottom:6px;color:var(--ink)}
+.cat-monto{font-family:var(--mono);font-size:13px;font-weight:600;margin-bottom:8px;color:var(--ink-2)}
+.cat-sub{font-size:11.5px;color:var(--ink-3);line-height:1.5}
+.cat-pct-bar{margin-top:12px;height:3px;background:var(--line-2);border-radius:2px;overflow:hidden}
+.cat-pct-fill{height:100%;border-radius:2px}
+.c-obra .cat-pct-fill{background:var(--obra)}.c-adq .cat-pct-fill{background:var(--adq)}.c-serv .cat-pct-fill{background:var(--serv)}
+.cat-stats-row{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
+.cat-stat-item{font-size:11px;color:var(--ink-3);display:flex;flex-direction:column;gap:1px}
+.cat-stat-item strong{font-size:15px;font-weight:700;color:var(--ink-2);font-family:var(--mono)}
+
+/* YEAR SUMMARY */
+.year-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.ys-card{background:var(--paper);border:1px solid var(--line);padding:18px 20px;position:relative;overflow:hidden;transition:box-shadow .15s,transform .15s;cursor:default}
+.ys-card::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--navy)}
+.ys-card:hover{box-shadow:0 4px 20px rgba(15,52,96,.1);transform:translateY(-1px)}
+.ys-anio{font-family:var(--serif);font-size:38px;font-weight:300;font-style:italic;color:var(--navy);line-height:1;margin-bottom:8px}
+.ys-total{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--ink);margin-bottom:10px}
+.ys-cat-row{display:flex;align-items:center;justify-content:space-between;font-size:11px;margin-bottom:2px}
+.ys-cat-name{display:flex;align-items:center;gap:6px;color:var(--ink-3)}
+.ys-cat-name strong{color:var(--ink-2);font-weight:600}
+.ys-cat-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ys-cat-val{font-family:var(--mono);font-size:10.5px;color:var(--ink-2);font-weight:600}
+.ys-cat-block{margin-bottom:9px}
+.ys-cat-block:last-child{margin-bottom:0}
+.ys-est-row{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;padding-left:13px}
+.ys-est{font-family:var(--mono);font-size:9px;font-weight:600;padding:2px 6px;letter-spacing:.04em}
+.ys-est-ejec{background:var(--obra-soft);color:var(--navy)}
+.ys-est-fin{background:var(--green-soft);color:var(--green)}
+.ys-est-adj{background:var(--amber-soft);color:var(--amber)}
+.ys-est-rec{background:#EDE9F6;color:#4a2080}
+.ys-est-des{background:#ECEAE4;color:#6b6459}
+.ys-est-can{background:var(--red-soft);color:var(--red)}
+.ys-est-otr{background:#ECEAE4;color:#9AA1AD}
+
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px}
+.chart-card{background:var(--paper);border:1px solid var(--line);padding:22px 26px}
+.chart-card.full{grid-column:1/-1}
+.chart-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:10px;flex-wrap:wrap}
+.chart-hd h3{font-family:var(--serif);font-size:17px;font-weight:300;font-style:italic;color:var(--ink)}
+.chart-hd h3 em{font-style:normal;font-weight:400}
+.legend{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink-3);font-weight:500}
+.legend-line{width:18px;height:2.5px;border-radius:1px}
+.legend-dot{width:9px;height:9px;border-radius:50%}
+.chart-wrap{position:relative;height:280px}
+.chart-wrap.tall{height:340px}
+
+/* TABLA */
+.tabla-section{background:var(--paper);border:1px solid var(--line);overflow:hidden}
+.tabla-toolbar{padding:12px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:9px;flex-wrap:wrap;background:var(--cream)}
+.t-search{height:30px;border:1px solid var(--line);background:var(--paper);padding:0 9px;font-family:var(--sans);font-size:12px;color:var(--ink);outline:none;width:210px}
+.t-search:focus{border-color:var(--navy)}
+.t-sel{height:30px;border:1px solid var(--line);background:var(--paper);padding:0 9px;font-family:var(--sans);font-size:12px;color:var(--ink);outline:none;cursor:pointer}
+.t-count{font-family:var(--mono);font-size:10.5px;color:var(--ink-3);margin-left:auto}
+.t-csv{height:30px;padding:0 13px;border:1px solid var(--line);font-size:10.5px;font-family:var(--mono);color:var(--ink-3);background:var(--paper);letter-spacing:.04em;transition:all .15s}
+.t-csv:hover{border-color:var(--navy);color:var(--navy)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr{background:var(--cream);border-bottom:1px solid var(--line)}
+th{padding:8px 11px;text-align:left;font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:500;white-space:nowrap;cursor:pointer;user-select:none}
+th:hover{color:var(--ink)}
+tbody tr{border-bottom:1px solid var(--line-2);cursor:pointer;transition:background .1s}
+tbody tr:hover{background:var(--cream)}
+tbody tr:last-child{border-bottom:none}
+td{padding:8px 11px;vertical-align:top}
+.td-cod{font-family:var(--mono);font-size:10px;color:var(--navy);white-space:nowrap;font-weight:500}
+.td-obj{max-width:360px;font-size:12px;line-height:1.4}
+.td-monto{font-family:var(--mono);font-size:11px;text-align:right;white-space:nowrap}
+.td-fecha{font-family:var(--mono);font-size:10px;color:var(--ink-3);white-space:nowrap}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 7px;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.04em;white-space:nowrap}
+.b-fin{background:var(--green-soft);color:var(--green)}
+.b-ejec{background:var(--obra-soft);color:var(--navy)}
+.b-des{background:#ECEAE4;color:#6b6459}
+.b-can{background:var(--red-soft);color:var(--red)}
+.b-adj{background:var(--amber-soft);color:var(--amber)}
+.b-rec{background:#EDE9F6;color:#4a2080}
+.b-otr{background:#ECEAE4;color:#6b6459}
+.cat-badge{display:inline-block;padding:2px 7px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;white-space:nowrap}
+.cb-obra{background:var(--obra-soft);color:var(--obra)}
+.cb-adq{background:var(--adq-soft);color:var(--adq)}
+.cb-serv{background:var(--serv-soft);color:var(--serv)}
+
+/* PAGINACION */
+.pag{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;background:var(--cream);border-top:1px solid var(--line)}
+.pag-info{font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.pag-btns{display:flex;gap:3px}
+.pag-btn{height:25px;min-width:25px;padding:0 7px;border:1px solid var(--line);background:var(--paper);font-family:var(--mono);font-size:10px;color:var(--ink);cursor:pointer;transition:all .1s}
+.pag-btn:hover:not(:disabled){border-color:var(--navy);color:var(--navy)}
+.pag-btn.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.pag-btn:disabled{opacity:.35;cursor:not-allowed}
+
+/* PANEL DETALLE */
+.overlay{position:fixed;inset:0;background:rgba(10,36,71,.45);z-index:200;display:none}
+.overlay.open{display:block}
+.panel{position:fixed;right:0;top:0;bottom:0;width:480px;background:var(--paper);border-left:1px solid var(--line);overflow-y:auto;z-index:201;transform:translateX(100%);transition:transform .22s ease}
+.panel.open{transform:none}
+.panel-hdr{background:var(--navy-deep);color:#fff;padding:18px 20px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.p-cod{font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.5);margin-bottom:5px}
+.p-title{font-family:var(--serif);font-size:15px;font-weight:300;font-style:italic;color:#fff;line-height:1.35}
+.btn-close{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);width:28px;height:28px;font-size:14px;flex-shrink:0;transition:all .15s}
+.btn-close:hover{background:rgba(255,255,255,.2);color:#fff}
+.panel-body{padding:18px 20px}
+.p-sec{margin-bottom:16px}
+.p-sec-title{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-4);padding-bottom:6px;border-bottom:1px solid var(--line-2);margin-bottom:9px}
+.p-row{display:flex;gap:10px;margin-bottom:6px;font-size:12px}
+.p-key{min-width:120px;color:var(--ink-3);font-size:11px;flex-shrink:0}
+.p-val{color:var(--ink);word-break:break-word}
+.p-val.mono{font-family:var(--mono);font-size:11px}
+.p-link{color:var(--navy);font-family:var(--mono);font-size:11px}
+.p-link:hover{text-decoration:underline}
+
+/* MANIFIESTO */
+.manifesto-band{display:grid;grid-template-columns:1.4fr 1fr;margin-top:40px;border-top:1px solid var(--line)}
+.mb-navy{background:var(--navy-deep);color:#fff;padding:44px 48px;position:relative;overflow:hidden}
+.mb-navy::before{content:"";position:absolute;top:0;right:0;width:180px;height:180px;background:radial-gradient(circle at top right,rgba(201,162,39,.2) 0%,transparent 70%)}
+.mb-ey{font-size:10px;text-transform:uppercase;letter-spacing:.28em;font-weight:600;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.mb-ey::before{content:"";width:26px;height:1px;background:var(--gold)}
+.mb-h2{font-family:var(--serif);font-size:48px;line-height:.95;font-weight:300;font-style:italic;margin:0 0 14px;color:#fff;letter-spacing:-.02em}
+.mb-h2 em{font-style:normal;font-weight:400;color:var(--gold)}
+.mb-sub{font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.75);max-width:44ch}
+.mb-stat{background:#A4271F;color:#fff;padding:44px 38px;display:flex;flex-direction:column;justify-content:center;background-image:linear-gradient(135deg,#A4271F,#8C1F18);position:relative;overflow:hidden}
+.mb-stat::before{content:"";position:absolute;top:-30px;right:-30px;width:180px;height:180px;border:1px solid rgba(255,255,255,.15);border-radius:50%}
+.mb-stat-ey{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.24em;color:rgba(255,255,255,.65);margin-bottom:14px}
+.mb-stat-num{font-family:var(--serif);font-size:44px;line-height:1;font-weight:300;font-style:italic;color:#fff;margin-bottom:10px}
+.mb-stat-line{width:38px;height:2px;background:var(--gold);margin:14px 0 12px}
+.mb-stat-txt{font-size:13px;color:rgba(255,255,255,.8);line-height:1.5;max-width:28ch}
+
+@media(max-width:1100px){
+  .topstrip,.mast,.tabnav,main{padding-left:16px;padding-right:16px}
+  .cat-kpi-row,.kpi-totales{grid-template-columns:1fr 1fr}
+  .chart-grid{grid-template-columns:1fr}
+  .chart-card.full{grid-column:auto}
+  .year-summary{grid-template-columns:1fr 1fr}
+  .manifesto-band{grid-template-columns:1fr}
+  .panel{width:100vw}
+}
+
+/* TIPOS PANEL */
+.tipos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px;margin-bottom:28px}
+.tipo-card{background:var(--paper);border:1px solid var(--line);overflow:hidden;transition:box-shadow .15s,transform .15s}
+.tipo-card:hover{box-shadow:0 4px 18px rgba(15,52,96,.09);transform:translateY(-1px)}
+.tipo-card-hdr{padding:14px 18px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tipo-card-hdr .tipo-code{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--navy);letter-spacing:.04em}
+.tipo-card-hdr .tipo-fullname{font-size:11px;color:var(--ink-3);flex:1;padding-left:10px;line-height:1.3}
+.tipo-card-hdr .tipo-count{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--ink);min-width:36px;text-align:right}
+.tipo-card-body{padding:12px 18px 14px}
+.tipo-kpi-row{display:flex;gap:0;border:1px solid var(--line);margin-bottom:10px}
+.tipo-kpi{flex:1;padding:8px 10px;text-align:center}
+.tipo-kpi+.tipo-kpi{border-left:1px solid var(--line)}
+.tipo-kpi-label{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-4);font-family:var(--mono);margin-bottom:3px}
+.tipo-kpi-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ink-2)}
+.tipo-bar-header{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-3);margin-bottom:6px;font-family:var(--mono)}
+.tipo-estados{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.tipo-cat-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tipo-anios{display:flex;gap:6px;margin-top:6px}
+.tipo-anio-pip{font-family:var(--mono);font-size:9px;padding:2px 7px;background:var(--cream-2);color:var(--ink-3);font-weight:600}
+.tipo-full-table{margin-top:8px}
+.tipo-full-table table{width:100%;border-collapse:collapse;font-size:11px}
+.tipo-full-table thead tr{background:var(--cream);border-bottom:1px solid var(--line)}
+.tipo-full-table th{padding:5px 8px;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+.tipo-full-table tbody tr{border-bottom:1px solid var(--line-2);cursor:pointer;transition:background .1s}
+.tipo-full-table tbody tr:hover{background:var(--cream)}
+.tipo-full-table td{padding:6px 8px;vertical-align:top}
+.tipo-expand-btn{width:100%;padding:7px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--navy);background:var(--cream);border-top:1px solid var(--line);cursor:pointer;transition:background .15s;text-align:center}
+.tipo-expand-btn:hover{background:var(--navy-soft)}
+
+
+/* INFRAESTRUCTURA */
+.infra-hero{background:var(--navy-deep);color:#fff;padding:36px 40px;margin-bottom:24px;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.infra-hero::before{content:"";position:absolute;top:-40px;right:-40px;width:280px;height:280px;border:1px solid rgba(201,162,39,.15);border-radius:50%;pointer-events:none}
+.infra-hero::after{content:"";position:absolute;bottom:-60px;right:80px;width:180px;height:180px;border:1px solid rgba(201,162,39,.1);border-radius:50%;pointer-events:none}
+.infra-hero-title{font-family:var(--serif);font-size:36px;font-weight:300;font-style:italic;color:#fff;line-height:1;margin-bottom:8px;letter-spacing:-.02em}
+.infra-hero-title em{font-style:normal;font-weight:400;color:var(--gold)}
+.infra-hero-sub{font-size:13px;color:rgba(255,255,255,.65);max-width:52ch;line-height:1.5}
+.infra-hero-kpis{display:flex;gap:28px;flex-wrap:wrap}
+.infra-hero-kpi{text-align:right}
+.infra-hero-kpi .val{font-family:var(--mono);font-size:22px;font-weight:700;color:#fff;display:block}
+.infra-hero-kpi .lbl{font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.5);font-family:var(--mono)}
+
+.infra-subcats{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px;margin-bottom:28px}
+.isc-card{background:var(--paper);border:1px solid var(--line);overflow:hidden;transition:box-shadow .15s,transform .15s}
+.isc-card:hover{box-shadow:0 4px 20px rgba(15,52,96,.1);transform:translateY(-1px)}
+.isc-hdr{padding:14px 18px 12px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line)}
+.isc-icon{font-size:20px;flex-shrink:0;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:var(--obra-soft);border-radius:50%}
+.isc-hdr-info{flex:1}
+.isc-name{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.isc-meta{font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+.isc-monto-big{font-family:var(--serif);font-size:28px;font-weight:300;font-style:italic;color:var(--navy);text-align:right;line-height:1}
+.isc-body{padding:12px 18px 0}
+.isc-kpi-row{display:flex;gap:0;border:1px solid var(--line);margin-bottom:10px}
+.isc-kpi{flex:1;padding:7px 9px;text-align:center}
+.isc-kpi+.isc-kpi{border-left:1px solid var(--line)}
+.isc-kpi-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-4);font-family:var(--mono);margin-bottom:2px}
+.isc-kpi-val{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink-2)}
+.isc-table-wrap{display:none}
+.isc-table-wrap.open{display:block}
+.isc-table-wrap table{width:100%;border-collapse:collapse;font-size:11.5px}
+.isc-table-wrap thead tr{background:var(--cream);border-bottom:1px solid var(--line)}
+.isc-table-wrap th{padding:6px 10px;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:500}
+.isc-table-wrap tbody tr{border-bottom:1px solid var(--line-2);cursor:pointer;transition:background .1s}
+.isc-table-wrap tbody tr:hover{background:var(--cream)}
+.isc-table-wrap td{padding:7px 10px;vertical-align:top}
+.isc-expand{width:100%;padding:8px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--navy);background:var(--cream);border-top:1px solid var(--line);cursor:pointer;transition:background .15s;text-align:center;display:block;border:none;border-top:1px solid var(--line)}
+.isc-expand:hover{background:var(--navy-soft)}
+
+.infra-timeline{background:var(--paper);border:1px solid var(--line);padding:22px 26px;margin-bottom:24px}
+.infra-anio-row{display:flex;align-items:flex-start;gap:18px;margin-bottom:18px}
+.infra-anio-row:last-child{margin-bottom:0}
+.infra-anio-label{font-family:var(--serif);font-size:32px;font-weight:300;font-style:italic;color:var(--navy);min-width:70px;line-height:1;padding-top:4px}
+.infra-anio-content{flex:1}
+.infra-anio-kpis{display:flex;gap:18px;margin-bottom:10px;flex-wrap:wrap}
+.infra-anio-kpi{font-size:11px;color:var(--ink-3)}
+.infra-anio-kpi strong{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ink-2);display:block}
+.infra-anio-bar{height:8px;background:var(--line-2);border-radius:4px;overflow:hidden;margin-bottom:8px}
+.infra-anio-bar-fill{height:100%;background:linear-gradient(90deg,var(--navy),var(--navy-mid));border-radius:4px;transition:width .5s ease}
+.infra-anio-tipos{display:flex;gap:6px;flex-wrap:wrap}
+.infra-tipo-pip{font-family:var(--mono);font-size:9px;padding:2px 7px;border:1px solid var(--line);color:var(--ink-3)}
+
+</style>
+</head>
+<body>
+
+<div class="topstrip">
+  <span>GADM Riobamba · Sistema de Monitoreo de Contratación Pública</span>
+  <span class="ts-r">SOCE / SERCOP · Cantón Riobamba · Chimborazo</span>
+</div>
+
+<header class="mast">
+  <div class="mast-l">
+    <div class="mast-escudo">
+      <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px;fill:#C9A227">
+        <path d="M20 3 L36 11 L36 29 C36 35 20 39 20 39 C20 39 4 35 4 29 L4 11 Z" fill="none" stroke="#C9A227" stroke-width="1.5"/>
+        <path d="M13 21 L17 25 L27 15" stroke="#C9A227" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="20" cy="14" r="2.5" fill="#C9A227" opacity=".7"/>
+      </svg>
+    </div>
+    <div class="mast-info">
+      <div class="mast-eyebrow">Gobierno Autónomo Descentralizado Municipal</div>
+      <div class="mast-title">Procesos de <em>Contratación Pública</em></div>
+      <div class="mast-sub">Cantón Riobamba · Chimborazo · Ecuador · 2023–2026</div>
+    </div>
+  </div>
+  <div class="mast-r">
+    <div class="tag">Portal Público Activo</div>
+    <div class="total-proc" id="hdr-total">Cargando...</div>
+  </div>
+</header>
+
+<div class="tricolor"><i class="t-blue"></i><i class="t-red"></i><i class="t-gold"></i></div>
+
+<nav class="tabnav">
+  <button class="tnav-btn active" onclick="setTab('resumen')">Resumen <span class="tnav-badge" id="nb-resumen">424</span></button>
+  <button class="tnav-btn" onclick="setTab('2023')">2023 <span class="tnav-badge" id="nb-2023">—</span></button>
+  <button class="tnav-btn" onclick="setTab('2024')">2024 <span class="tnav-badge" id="nb-2024">—</span></button>
+  <button class="tnav-btn" onclick="setTab('2025')">2025 <span class="tnav-badge" id="nb-2025">—</span></button>
+  <button class="tnav-btn" onclick="setTab('2026')">2026 <span class="tnav-badge" id="nb-2026">—</span></button>
+  <button class="tnav-btn" onclick="setTab('tipos')">Por Tipo <span class="tnav-badge" id="nb-tipos">13</span></button>
+  <button class="tnav-btn" onclick="setTab('infra')">Infraestructura <span class="tnav-badge" id="nb-infra">94</span></button>
+</nav>
+
+<main>
+<div class="tab-panel active" id="panel-resumen">
+  <div class="sec-ey">Indicadores generales · 2023–2026</div>
+  <div class="kpi-totales">
+    <div class="kpi-tot-card"><div class="kpi-tot-label">Total procesos</div><div class="kpi-tot-val" id="r-total">—</div><div class="kpi-tot-sub">2023 – 2026</div></div>
+    <div class="kpi-tot-card"><div class="kpi-tot-label">Presupuesto referencial</div><div class="kpi-tot-val" id="r-monto">—</div><div class="kpi-tot-sub">Total acumulado sin IVA</div></div>
+    <div class="kpi-tot-card"><div class="kpi-tot-label">Finalizados / Adjudicados</div><div class="kpi-tot-val" id="r-fin">—</div><div class="kpi-tot-sub">procesos completados</div></div>
+    <div class="kpi-tot-card"><div class="kpi-tot-label">En ejecución</div><div class="kpi-tot-val" id="r-ejec">—</div><div class="kpi-tot-sub">contratos activos</div></div>
+    <div class="kpi-tot-card"><div class="kpi-tot-label">Obra</div><div class="kpi-tot-val" id="r-obra">—</div><div class="kpi-tot-sub">procesos de construcción</div></div>
+    <div class="kpi-tot-card"><div class="kpi-tot-label">Adquisición</div><div class="kpi-tot-val" id="r-adq">—</div><div class="kpi-tot-sub">procesos de compra</div></div>
+  </div>
+
+  <div class="sec-ey">Desglose por categoría</div>
+  <div class="cat-kpi-row" id="cat-row-resumen"></div>
+
+  <div class="sec-ey">Resumen por año</div>
+  <div class="year-summary" id="year-summary"></div>
+
+  <div class="sec-ey">Evolución temporal</div>
+  <div class="chart-grid">
+    <div class="chart-card full">
+      <div class="chart-hd">
+        <div>
+          <h3>Presupuesto referencial por año y <em>categoría</em></h3>
+          <p style="font-size:11.5px;color:var(--ink-3);margin-top:3px">Millones USD · sin IVA · datos SOCE/SERCOP</p>
+        </div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-line" style="background:var(--obra)"></div>Obra</div>
+          <div class="legend-item"><div class="legend-line" style="background:var(--adq)"></div>Adquisición</div>
+          <div class="legend-item"><div class="legend-line" style="background:var(--serv)"></div>Servicio/Consultoría</div>
+        </div>
+      </div>
+      <div class="chart-wrap tall"><canvas id="chart-linea-monto"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-hd">
+        <div><h3>N.° de procesos por <em>año y categoría</em></h3></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--obra)"></div>Obra</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--adq)"></div>Adq.</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--serv)"></div>Serv.</div>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-barras-count"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-hd"><div><h3>Distribución por <em>estado</em></h3></div></div>
+      <div class="chart-wrap"><canvas id="chart-donut-estado"></canvas></div>
+    </div>
+  </div>
+
+  <div class="manifesto-band">
+    <div class="mb-navy">
+      <div class="mb-ey">Dirección de Obras Públicas · GADMR</div>
+      <h2 class="mb-h2">Riobamba<br>que <em>avanza</em></h2>
+      <p class="mb-sub">Registro consolidado de procesos de contratación pública del GADM Riobamba. Datos oficiales extraídos del portal SOCE del Servicio Nacional de Contratación Pública (SERCOP).</p>
+    </div>
+    <div class="mb-stat">
+      <div class="mb-stat-ey">Inversión acumulada referencial</div>
+      <div class="mb-stat-num" id="mf-monto">—</div>
+      <div class="mb-stat-line"></div>
+      <p class="mb-stat-txt" id="mf-txt">—</p>
+    </div>
+  </div>
+</div>
+
+<div class="tab-panel" id="panel-tipos">
+  <div class="sec-ey">Procesos por tipo de contratación · todos los años</div>
+  <div class="kpi-totales" id="tipos-kpis-top"></div>
+  <div class="sec-ey" style="margin-top:24px">Detalle por tipo</div>
+  <div class="tipos-grid" id="tipos-grid"></div>
+</div>
+
+
+<div class="tab-panel" id="panel-infra">
+
+  <!-- Hero -->
+  <div class="infra-hero">
+    <div>
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.28em;font-weight:600;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px"><span style="width:24px;height:1px;background:var(--gold);display:block"></span>Dirección de Obras Públicas · GADMR</div>
+      <div class="infra-hero-title">Proyectos de <em>Infraestructura</em></div>
+      <p class="infra-hero-sub">Todos los procesos de contratación vinculados a obra física e infraestructura pública del Cantón Riobamba, independientemente del tipo de contratación utilizado.</p>
+    </div>
+    <div class="infra-hero-kpis" id="infra-hero-kpis"></div>
+  </div>
+
+  <!-- Línea de tiempo por año -->
+  <div class="sec-ey">Evolución por año</div>
+  <div class="infra-timeline" id="infra-timeline"></div>
+
+  <!-- Gráfica -->
+  <div class="chart-grid" style="margin-bottom:24px">
+    <div class="chart-card">
+      <div class="chart-hd"><div><h3>Monto por <em>subcategoría</em></h3></div></div>
+      <div class="chart-wrap"><canvas id="chart-infra-subcat"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-hd"><div><h3>Monto de infraestructura por <em>año</em></h3></div></div>
+      <div class="chart-wrap"><canvas id="chart-infra-anio"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Cards por subcategoría -->
+  <div class="sec-ey">Por subcategoría</div>
+  <div class="infra-subcats" id="infra-subcats"></div>
+
+</div>
+
+</main>
+
+<div class="overlay" id="overlay" onclick="cerrar()"></div>
+<div class="panel" id="panel-det">
+  <div class="panel-hdr">
+    <div><div class="p-cod" id="p-cod"></div><div class="p-title" id="p-title"></div></div>
+    <button class="btn-close" onclick="cerrar()">✕</button>
+  </div>
+  <div class="panel-body" id="p-body"></div>
+</div>
+
+<script>
+const DB=[
+{anio:2023,codigo:"CDC-GADMR-003-2023",objeto:"CONSULTORÍA PARA REALIZAR LOS ESTUDIOS INTEGRALES PARA LA REHABILITACIÓN DEL INMUEBLE DENOMINADO CASA VÉLEZ MERINO, UBICADO EN EL CANTÓN RIOBAMBA",estado:"Desierta",monto:50000.0,fecha:"2023-05-10",tipo:"CDC",cat:"Servicio"},
+{anio:2023,codigo:"LCC-GADMR-001-2023",objeto:"GENERACIÓN DE CARTOGRAFÍA BASE CON FINES CATASTRALES 1:1000 DE LA ZONA URBANA Y CABECERAS URBANO PARROQUIALES DEL CANTÓN RIOBAMBA",estado:"Cancelado",monto:280000.0,fecha:"2023-05-10",tipo:"LCC",cat:"Servicio"},
+{anio:2023,codigo:"LICO-GADMR-001-2023",objeto:"CONSTRUCCIÓN Y OPERACIÓN DEL COLECTOR BOSQUE-TUBASEC",estado:"Desierta",monto:2460511.8,fecha:"2023-04-13",tipo:"LICO",cat:"Obra"},
+{anio:2023,codigo:"LICO-GADMR-002-2023",objeto:"CONTRATACIÓN Y OPERACIÓN DE LA PTAR ORIENTAL-COLECTOR ORIENTAL",estado:"Desierta",monto:6354877.01,fecha:"2023-04-18",tipo:"LICO",cat:"Obra"},
+{anio:2023,codigo:"MCO-GADMR-005-2023",objeto:"ÁREA RECREATIVA DEL CENTRO INFANTIL MUNDO DE ILUSIONES DE LA POLICÍA NACIONAL",estado:"Fin. mutuo acuerdo",monto:18676.78,fecha:"2023-05-03",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"MCO-GADMR-006-2023",objeto:"CONSERVACIÓN Y RESTAURACIÓN DE LA FACHADA, CÚPULAS Y MONUMENTO VIRGEN DOLOROSA DE LA IGLESIA PARROQUIA DE YARUQUÍES",estado:"En Recepción",monto:50742.87,fecha:"2023-05-08",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"MCS-GADMR-002-2023",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE LOS EVENTOS ARTÍSTICOS, CULTURALES, PROMOCIONALES SEMINARIO DE EMPRENDIMIENTO ECONOMÍA POPULAR Y SOLIDARIA, COMERCIO JUSTO Y EL DESARROLLO ECONÓMICO LOCAL",estado:"Fin. mutuo acuerdo",monto:14985.5,fecha:"2023-04-14",tipo:"MCS",cat:"Servicio"},
+{anio:2023,codigo:"MCS-GADMR-003-2023",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DEL FESTIVAL GASTRONÓMICO RIOBAMBA TU MEJOR PLAN 2023",estado:"Cancelado",monto:19711.0,fecha:"2023-04-27",tipo:"MCS",cat:"Servicio"},
+{anio:2023,codigo:"SIE-GADMR-007-2023",objeto:"PROVISIÓN E INSTALACIÓN DE POSTES Y CÁMARAS DE SEGURIDAD PARA EL SISTEMA INTEGRADO ECU 911 EN DIFERENTES SECTORES DE LA CIUDAD",estado:"Desierta",monto:77214.15,fecha:"2023-04-11",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-008-2023",objeto:"SERVICIO DE DISEÑO E IMPRESIÓN DE DOCUMENTOS ADHESIVOS DE SEGURIDAD PARA REVISIÓN VEHICULAR DE LA DIRECCIÓN GENERAL DE GESTIÓN DE MOVILIDAD TRÁNSITO Y TRANSPORTE DEL GAD MUNICIPAL DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:58800.74,fecha:"2023-04-12",tipo:"SIE",cat:"Servicio"},
+{anio:2023,codigo:"SIE-GADMR-009-2023",objeto:"PRENDAS DE SEGURIDAD NO CATALOGADAS PARA EL PERSONAL DEL GADM DE RIOBAMBA",estado:"Desierta",monto:154999.35,fecha:"2023-04-13",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-010-2023",objeto:"LUBRICANTES PARA MAQUINARIA Y VEHÍCULOS QUE PRESTAN SERVICIOS EN EL GADM DEL CANTÓN RIOBAMBA",estado:"Desierta",monto:122966.47,fecha:"2023-04-27",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-011-2023",objeto:"ADQUISICIÓN DE DOS RECOLECTORES DE CARGA LATERAL PARA FORTALECER EL SISTEMA DE RECOLECCIÓN EN EL CANTÓN RIOBAMBA",estado:"Desierta",monto:599990.0,fecha:"2023-05-02",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-012-2023",objeto:"Adquisición de Materiales de Oficina No Catalogados, para varias dependencias del GADM de Riobamba",estado:"Ejecución de Contrato",monto:20404.03,fecha:"2023-05-02",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-014-2023",objeto:"REPUESTOS PARA LOS DIFERENTES SISTEMAS DE LOS RECOLECTORES CARGA LATERAL DAF QUE PERTENECE AL GADM DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:117172.72,fecha:"2023-05-09",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-015-2023",objeto:"REPUESTOS INCLUIDO MANTENIMIENTO PARA LOS RECOLECTORES KENWORTH DE PLACAS HMA-1093 Y HMA-1095 QUE PERTENECE AL GADM DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:65678.36,fecha:"2023-05-10",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-016-2023",objeto:"ADQUISICIÓN DE TUBERÍA PVC PARA EL ALCANTARILLADO DEL BARRIO SAN MIGUEL DE TAPI",estado:"Ejecución de Contrato",monto:45516.6,fecha:"2023-05-09",tipo:"SIE",cat:"Obra"},
+{anio:2023,codigo:"SIE-GADMR-017-2023",objeto:"ADQUISICIÓN DE SACOS DE CEMENTO GRIS DE 50 KG TIPO GU PARA TRABAJOS DE LA DIRECCIÓN DE OBRAS PÚBLICAS",estado:"Desierta",monto:72100.0,fecha:"2023-05-11",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-018-2023",objeto:"ADQUISICIÓN DE MATERIAL DE CONSTRUCCIÓN PARA LAS PARROQUIAS RURALES DEL CANTÓN RIOBAMBA",estado:"Desierta",monto:203132.89,fecha:"2023-05-12",tipo:"SIE",cat:"Obra"},
+{anio:2023,codigo:"SIE-GADMR-019-2023",objeto:"LUBRICANTES PARA MAQUINARIA Y VEHÍCULOS QUE PRESTAN SERVICIOS EN EL GADM DEL CANTÓN RIOBAMBA (2da convocatoria)",estado:"Ejecución de Contrato",monto:122966.47,fecha:"2023-05-31",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"CDC-GADMR-001-2023",objeto:"CONSULTORÍA ESTUDIOS INTEGRALES REHABILITACIÓN CASA VÉLEZ MERINO (1ra conv.)",estado:"Desierta",monto:50000.0,fecha:"2023-03-24",tipo:"CDC",cat:"Servicio"},
+{anio:2023,codigo:"CDC-GADMR-002-2023",objeto:"FISCALIZACIÓN DE LA EJECUCIÓN DE LOS SISTEMAS DE AGUA POTABLE COMUNIDADES SHOBOL LLIN LLIN Y CALERA GRANDE POMALO, PARROQUIA SAN JUAN",estado:"Desierta",monto:23036.25,fecha:"2023-03-29",tipo:"CDC",cat:"Servicio"},
+{anio:2023,codigo:"COTO-GADMR-001-2023",objeto:"EJECUCIÓN DE LOS SISTEMAS DE AGUA POTABLE COMUNIDADES SHOBOL LLIN LLIN Y CALERA GRANDE POMALÓ PARROQUIA SAN JUAN",estado:"Desierta",monto:457717.47,fecha:"2023-03-14",tipo:"COTO",cat:"Obra"},
+{anio:2023,codigo:"LICSG-GADMR-001-2023",objeto:"CONTRATACIÓN DE LA PÓLIZA DE FIDELIDAD PÚBLICA PARA LOS SERVIDORES CAUCIONADOS MUNICIPALES DEL GADM DE RIOBAMBA",estado:"Ejecución de Contrato",monto:21284.44,fecha:"2023-04-10",tipo:"LICSG",cat:"Servicio"},
+{anio:2023,codigo:"MCO-GADMR-001-2023",objeto:"CONSTRUCCIÓN DEL CENTRO DE CAPACITACIÓN EN LA COMUNIDAD AMULA SHIHUILQUIS DE LA PARROQUIA CACHA",estado:"Ejecución de Contrato",monto:34803.82,fecha:"2023-03-20",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"MCO-GADMR-003-2023",objeto:"MANTENIMIENTO Y CAMBIO DE CUBIERTA DEL EDIFICIO PATRIMONIAL DE LA UNIDAD EDUCATIVA CARLOS CISNEROS",estado:"Ejecución de Contrato",monto:77263.87,fecha:"2023-03-24",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"MCO-GADMR-004-2023",objeto:"CONSTRUCCIÓN DE BATERÍA SANITARIA UE CAMILO GALLEGOS TOLEDO, TERMINACIÓN AULAS ESCUELA GERMAN ABDOTOUMA, ARCOS METÁLICOS UE INTERCULTURAL BILUNGUE SANGAY, REHABILITACIÓN CANCHA UE MIGUEL ANGEL LEÓN PONTÓN",estado:"Adjudicada",monto:151359.42,fecha:"2023-04-04",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"MCS-GADMR-001-2023",objeto:"Impresión de soportes comunicacionales a full color para informar la Gestión del GADM Riobamba",estado:"Ejecución de Contrato",monto:25000.0,fecha:"2023-03-07",tipo:"MCS",cat:"Servicio"},
+{anio:2023,codigo:"SIE-GADMR-001-2023",objeto:"Adquisición de drone cuadroptero con sistema RTK",estado:"Finalizada",monto:10150.0,fecha:"2023-03-09",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-002-2023",objeto:"ADQUISICIÓN TUBERIA PVC Y ACCESORIOS PARA ALCANTARILLADO CORPORACIÓN DE BARRIOS SECTOR LA LIBERTAD PARROQUIA SAN LUIS",estado:"Finalizada",monto:284886.63,fecha:"2023-03-13",tipo:"SIE",cat:"Obra"},
+{anio:2023,codigo:"SIE-GADMR-003-2023",objeto:"PRENDAS DE SEGURIDAD NO CATALOGADAS PARA EL PERSONAL DEL GADM DE RIOBAMBA (1ra conv.)",estado:"Desierta",monto:154999.35,fecha:"2023-03-09",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-004-2023",objeto:"Adquisición de cementos para diferentes obras dentro las parroquias Rurales del cantón Riobamba",estado:"Finalizada",monto:222700.0,fecha:"2023-03-20",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-005-2023",objeto:"Materiales de ferretería para la Dirección de Gestión de Servicios Municipales",estado:"Finalizada",monto:12195.08,fecha:"2023-03-22",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"VPN-GADMR-001-2023",objeto:"CAMIÓN PARA TRABAJOS DE SEÑALÉTICA EN CALLES Y AVENIDAS DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:0.0,fecha:"2023-03-21",tipo:"VPN",cat:"Adquisición"},
+{anio:2023,codigo:"VPN-GADMR-002-2023",objeto:"ADQUISICIÓN DE DOS RECOLECTORES DE CARGA LATERAL PARA FORTALECER EL SISTEMA DE RECOLECCIÓN EN EL CANTÓN RIOBAMBA",estado:"Finalizada",monto:0.0,fecha:"2023-04-10",tipo:"VPN",cat:"Adquisición"},
+{anio:2023,codigo:"CDC-GADMR-2023-010",objeto:"ESTUDIO DIAGNÓSTICO SITUACIONAL LÍNEA BASE GRUPOS DE ATENCIÓN PRIORITARIA EN ESTADO DE VULNERABILIDAD",estado:"Finalizada",monto:49240.57,fecha:"2023-12-29",tipo:"CDC",cat:"Servicio"},
+{anio:2023,codigo:"CDC-GADMR-2023-011",objeto:"CONSULTORÍA EVALUACIÓN ESTRUCTURAL Y ESTUDIOS DE REFORZAMIENTO EDIFICIO DIRECCIÓN GESTIÓN DESARROLLO SOCIAL Y HUMANO",estado:"Desierta",monto:20000.0,fecha:"2023-12-29",tipo:"CDC",cat:"Servicio"},
+{anio:2023,codigo:"COTO-GADMR-2023-005",objeto:"READECUACIÓN DE ÁREAS RECREATIVAS EN LAS PARROQUIAS DE LICAN, FLORES Y CALPI",estado:"Ejecución de Contrato",monto:228445.46,fecha:"2023-12-28",tipo:"COTO",cat:"Obra"},
+{anio:2023,codigo:"COTO-GADMR-2023-006",objeto:"CONSTRUCCIÓN DE UNIDADES BÁSICAS SANITARIAS PUESETUS CHICO, EL OBRAJE FLORES Y DAL DAL PUNGALÁ CANTÓN RIOBAMBA",estado:"Adjudicada",monto:239873.14,fecha:"2023-12-29",tipo:"COTO",cat:"Obra"},
+{anio:2023,codigo:"COTS-GADMR-2023-006",objeto:"CONTRATACIÓN SERVICIOS CAMPEONATO NACIONAL DE CICLISMO RIOBAMBA 2024 Y CAMPEONATO MUNDIAL TAEKWONDO RIOBAMBA ECUADOR OPEN 2024",estado:"Desierta",monto:100529.24,fecha:"2023-12-29",tipo:"COTS",cat:"Servicio"},
+{anio:2023,codigo:"MCO-GADMR-2023-008",objeto:"AMPLIACIÓN DEL CEMENTERIO DE LA CABECERA PARROQUIAL DE CALPI",estado:"Adjudicada",monto:87957.22,fecha:"2023-12-28",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"MCO-GADMR-2023-010",objeto:"READECUACIÓN DEL CEMENTERIO COMUNIDAD SHANAICUN DE LA PARROQUIA PUNGALÁ",estado:"Ejecución de Contrato",monto:37315.65,fecha:"2023-12-28",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"MCO-GADMR-2023-011",objeto:"READECUACIÓN DEL PARQUE 9 DE OCTUBRE",estado:"Ejecución de Contrato",monto:135306.93,fecha:"2023-12-29",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"MCO-GADMR-2023-012",objeto:"CONSTRUCCIÓN DE BÓVEDAS EN EL CEMENTERIO PARROQUIA FLORES - COMUNIDAD NAUBUG",estado:"Finalizada",monto:24997.9,fecha:"2023-12-29",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"MCS-GADMR-2023-005",objeto:"ORGANIZACIÓN SESIONES ITINERANTES DEL CONCEJO CANTONAL EN LA ZONA URBANA Y RURAL DEL CANTÓN RIOBAMBA",estado:"Fin. mutuo acuerdo",monto:24030.0,fecha:"2023-12-28",tipo:"MCS",cat:"Servicio"},
+{anio:2023,codigo:"MCS-GADMR-2023-006",objeto:"SERVICIO DE MANTENIMIENTO DE CILINDROS PARA RECOLECTORES DE CARGA LATERAL IVECO STRALIS Y DAF",estado:"Ejecución de Contrato",monto:28080.0,fecha:"2023-12-29",tipo:"MCS",cat:"Servicio"},
+{anio:2023,codigo:"SIE-GADMR-2023-049",objeto:"ADQUISICIÓN DE MICROORGANISMOS PARA TRATAMIENTO DE LIXIVIADOS",estado:"Finalizada",monto:20994.75,fecha:"2023-12-28",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-050",objeto:"ADQUISICIÓN DE MATERIALES DE CONSTRUCCIÓN PARA LAS PARROQUIAS RURALES",estado:"Ejecución de Contrato",monto:19321.69,fecha:"2023-12-29",tipo:"SIE",cat:"Obra"},
+{anio:2023,codigo:"SIE-GADMR-2023-051",objeto:"CONTRATACIÓN DEL SERVICIO DE INTERNET WIFI PARA MANTENER OPERATIVAS LAS 156 ZONAS WI-FI EN EL CANTÓN RIOBAMBA",estado:"Finalizada",monto:198000.0,fecha:"2023-12-28",tipo:"SIE",cat:"Servicio"},
+{anio:2023,codigo:"SIE-GADMR-2023-052",objeto:"MOBILIARIO Y MENAJE DE LA CASA DE ACOGIDA PARA MUJERES VÍCTIMAS DE VIOLENCIA DE GÉNERO",estado:"Finalizada",monto:13085.0,fecha:"2023-12-29",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-053",objeto:"ADQUISICIÓN DE CEMENTO PARA FABRICACIÓN DE ADOQUINES Y VARIAS OBRAS DENTRO DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:105081.6,fecha:"2023-12-28",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-054",objeto:"Adquisición de equipos y maquinarias para los proyectos de la Dirección Gestión Desarrollo Social y Humano",estado:"Desierta",monto:17635.0,fecha:"2023-12-29",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-055",objeto:"ADQUISICIÓN DE PINTURA DE ALTO TRÁFICO, MICROESFERAS Y THINNER PARA SEÑALETICA HORIZONTAL DEL CANTON RIOBAMBA",estado:"Ejecución de Contrato",monto:85619.41,fecha:"2023-12-28",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-056",objeto:"SERVICIO DE MANTENIMIENTO Y ADECENTAMIENTO DE LAS DIFERENTES ÁREAS VERDES DEL CANTÓN RIOBAMBA",estado:"En Recepción",monto:99975.51,fecha:"2023-12-29",tipo:"SIE",cat:"Servicio"},
+{anio:2023,codigo:"SIE-GADMR-2023-057",objeto:"ADQUISICIÓN DE MATERIAL DE FERRETERÍA PARA MANTENIMIENTO DE ÁREAS VERDES Y ESPACIOS RECREATIVOS",estado:"Finalizada",monto:12948.21,fecha:"2023-12-29",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"CDC-GADMR-2023-008",objeto:"Consultoría especializada para la implementación de la ley de protección de datos personales",estado:"Finalizada",monto:8180.0,fecha:"2023-12-20",tipo:"CDC",cat:"Servicio"},
+{anio:2023,codigo:"CDC-GADMR-2023-009",objeto:"EVALUACIÓN DE VULNERABILIDADES DE SEGURIDAD DE LA INFORMACIÓN Y ETHICAL HACKING A LA INFRAESTRUCTURA TECNOLÓGICA DEL GADM DE RIOBAMBA",estado:"Desierta",monto:12000.0,fecha:"2023-12-28",tipo:"CDC",cat:"Servicio"},
+{anio:2023,codigo:"COTO-GADMR-2023-003",objeto:"CONSTRUCCIÓN DE LA PLAZA DE RASTRO DE LA PARROQUIA LICTO",estado:"Desierta",monto:405465.81,fecha:"2023-12-27",tipo:"COTO",cat:"Obra"},
+{anio:2023,codigo:"COTO-GADMR-2023-004",objeto:"BACHEO DE VARIAS VÍAS DE LA CIUDAD DE RIOBAMBA",estado:"En Recepción",monto:299587.77,fecha:"2023-12-27",tipo:"COTO",cat:"Obra"},
+{anio:2023,codigo:"MCB-GADMR-2023-001",objeto:"Provisión e Instalación de señalética tipo placas para establecimientos turísticos del cantón Riobamba",estado:"Ejecución de Contrato",monto:7000.0,fecha:"2023-12-20",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"MCO-GADMR-2023-009",objeto:"CONSTRUCCIÓN DE ESTADIO DE LA CABECERA PARROQUIAL DE PUNÍN",estado:"En Recepción",monto:49549.1,fecha:"2023-12-26",tipo:"MCO",cat:"Obra"},
+{anio:2023,codigo:"SIE-GADMR-2023-032",objeto:"Adquisición de puntos de reciclaje comunitarios para fomentar el reciclaje",estado:"Finalizada",monto:50736.0,fecha:"2023-12-20",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-035",objeto:"MANTENIMIENTO DE SEÑALETICA EN ATRACTIVOS TURÍSTICOS DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:26205.0,fecha:"2023-12-21",tipo:"SIE",cat:"Servicio"},
+{anio:2023,codigo:"SIE-GADMR-2023-038",objeto:"ADQUISICIÓN DE MATERIALES PÉTREOS PARA VARIAS OBRAS EN LAS PARROQUIAS RURALES DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:11979.88,fecha:"2023-12-20",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-039",objeto:"IMPLEMENTACIÓN Y CONFIGURACIÓN DEL ACTIVE DIRECTORY PARA SEGURIDAD Y POLÍTICAS DE SERVICIO DE RED",estado:"Finalizada",monto:9998.5,fecha:"2023-12-20",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-040",objeto:"ADQUISICIÓN DE LICENCIAS AUTODESK",estado:"Ejecución de Contrato",monto:21216.0,fecha:"2023-12-20",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-041",objeto:"Alimentos, productos de aseo, accesorios y medicinas para canes y equinos del Centro Despertar de los Ángeles",estado:"Finalizada",monto:24216.0,fecha:"2023-12-21",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-043",objeto:"ADQUISICIÓN DE UNA COMPACTADORA PARA DISMINUIR EL VOLUMEN DE RESIDUOS SÓLIDOS",estado:"Finalizada",monto:15500.0,fecha:"2023-12-21",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-044",objeto:"CONTRATACIÓN DEL SERVICIO DE INTERNET PARA LAS 11 SUBSEDES DEL GADMR EN PARROQUIAS RURALES",estado:"Fin. mutuo acuerdo",monto:7700.0,fecha:"2023-12-21",tipo:"SIE",cat:"Servicio"},
+{anio:2023,codigo:"SIE-GADMR-2023-045",objeto:"CONTROL DE PLAGAS CAMAL, MERCADOS, PLAZAS Y CENTRO COMERCIAL",estado:"Finalizada",monto:18726.4,fecha:"2023-12-27",tipo:"SIE",cat:"Servicio"},
+{anio:2023,codigo:"SIE-GADMR-2023-046",objeto:"ADQUISICIÓN DE CONTENEDORES PARA EL MANEJO DE RESIDUOS EN EL CENTRO DEL RECICLAJE",estado:"Ejecución de Contrato",monto:9882.81,fecha:"2023-12-27",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-047",objeto:"Maquinaria y equipos para el faenamiento en el Camal Municipal",estado:"Ejecución de Contrato",monto:7830.0,fecha:"2023-12-26",tipo:"SIE",cat:"Adquisición"},
+{anio:2023,codigo:"SIE-GADMR-2023-048",objeto:"Adquisición y Renovación de Licencias de Microsoft Office 365",estado:"Ejecución de Contrato",monto:61551.75,fecha:"2023-12-26",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"CDC-GADMR-2024-019",objeto:"ESTUDIOS DE CONSULTORÍA PARA LA RESTAURACIÓN INTEGRAL Y REHABILITACIÓN DE LA CASA VÉLEZ MERINO BIEN INMUEBLE PATRIMONIAL DEL GAD MUNICIPAL",estado:"Ejecución de Contrato",monto:50000.0,fecha:"2024-12-19",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-020",objeto:"CONSULTORÍA TÉCNICA PARA LA OBTENCIÓN DEL TÍTULO HABILITANTE DE REGISTRO DE OPERACIÓN DE RED PRIVADA CONCESIÓN/REGISTRO DE USO DE FRECUENCIAS DEL ESPECTRO RADIOELÉCTRICO (RADIO DE DOS VÍAS)",estado:"Desierta",monto:3000.0,fecha:"2024-12-30",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-022",objeto:"MEJORA INTEGRAL DEL CENTRO COMERCIAL POPULAR LA CONDAMINE FASE II – ESTUDIOS REMODELACION DE FACHADA, ESPACIOS INTERIORES Y EXTERIORES, SISTEMA HIDROSANITARIO, CONTRAINCENDIOS, SISTEMA ELÉCTRICO, ELECTRÓNICO AMBIENTAL Y MECÁNICO",estado:"Ejecución de Contrato",monto:66550.0,fecha:"2024-12-31",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"COTO-GADMR-2024-007",objeto:"REASFALTADO DE VARIAS VIAS DE LA CIUDAD DE RIOBAMBA ETAPA 1",estado:"Ejecución de Contrato",monto:910805.6,fecha:"2024-12-31",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"COTO-GADMR-2024-008",objeto:"CONSTRUCCIÓN DE LA PLAZA DE RASTRO DE LA PARROQUIA LICTO, ETAPA 1",estado:"Ejecución de Contrato",monto:466039.0,fecha:"2024-12-24",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"COTO-GADMR-2024-009",objeto:"REHABILITACIÓN Y REESTRUCTURACIÓN DEL MERCADO MARIANO BORJA LA MERCED",estado:"Desierta",monto:996517.73,fecha:"2024-12-31",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"COTO-GADMR-2024-010",objeto:"CONSTRUCCIÓN DEL CENTRO DE CAPACITACIÓN DE LA CABECERA PARROQUIAL DE SAN LUIS",estado:"Ejecución de Contrato",monto:311868.88,fecha:"2024-12-27",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"COTO-GADMR-2024-011",objeto:"REASFALTADO DE VARIAS VÍAS DE LA CIUDAD DE RIOBAMBA ETAPA 1 (2da conv.)",estado:"Cancelado",monto:910805.6,fecha:"2024-12-30",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"COTS-GADMR-2024-009",objeto:"SERVICIO DE MANTENIMIENTO CORRECTIVO, REPOSICIÓN, SUMINISTRO E INSTALACIÓN DE CÉSPED SINTÉTICO EN LAS CANCHAS DE FUTBOL DEL PARQUE SESQUICENTENARIO Y DEL BARRIO BELLAVISTA",estado:"Ejecución de Contrato",monto:75950.0,fecha:"2024-12-24",tipo:"COTS",cat:"Servicio"},
+{anio:2024,codigo:"COTS-GADMR-2024-010",objeto:"MANTENIMIENTO DE LA INFRAESTRUCTURA DE LOS CEMENTERIOS MUNICIPALES DEL CANTÓN RIOBAMBA",estado:"Desierta",monto:79999.96,fecha:"2024-12-31",tipo:"COTS",cat:"Servicio"},
+{anio:2024,codigo:"MCO-GADMR-2024-016",objeto:"MANTENIMIENTO E ILUMINACION DE LA CUBIERTA Y FACHADA DEL EDIFICIO PATRIMONIAL DEL MUSEO DE LA CIUDAD",estado:"Ejecución de Contrato",monto:70788.08,fecha:"2024-12-23",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCO-GADMR-2024-017",objeto:"AMPLIACIÓN DE CHIMENEAS PARA LA EVACUACIÓN Y CONDUCCIÓN DE GASES DENTRO DEL RELLENO SANITARIO",estado:"Desierta",monto:7271.56,fecha:"2024-12-19",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCO-GADMR-2024-018",objeto:"EJECUCIÓN DEL SISTEMA DE AGUA POTABLE PARA LA JUNTA DE AGUA POTABLE DE TZALARON Y LA JUNTA DE AGUA POTABLE YANACOCHA DE LA PARROQUIA PUNÍN, CANTÓN RIOBAMBA",estado:"Adjudicada",monto:200797.54,fecha:"2024-12-31",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCS-GADMR-2024-019",objeto:"MANTENIMIENTO Y ADECUACION DE VARIAS ZONAS INTERNAS DE LA CASA CENTRAL MUNICIPAL DE RIOBAMBA",estado:"Ejecución de Contrato",monto:43450.91,fecha:"2024-12-24",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-020",objeto:"ORGANIZACIÓN, PRODUCCIÓN, LOGÍSTICA Y PUESTA EN ESCENA DE LAS SESIONES DEL CONCEJO MUNICIPAL ORDINARIAS Y EXTRAORDINARIAS EN EL TERRITORIO DEL CANTÓN RIOBAMBA",estado:"Adjudicada",monto:39541.95,fecha:"2024-12-30",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-098",objeto:"ADQUISICION DE REPUESTOS ELECTRICOS PARA EL GADM DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:21124.46,fecha:"2024-12-19",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-105",objeto:"ADQUISICIÓN DE EQUIPAMIENTO TECNOLÓGICO E INDUSTRIAL PARA LA TECNIFICACIÓN DE LOS PROCESOS DE FAENAMIENTO QUE SE EJECUTAN DENTRO DEL SUBPROCESO CAMAL",estado:"Ejecución de Contrato",monto:42824.5,fecha:"2024-12-27",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-106",objeto:"ADQUISICIÓN DE REPUESTOS, ACCESORIOS Y MANTENIMIENTO DE LAS DIFERENTES MARCAS DE LOS VEHÍCULOS Y MAQUINARIA DEL PARQUE AUTOMOR DEL GADM DEL CANTON RIOBAMBA",estado:"Finalizada",monto:104766.36,fecha:"2024-12-23",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-109",objeto:"PRESTACIÓN DE SERVICIOS DE BARRIDO, LIMPIEZA, RECOLECCIÓN, TRANSPORTE Y TRATAMIENTO PARCIAL DE RESIDUOS SÓLIDOS DEL CANTÓN RIOBAMBA",estado:"Desierta",monto:295368.02,fecha:"2024-12-30",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-110",objeto:"Organización y producción de eventos turísticos promocionales en las parroquias rurales del cantón Riobamba",estado:"Ejecución de Contrato",monto:24999.92,fecha:"2024-12-30",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-017",objeto:"IDENTIFICACIÓN Y DELIMITACIÓN DE SITIOS ARQUEOLÓGICOS DE LAS PARROQUIAS RURALES: FLORES, PUNÍN Y LICTO DEL CANTÓN RIOBAMBA",estado:"Desierta",monto:25000.0,fecha:"2024-12-11",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-018",objeto:"CONTRATACIÓN DE ESTUDIOS Y DISEÑOS DEFINITIVOS PARA LA CONSTRUCCIÓN DEL MERCADO DE EXPENDIO DE PESCADOS Y MARISCOS EN LA CIUDAD DE RIOBAMBA",estado:"Fin. mutuo acuerdo",monto:62667.0,fecha:"2024-12-18",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"LCC-GADMR-2024-003",objeto:"Estudios de Factibilidad y Diseños Definitivos para la gestión integral de residuos sólidos – Complejo Ambiental Riobamba (CAR)",estado:"Desierta",monto:115000.0,fecha:"2024-12-18",tipo:"LCC",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-00018",objeto:"MANTENIMIENTO E ILUMINACIÓN DE LAS FACHADAS DEL EDIFICIO PATRIMONIAL DEL HOSPITAL PEDIÁTRICO ALFONSO VILLAGÓMEZ",estado:"Ejecución de Contrato",monto:27900.29,fecha:"2024-12-18",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-015",objeto:"RECTIFICACION DE ZAPATAS, PASTILLAS Y DISCOS DE FRENO PARA LA FLOTA VEHICULAR QUE PERTENECEN AL GADM DEL CANTON RIOBAMBA",estado:"Ejecución de Contrato",monto:10175.0,fecha:"2024-12-12",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-016",objeto:"MANTENIMIENTO DE LA FACHADA DEL MERCADO LIZARZABURU SAN FRANCISCO",estado:"Ejecución de Contrato",monto:17344.24,fecha:"2024-12-09",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-017",objeto:"SERVICIO DE RECONSTRUCCION, CORTE Y SUELDA ESPECIAL DE PIEZAS DE LA FLOTA VEHICULAR GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:9934.0,fecha:"2024-12-18",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-0101",objeto:"CONTRATACIÓN DEL SERVICIO DE OUTSOURCING DE IMPRESIÓN Y FOTOCOPIADO",estado:"Ejecución de Contrato",monto:120900.0,fecha:"2024-12-17",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-068",objeto:"ADQUISICIÓN DE CHALECOS ANTIBALAS PARA LOS AGENTES DE CONTROL MUNICIPAL",estado:"Finalizada",monto:30240.0,fecha:"2024-12-18",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-088",objeto:"SEÑALIZACIÓN HORIZONTAL PARA CALLES Y AVENIDAS EN EL CANTÓN RIOBAMBA",estado:"Finalizada",monto:398813.66,fecha:"2024-12-09",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-093",objeto:"GENERACIÓN E INDEXACIÓN DE FICHAS REGISTRALES Y ACTUALIZACIÓN DE MOVIMIENTOS HISTÓRICOS EN EL SISTEMA DEL REGISTRO DE LA PROPIEDAD",estado:"Fin. mutuo acuerdo",monto:25000.0,fecha:"2024-12-10",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-094",objeto:"ADQUISICIÓN DE EQUIPO CAMINERO DEL GOBIERNO AUTÓNOMO DESCENTRALIZADO DEL CANTÓN RIOBAMBA",estado:"En Recepción",monto:2105000.0,fecha:"2024-12-19",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-095",objeto:"PROVISIÓN E INSTALACIÓN DE MOBILIARIO PARA EL TALLER DE CONSERVACIÓN E INVESTIGACIÓN DE LA DIRECCIÓN DE GESTIÓN DE PATRIMONIO CULTURAL DEL GADM RIOBAMBA",estado:"En Recepción",monto:15831.32,fecha:"2024-12-12",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-096",objeto:"SERVICIO MANTENIMIENTO INCLUIDO REPUESTOS PARA LAS HIDROLAVADORAS Y COMPRESOR PERTENECIENTES AL GADM DEL CANTON RIOBAMBA",estado:"Desierta",monto:13354.41,fecha:"2024-12-18",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-097",objeto:"SERVICIO DE ORTOIMÁGENES SATELITALES DE ALTA RESOLUCIÓN ESPACIAL ESCALA 1:5000 PARA LA ACTUALIZACIÓN DEL CATASTRO RURAL",estado:"Ejecución de Contrato",monto:89990.95,fecha:"2024-12-16",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-099",objeto:"ADQUISICION DE EQUIPOS Y HERRAMIENTAS AUTOMOTRICES PARA EL GADM DEL CANTON RIOBAMBA",estado:"Finalizada",monto:49279.93,fecha:"2024-12-18",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-100",objeto:"Contratación del servicio de exámenes médicos ocupacionales para servidores del GADM Riobamba",estado:"Finalizada",monto:7948.25,fecha:"2024-12-17",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-102",objeto:"Contratación de productos audiovisuales para informar la gestión del GADM del cantón Riobamba",estado:"Finalizada",monto:52000.0,fecha:"2024-12-18",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-103",objeto:"Adquisición de microorganismos para el Sub Proceso de Residuos Sólidos",estado:"Finalizada",monto:9998.5,fecha:"2024-12-18",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-104",objeto:"ADQUISICIÓN DE MATERIALES DE FERRETERÍA ENTREGADOS EN SITIO PARA LA REHABILITACIÓN DE LOS SISTEMAS DE AGUA DE CONSUMO HUMANO PARA LAS PARROQUIAS LICTO Y PUNÍN",estado:"Finalizada",monto:58472.1,fecha:"2024-12-19",tipo:"SIE",cat:"Obra"},
+{anio:2024,codigo:"COTO-GADMR-2024-004",objeto:"FASE 1 DEL MANTENIMIENTO A LA INFRAESTRUCTURA DEL CENTRO COMERCIAL POPULAR LA CONDAMINE",estado:"Ejecución de Contrato",monto:593275.3,fecha:"2024-11-26",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"COTO-GADMR-2024-06",objeto:"CONSTRUCCIÓN DEL PARQUE DE LA CIUDADELA LUIS A. MARTÍNEZ",estado:"Ejecución de Contrato",monto:296627.8,fecha:"2024-11-26",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"LICSG-GADMR-2024-003",objeto:"CONTRATACIÓN DE PÓLIZA DE SEGURO PARA VEHÍCULOS LIVIANOS, PESADOS, MOTOS Y MAQUINARIA PESADA DE PROPIEDAD DEL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:249721.06,fecha:"2024-12-05",tipo:"LICSG",cat:"Servicio"},
+{anio:2024,codigo:"MCO-GADMR-2024-014",objeto:"CONSTRUCCIÓN DE LA BATERÍA SANITARIA PARA EL ESTADIO CRUZADA HUALIQUIS – PARROQUIA CACHA – COMUNIDAD CRUZADA HUALIQUIS",estado:"Ejecución de Contrato",monto:35994.95,fecha:"2024-11-29",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCS-GADMR-2024-011",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE EVENTOS CULTURALES Y DE EMPRENDIMIENTO BOULEVARD DE ARTES Y EMPRENDIMIENTOS RIOBAMBA 2024 y RUTA DEL EMPRENDEDOR RURAL 2024",estado:"Calificación de Participantes",monto:34994.0,fecha:"2024-11-19",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-012",objeto:"SERVICIO DE CONTRATACIÓN DE INSTRUCTORES EN LAS DIFERENTES DISCIPLINAS DE ARTE, RECREACIÓN Y DEPORTIVA EN EL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:26685.6,fecha:"2024-11-26",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-013",objeto:"SERVICIO DE MANTENIMIENTO CORRECTIVO DE FURGONES, BUSETA Y CAMIONETA PERTENECIENTES AL GADM DEL CANTON RIOBAMBA",estado:"Finalizada",monto:31612.0,fecha:"2024-11-28",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-014",objeto:"REPARACION DE LOS SISTEMAS DE INYECCION INCLUIDOS LOS REPUESTOS PARA VEHICULOS Y MAQUINARIA DEL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:10529.0,fecha:"2024-12-05",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-069",objeto:"SERVICIO DE ORTOIMÁGENES SATELITALES DE ALTA RESOLUCIÓN ESPACIAL ESCALA 1:5000 PARA LA ACTUALIZACIÓN DEL CATASTRO RURAL (1ra conv.)",estado:"Desierta",monto:89990.95,fecha:"2024-12-21",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-076",objeto:"Renovación de Licencias de Microsoft Office 365",estado:"Finalizada",monto:23500.4,fecha:"2024-11-19",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-081",objeto:"ADQUISICIÓN DE DISPOSITIVOS DE SEGURIDAD PARA CONTROL DE VELOCIDAD DE TRÁNSITO PARA LAS CALLES Y AVENIDAS DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:286977.9,fecha:"2024-11-25",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-082",objeto:"Adquisición de equipos de sonido y amplificación para el Teatro León y otros escenarios culturales y artísticos del GADMR",estado:"Ejecución de Contrato",monto:39998.65,fecha:"2024-11-21",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-083",objeto:"ADQUISICIÓN DE INSTRUMENTOS MUSICALES PARA FORTALECER LA BANDA Y ORQUESTA MUNICIPAL DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:15497.94,fecha:"2024-11-22",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-084",objeto:"ADQUISICIÓN ARMAS MENOS LETALES (DISPOSITIVO LANZADOR DE AGENTE QUIMICO AL 1.3 POR CIENTO) DE SEGURIDAD PARA LOS AGENTES DE CONTROL MUNICIPAL FASE II",estado:"Ejecución de Contrato",monto:50154.72,fecha:"2024-11-25",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-085",objeto:"ADQUISICIÓN DE MAQUINARIA PARA EL FORTALECIMIENTO A LAS INICIATIVAS PRODUCTIVAS DEL CANTÓN",estado:"Ejecución de Contrato",monto:30000.0,fecha:"2024-11-21",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-086",objeto:"Adquisición de contenedores de carga lateral de 2400 y 3000 litros de capacidad",estado:"Desierta",monto:148700.0,fecha:"2024-11-25",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-089",objeto:"MAQUINARIA Y EQUIPO PARA EL CAMAL MUNICIPAL",estado:"Finalizada",monto:52810.0,fecha:"2024-12-04",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-090",objeto:"INSUMOS MÉDICOS PARA LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO Y CENTRO DE SALUD TIPO B GADM RIOBAMBA",estado:"Finalizada",monto:15566.32,fecha:"2024-12-04",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-091",objeto:"CONTRATACIÓN DEL SERVICIO DE OUTSOURCING DE IMPRESIÓN Y FOTOCOPIADO (1ra conv.)",estado:"Desierta",monto:120900.0,fecha:"2024-11-28",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-092",objeto:"ADQUISICIÓN DE MEZCLA ASFÁLTICA EN CALIENTE INCLUIDO TRANSPORTE PARA UTILIZAR EN EL CANTÓN RIOBAMBA ETAPA 2",estado:"Ejecución de Contrato",monto:246364.0,fecha:"2024-11-29",tipo:"SIE",cat:"Obra"},
+{anio:2024,codigo:"CDC-GADMR-2024-015",objeto:"CONTRATACIÓN DE UNA CONSULTORÍA PARA LOS ESTUDIOS DE EVALUACIÓN, DIAGNÓSTICO Y DISEÑOS DEFINITIVOS DE ALCANTARILLADO SANITARIO Y UNIDADES BÁSICAS SANITARIAS PARA COMUNIDAD SAN CLEMENTE Y PORLÓN, PARROQUIA CUBIJÍES",estado:"En Recepción",monto:50611.24,fecha:"2024-11-08",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-016",objeto:"CONTRATACIÓN DE UNA CONSULTORÍA PARA LOS ESTUDIOS DE EVALUACIÓN, DIAGNÓSTICO Y DISEÑOS DEFINITIVOS DE ALCANTARILLADO SANITARIO PARA LAS COMUNIDADES CHIMBORAZO Y SANTA ISABEL, PARROQUIA SAN JUAN",estado:"En Recepción",monto:20008.87,fecha:"2024-11-14",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"COTO-GADMR-2024-005",objeto:"REHABILITACIÓN DE ZONAS INTERNAS DEL PARQUE GUAYAQUIL DE LA CIUDAD DE RIOBAMBA",estado:"En Recepción",monto:462337.3,fecha:"2024-10-30",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"FI-GADMR-2024-004",objeto:"SERVICIO DE PODA DE PALMERAS FENIX PHOENIX CANARIENSIS",estado:"Finalizada",monto:13481.25,fecha:"2024-11-06",tipo:"FI",cat:"Servicio"},
+{anio:2024,codigo:"FI-GADMR-2024-005",objeto:"SERVICIO DE ALIMENTACION PARA LOS BENEFICIARIOS DE LOS CENTROS DE ATENCIÓN DE LA DIRECCIÓN DE GESTIÓN DESARROLLO SOCIAL Y HUMANO",estado:"Adjudicada",monto:131703.0,fecha:"2024-11-14",tipo:"FI",cat:"Servicio"},
+{anio:2024,codigo:"MCO-GADMR-2024-012",objeto:"INTERVENCIÓN DE OBRAS DEL ENTORNO DEL PROYECTO PARQUES INCLUSIVOS INTEGRALES PARQUE SESQUICENTENARIO DEL GAD DE RIOBAMBA",estado:"Finalizada",monto:13771.06,fecha:"2024-10-30",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCO-GADMR-2024-013",objeto:"CONSTRUCCIÓN DEL CERRAMIENTO DEL ESTADIO COMUNIDAD ALAO LLACTAPAMBA, PARROQUIA PUNGALÁ",estado:"Ejecución de Contrato",monto:69959.15,fecha:"2024-11-13",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCS-GADMR-2024-010",objeto:"ORGANIZACIÓN, PRODUCCIÓN, LOGÍSTICA Y PUESTA EN ESCENA DE LA SESIÓN SOLEMNE CONMEMORATIVA DEL 11 NOVIEMBRE 2024 Y SESIONES ITINERANTES DEL CONCEJO MUNICIPAL EN LA ZONA URBANA Y RURAL DEL CANTÓN RIOBAMBA",estado:"Cancelado",monto:46172.0,fecha:"2024-10-21",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-059",objeto:"ADQUISICIÓN DE EQUIPOS DE CONECTIVIDAD PARA EL GADM DE RIOBAMBA",estado:"Ejecución de Contrato",monto:600112.3,fecha:"2024-11-18",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-064",objeto:"ADQUISICIÓN DE MAQUINARIA E INSUMOS PARA MANTENIMIENTO DE ÁREAS VERDES Y ESPACIOS RECREATIVOS",estado:"Finalizada",monto:22959.04,fecha:"2024-10-22",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-065",objeto:"ADQUISICIÓN DE EQUIPOS DE DEMARCACIÓN PARA SEÑALIZACIÓN VIAL PARA EL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:36319.99,fecha:"2024-10-30",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-070",objeto:"Alquiler de maquinaria para varias obras del Gobierno Autónomo Descentralizado Del Cantón Riobamba",estado:"Cancelado",monto:99280.0,fecha:"2024-10-21",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-071",objeto:"Adquisición de radios portátiles para los Agentes de Control Municipal",estado:"Finalizada",monto:12402.0,fecha:"2024-11-14",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-072",objeto:"ADQUISICIÓN DE EQUIPOS, MATERIALES Y SUMINISTROS SEMAFÓRICOS PARA LA REPOTENCIACIÓN Y MODERNIZACIÓN DEL SISTEMA ACTUAL",estado:"Finalizada",monto:249088.07,fecha:"2024-11-07",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-073",objeto:"CONTRATACIÓN DEL SERVICIO DE REMANUFACTURA DE TÓNERES",estado:"Ejecución de Contrato",monto:29990.0,fecha:"2024-11-08",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-074",objeto:"ADQUISICIÓN DE MATERIALES DE FERRETERÍA PARA EL SISTEMA DE ALCANTARILLADO SANITARIO Y PLUVIAL DE LOS BARRIOS DE LA LIBERTAD, RED PRINCIPAL DEL ALCANTARILLADO SANITARIO VIA RIOBAMBA SAN LUIS PLANTA DE TRATAMIENTO",estado:"Finalizada",monto:136611.05,fecha:"2024-11-05",tipo:"SIE",cat:"Obra"},
+{anio:2024,codigo:"SIE-GADMR-2024-075",objeto:"Diseño, fabricación e instalación de letras corpóreas en alto relieve con panel de acero impreso y laminadas con diseño de Riobamba",estado:"Fin. mutuo acuerdo",monto:28000.0,fecha:"2024-11-06",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-077",objeto:"Contratación del servicio de exámenes médicos ocupacionales para servidores del GADM Riobamba (1ra conv.)",estado:"Desierta",monto:7948.25,fecha:"2024-11-18",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-078",objeto:"ADQUISICIÓN DE LICENCIAS SOFTWARE TIPO CAD",estado:"Ejecución de Contrato",monto:20200.0,fecha:"2024-11-19",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-080",objeto:"Alquiler de maquinaria para varias obras del Gobierno Autónomo Descentralizado Del Cantón Riobamba",estado:"Finalizada",monto:96220.0,fecha:"2024-11-13",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-012",objeto:"INVESTIGACIÓN DE LA RIQUEZA DEL PATRIMONIO CULTURAL INMATERIAL DE LAS PARROQUIAS RURALES CACHA Y FLORES DEL CANTÓN RIOBAMBA",estado:"Fin. mutuo acuerdo",monto:15000.0,fecha:"2024-09-17",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-014",objeto:"ESTUDIO Y ELABORACIÓN DE LA ACTUALIZACIÓN DEL INVENTARIO DEL PATRIMONIO INMUEBLE (ARQUITECTÓNICO) DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:60000.0,fecha:"2024-09-18",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"COTO-GADMR-2024-003",objeto:"REGENERACIÓN URBANA DE LA AV. CARLOS ZAMBRANO Y PREDIOS ALEDAÑOS AL ESTADIO OLÍMPICO FERNANDO GUERRERO DE LA CIUDAD DE RIOBAMBA",estado:"Ejecución de Contrato",monto:593161.65,fecha:"2024-10-09",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"COTS-GADMR-2024-006",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE LOS EVENTOS QUE FOMENTEN LA CULTURA, LA RECREACIÓN Y LAS TRADICIONES PARA EL DESARROLLO ECONÓMICO DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:147882.0,fecha:"2024-10-03",tipo:"COTS",cat:"Servicio"},
+{anio:2024,codigo:"COTS-GADMR-2024-007",objeto:"Organización, producción y puesta en escena de los eventos que fomenten la cultura y las tradiciones en el cantón Riobamba",estado:"Ejecución de Contrato",monto:92000.0,fecha:"2024-10-02",tipo:"COTS",cat:"Servicio"},
+{anio:2024,codigo:"COTS-GADMR-2024-008",objeto:"SERVICIO DE PRODUCCIÓN Y ORGANIZACIÓN DE EVENTOS EN DIVERSAS DISCIPLINAS DEPORTIVAS PARA PROMOVER EL DEPORTE Y LA RECREACIÓN EN EL CANTÓN RIOBAMBA",estado:"Finalizada",monto:71000.0,fecha:"2024-10-08",tipo:"COTS",cat:"Servicio"},
+{anio:2024,codigo:"FI-GADMR-2024-002",objeto:"CONTRATACIÓN DEL SERVICIO DE ALIMENTACIÓN CATERING PARA EL PROYECTO DE DESARROLLO INFANTIL CDI BALTAZARA LLANGOMA, SAN JUAN LUZ Y VIDA, SAN JUAN CDI EL CHAVO, REINA PACCHA CACHA, RIOBAMBA LIZARZABURU",estado:"Finalizada",monto:65648.88,fecha:"2024-09-11",tipo:"FI",cat:"Servicio"},
+{anio:2024,codigo:"FI-GADMR-2024-003",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE LOS EVENTOS ARTÍSTICOS, CULTURALES, PROMOCIONALES PARA FOMENTAR EL DESARROLLO SOCIAL Y LA DINAMIZACIÓN ECONÓMICA LOCAL RIOBAMBA 2024",estado:"Adjudicada",monto:119050.0,fecha:"2024-09-12",tipo:"FI",cat:"Servicio"},
+{anio:2024,codigo:"MCO-GADMR-2024-011",objeto:"CONSTRUCCIÓN DEL ALCANTARILLADO SANITARIO DE LA COMUNIDAD SAN MARTÍN DE VERANILLO ETAPA 1 - TRAMO DE INTERÉS",estado:"Ejecución de Contrato",monto:113203.35,fecha:"2024-10-17",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"SIE-GADMR-2024-052",objeto:"MENAJE Y ACCESORIOS DESCARTABLES PARA LOS PROYECTOS DE LA DIRECCIÓN DE GESTIÓN DESARROLLO SOCIAL Y HUMANO DEL GADMR",estado:"Finalizada",monto:31013.5,fecha:"2024-09-11",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-053",objeto:"REPUESTOS PARA MAQUINARIA Y EQUIPOS DEL CAMAL MUNICIPAL",estado:"Finalizada",monto:7884.5,fecha:"2024-09-18",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-054",objeto:"RECUBRIMIENTO DE PINTURA EPÓXICA GRADO ALIMENTICIO EN PAREDES Y POLIURETANO CEMENTICIO GRADO ALIMENTICIO DE PISOS PARA EL ÁREA DE FAENAMIENTO Y CÁMARA OREO SECCIÓN OVINOS DEL CAMAL MUNICIPAL",estado:"Finalizada",monto:24475.0,fecha:"2024-09-19",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-056",objeto:"ADQUISICIÓN DE EQUIPO INFORMÁTICO ESPECIALIZADO Y ELECTRONICO PARA LA DIRECCIÓN DE SERVICIOS MUNICIPALES",estado:"Ejecución de Contrato",monto:11265.0,fecha:"2024-09-30",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-057",objeto:"ADQUISICIÓN DE CUCHILLOS Y CHAIRAS PARA EL FAENAMIENTO DE GANADO MAYOR (BOVINOS) Y MENOR (PORCINOS Y OVINOS) EN EL CAMAL MUNICIPAL",estado:"Finalizada",monto:9527.5,fecha:"2024-09-20",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-058",objeto:"POTENCIAR LA PLATAFORMA DE SEGURIDAD Y CONTROL PERIMETRAL DE LA RED DE DATOS INSTITUCIONAL DEL GADM DE RIOBAMBA A TRAVÉS DE LA ADQUISICIÓN DE EQUIPOS, ACTUALIZACIÓN DE LICENCIAS, SOPORTE E IMPLEMENTACIÓN",estado:"Ejecución de Contrato",monto:180001.17,fecha:"2024-09-17",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-060",objeto:"Adquisición de Licencias ADOBE CREATIVE CLOUD",estado:"Ejecución de Contrato",monto:13375.2,fecha:"2024-09-30",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-061",objeto:"SERVICIO DE DISEÑO E IMPRESIÓN DE DOCUMENTOS ADHESIVOS DE SEGURIDAD PARA REVISIÓN VEHICULAR DE LA DIRECCIÓN GENERAL DE GESTIÓN DE MOVILIDAD TRÁNSITO Y TRANSPORTE DEL GAD MUNICIPAL",estado:"Ejecución de Contrato",monto:139000.0,fecha:"2024-10-02",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-062",objeto:"ADQUISICIÓN DE EQUIPOS DE TOPOGRAFÍA Y MEDICIÓN PARA LA DIRECCIÓN DE GESTIÓN DE ORDENAMIENTO TERRITORIAL",estado:"Finalizada",monto:12400.0,fecha:"2024-10-17",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-063",objeto:"CONTRATACIÓN DE SERVICIO DE INTERNET BACKUP",estado:"Finalizada",monto:18000.0,fecha:"2024-10-03",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-066",objeto:"Materiales de ferretería, plomería, gasfitería eléctricos para el Camal Municipal",estado:"Ejecución de Contrato",monto:12810.09,fecha:"2024-10-15",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"CDC-GADMR-2024-011",objeto:"ACTUALIZACIÓN DEL PLAN DE USO Y GESTIÓN DE SUELO (PUGS) DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:64955.03,fecha:"2024-07-17",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"LCC-GADMR-2024-002",objeto:"CONTRATACIÓN DE ESTUDIOS Y DISEÑOS DEFINITIVOS PARA LA CONSTRUCCION DEL MERCADO SIMON BOLIVAR (SAN ALFONSO) DE LA CIUDAD DE RIOBAMBA PROVINCIA DE CHIMBORAZO",estado:"Desierta",monto:148964.59,fecha:"2024-07-24",tipo:"LCC",cat:"Servicio"},
+{anio:2024,codigo:"MCO-GADMR-2024-10",objeto:"MEJORAMIENTO DE LA CONDUCCIÓN E IMPLEMENTACIÓN DEL TANQUE DE RESERVA DEL SISTEMA DE AGUA POTABLE DE LA CABECERA PARROQUIAL DE SAN LUIS CANTÓN RIOBAMBA",estado:"Adjudicada",monto:48838.55,fecha:"2024-08-08",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCS-GADMR-2024-007",objeto:"MANTENIMIENTO DEL SISTEMA ELÉCTRICO Y CAMBIO DE LUMINARIAS DEL PARQUE SUCRE, DEL CANTON RIOBAMBA",estado:"Finalizada",monto:23649.08,fecha:"2024-07-17",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-008",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE LOS EVENTOS PÚBLICOS PROMOCIONALES INCLUSIVOS POR MIS DERECHOS DIRIGIDOS A GRUPOS DE ATENCIÓN PRIORITARIA Y A LA CIUDADANÍA DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:23340.0,fecha:"2024-07-18",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-009",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE EVENTOS ARTÍSTICOS Y CULTURALES PARA LA DINAMIZACIÓN DE LA ECONOMÍA EN EL CANTÓN RIOBAMBA SEPTIEMBRE 2024",estado:"Ejecución de Contrato",monto:18000.0,fecha:"2024-08-20",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-020",objeto:"SERVICIO DE ALQUILER DEL SISTEMA DE VIGILANCIA Y MONITOREO PARA LOS CENTROS DE ATENCIÓN DE LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO",estado:"Finalizada",monto:10560.0,fecha:"2024-08-07",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-036",objeto:"REPUESTOS Y MANTENIMIENTO DE MOTORES DE LA FLOTA VEHICULAR DEL GADM DEL CANTON RIOBAMBA",estado:"Ejecución de Contrato",monto:48050.99,fecha:"2024-07-24",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-039",objeto:"PRENDAS DE SEGURIDAD NO CATALOGADAS, PARA EL PERSONAL DEL GADM DE RIOBAMBA",estado:"Ejecución de Contrato",monto:109998.83,fecha:"2024-07-24",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-042",objeto:"MENAJE Y ACCESORIOS DESCARTABLES PARA LOS PROYECTOS DE LA DIRECCIÓN DE GESTIÓN DESARROLLO SOCIAL Y HUMANO DEL GADMR",estado:"Desierta",monto:31013.5,fecha:"2024-07-17",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-043",objeto:"ADQUISICIÓN DE SEÑALIZACIÓN VIAL PARA EL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:210708.0,fecha:"2024-08-28",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-044",objeto:"REPUESTOS INCLUIDO MANTENIMIENTO DE LOS DIFERENTES SISTEMAS DEL PARQUE AUTOMOR DEL GADM DEL CANTON RIOBAMBA",estado:"Ejecución de Contrato",monto:228286.86,fecha:"2024-07-31",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-045",objeto:"ADQUISICIÓN DE UN EQUIPO NAS",estado:"Ejecución de Contrato",monto:25400.64,fecha:"2024-08-01",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-046",objeto:"SERVICIO DE TORNOS Y SUELDAS ESPECIALES DE LA MAQUINARIA Y VEHICULOS DEL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:18881.0,fecha:"2024-08-19",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-047",objeto:"ORGANIZACIÓN, PRODUCCIÓN, DIFUSIÓN Y PUESTA EN ESCENA DE EVENTOS ARTÍSTICOS, CULTURALES, TURÍSTICOS Y PROMOCIONALES EN EL CANTÓN RIOBAMBA A TRAVÉS DE UN FESTIVAL DE LUCES, MAPPING Y SHOWROOM DE LA OFERTA TURÍSTICA RURAL",estado:"Ejecución de Contrato",monto:21550.0,fecha:"2024-08-07",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-048",objeto:"MATERIAL DIDÁCTICO PARA DIFERENTES PROYECTOS PARA LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO DEL GADMR",estado:"Finalizada",monto:24862.2,fecha:"2024-08-14",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-049",objeto:"ADQUSICIÓN DE INSUMOS PARA LA INSTALACIÓN Y MANTENIMIENTO DE REDES DE COMUNICACIÓN",estado:"Finalizada",monto:9792.78,fecha:"2024-08-16",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-050",objeto:"Renovación y Adquisición de las Licencias del Programa Antivirus",estado:"Ejecución de Contrato",monto:8496.0,fecha:"2024-09-09",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-051",objeto:"PROVISIÓN E INSTALACIÓN DE MOBILIARIO MUSEOGRÁFICO PARA EL MUSEO DE LA PARROQUIA RURAL DE PUNÍN",estado:"En Recepción",monto:15720.0,fecha:"2024-08-19",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-055",objeto:"INSUMOS ODONTOLOGICOS PARA LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO Y CENTRO DE SALUD TIPO B GADM RIOBAMBA",estado:"Finalizada",monto:11369.16,fecha:"2024-09-11",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"MCO-GADMR-2024-009",objeto:"CONSTRUCCION DEL CERRAMIENTO FRONTAL Y UN CUERPO DE BOVEDAS CEMENTERIO DE LA PARROQUIA FLORES - COMUNIDAD GUANTUL CENTRAL",estado:"Finalizada",monto:24239.23,fecha:"2024-07-03",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"SIE-GADMR-2024-040",objeto:"CONTRATACIÓN DE PRODUCTOS AUDIOVISUALES PARA INFORMAR LA GESTIÓN DEL GOBIERNO AUTÓNOMO DESCENTRALIZADO MUNICIPAL DEL CANTÓN RIOBAMBA",estado:"Desierta",monto:52000.0,fecha:"2024-07-03",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-041",objeto:"SERVICIO DE RECOLECCIÓN, TRANSPORTE DIFERENCIADO, TRATAMIENTO Y DISPOSICIÓN FINAL DE LOS DESECHOS SANITARIOS Y FARMACÉUTICOS GENERADOS DENTRO DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:223200.0,fecha:"2024-07-16",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"CDC-GADMR-2024-009",objeto:"EVALUACIÓN DE VULNERABILIDADES DE SEGURIDAD DE LA INFORMACIÓN Y ETHICAL HACKING A LA INFRAESTRUCTURA TECNOLÓGICA DEL GADM DE RIOBAMBA",estado:"Finalizada",monto:18000.0,fecha:"2024-06-05",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-010",objeto:"Contratación de servicios especializados para el diseño integral de la campaña educomunicacional para el fomento del reciclaje en el Cantón Riobamba",estado:"Desierta",monto:30000.0,fecha:"2024-06-12",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"COTO-GADMR-2024-002",objeto:"REASFALTADO DE VARIAS VÍAS CONECTORAS DE LA CIUDAD DE RIOBAMBA",estado:"Ejecución de Contrato",monto:932921.64,fecha:"2024-06-17",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"FI-GADMR-2024-001",objeto:"ABASTOS, LEGUMBRES, FRUTAS, HORTALIZAS, CARNICOS, LACTEOS Y PAN PARA LOS CENTROS DE ATENCION DE LA DIRECCIÓN DE GESTIÓN DESARROLLO SOCIAL Y HUMANO DEL GADMR",estado:"Adjudicada",monto:54947.75,fecha:"2024-06-25",tipo:"FI",cat:"Adquisición"},
+{anio:2024,codigo:"LCC-GADMR-2024-001",objeto:"CONTRATACIÓN DE LA CONSULTORÍA PARA DETERMINAR EL POLO DE DESARROLLO EN EL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:90000.0,fecha:"2024-06-10",tipo:"LCC",cat:"Servicio"},
+{anio:2024,codigo:"MCO-GADMR-2024-005",objeto:"ILUMINACIÓN DE LAS FACHADAS Y CAMBIO DE LAS INSTALACIONES ELÉCTRICAS INTERNAS DEL EDIFICIO PATRIMONIAL DE LA UNIDAD EDUCATIVA PEDRO VICENTE MALDONADO",estado:"Ejecución de Contrato",monto:67461.62,fecha:"2024-05-28",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCO-GADMR-2024-006",objeto:"Ampliación de chimeneas para la evacuación y conducción de gases dentro del Relleno Sanitario (1ra conv.)",estado:"Desierta",monto:7195.9,fecha:"2024-06-05",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCO-GADMR-2024-008",objeto:"ADECUACIÓN Y MANTENIMIENTO DEL CENTRO DE DESARROLLO INFANTIL WAWA WASI GUARDIANES DE LA PAZ - SECTOR 9 DE OCTUBRE",estado:"En Recepción",monto:88076.87,fecha:"2024-06-18",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"SIE-GADMR-2024-025",objeto:"MAQUINARIA Y EQUIPO PARA LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO",estado:"Finalizada",monto:39604.0,fecha:"2024-06-04",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-027",objeto:"CONTRATACIÓN DEL SERVICIO DE MANTENIMIENTO PREVENTIVO Y CORRECTIVO DEL DATA CENTER MATRIZ Y DEL REGISTRO DE LA PROPIEDAD DEL GAD MUNICIPAL DE RIOBAMBA",estado:"Ejecución de Contrato",monto:33997.8,fecha:"2024-05-31",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-028",objeto:"ADQUISICIÓN DE NEUMÁTICOS NO CATALOGADOS, TUBOS Y DEFENSAS PARA VEHÍCULOS Y MAQUINARIA DEL GADM DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:48278.68,fecha:"2024-06-04",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-029",objeto:"ADQUISICIÓN DE UNA MINICARGADORA, QUE INCLUYE UNA HORQUILLA PARA CARGA, PARA FORTALECER LA GESTIÓN DE RESIDUOS SÓLIDOS",estado:"Ejecución de Contrato",monto:75000.0,fecha:"2024-05-31",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-030",objeto:"Servicio de Rastreo Satelital, Vehículos, Equipo y Maquinaria del GADM del Cantón Riobamba",estado:"Ejecución de Contrato",monto:29381.64,fecha:"2024-06-04",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-031",objeto:"ADQUISICION DE FILTROS Y REPUESTOS PARA FLOTA VEHICULAR QUE PERTENECE AL GADM DEL CANTON RIOBAMBA",estado:"Finalizada",monto:40121.5,fecha:"2024-06-05",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-032",objeto:"Adquirir vehículos para el fortalecimiento del sistema de recolección de residuos sólidos, a través de la renovación del parque automotor de la Dirección de Gestión Ambiental, Salubridad e Higiene",estado:"Ejecución de Contrato",monto:1213170.41,fecha:"2024-06-20",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-033",objeto:"ADQUISICIÓN DE MEZCLA ASFÁLTICA EN CALIENTE A SER UTILIZADO EN EL BACHEO DEL CANTÓN RIOBAMBA INCLUIDO TRANSPORTE",estado:"Ejecución de Contrato",monto:147735.0,fecha:"2024-06-12",tipo:"SIE",cat:"Obra"},
+{anio:2024,codigo:"SIE-GADMR-2024-034",objeto:"ADQUISICIÓN DE MATERIALES DE CONSTRUCCIÓN, ELÉCTRICOS, GASFITERÍA, CARPINTERÍA, PLOMERÍA Y HERRAMIENTAS PARA VARIAS DEPENDENCIAS DEL GADM DE RIOBAMBA",estado:"Ejecución de Contrato",monto:182773.25,fecha:"2024-06-21",tipo:"SIE",cat:"Obra"},
+{anio:2024,codigo:"SIE-GADMR-2024-035",objeto:"ADQUISICIÓN DE PLANTAS PARA ARBORIZACIÓN Y ORNAMENTACIÓN DE ÁREAS VERDES Y ESPACIOS RECREATIVOS DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:17219.75,fecha:"2024-06-13",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-037",objeto:"MENAJE Y ACCESORIOS DESCARTABLES PARA LOS PROYECTOS DE LA DIRECCIÓN DE GESTIÓN DESARROLLO SOCIAL Y HUMANO DEL GADMR",estado:"Desierta",monto:31013.5,fecha:"2024-06-21",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-038",objeto:"Adquisición Armas No Letales (dispositivo lanzador de agente químico al 1.3 por ciento) de seguridad para los Agentes de Control Municipal",estado:"Finalizada",monto:21600.0,fecha:"2024-06-21",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"CDC-GADMR-2024-006",objeto:"CONSULTORÍA PARA REALIZAR EL ESTUDIO DE REFORZAMIENTO ESTRUCTURAL Y EVALUACION DE DAÑOS CAUSADOS POR HUMEDAD Y ASENTAMIENTOS DIFERENCIALES EN EL EDIFICIO DE LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO",estado:"Ejecución de Contrato",monto:20000.0,fecha:"2024-05-02",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-007",objeto:"ESTUDIOS DE REHABILITACIÓN DEL INMUEBLE PATRIMONIAL DE LA FEDERACIÓN DEPORTIVA DE CHIMBORAZO",estado:"Ejecución de Contrato",monto:40000.0,fecha:"2024-05-10",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-008",objeto:"CONTRATACIÓN DE ESTUDIOS Y DISEÑOS DEFINITIVOS PARA LA CONSTRUCCIÓN DEL MERCADO DE EXPENDIO DE PESCADOS Y MARISCOS EN LA CIUDAD DE RIOBAMBA",estado:"Desierta",monto:62667.0,fecha:"2024-05-14",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"COTS-GADMR-2024-005",objeto:"ORGANIZACIÓN, PRODUCCIÓN, LOGÍSTICA Y EJECUCIÓN DE ACTIVIDADES DE DIVERSAS DISCIPLINAS DEPORTIVAS PARA FOMENTAR EL DEPORTE, LA CULTURA Y LA RECREACIÓN EN EL CANTÓN RIOBAMBA",estado:"Finalizada",monto:95084.0,fecha:"2024-05-10",tipo:"COTS",cat:"Servicio"},
+{anio:2024,codigo:"LICSG-GADMR-2024-002",objeto:"Contratación de la Póliza de Fidelidad Pública para los Servidores Caucionados Municipales del GADM de Riobamba Tipo Blanket",estado:"Ejecución de Contrato",monto:15907.92,fecha:"2024-05-02",tipo:"LICSG",cat:"Servicio"},
+{anio:2024,codigo:"MCB-GADMR-2024-001",objeto:"PROVISIÓN E INSTALACIÓN DE MOBILIARIO MUSEOGRÁFICO PARA EL MUSEO DE LA PARROQUIRA RURAL DE PUNÍN",estado:"Cancelado",monto:15723.0,fecha:"2024-05-20",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"MCO-GADMR-2024-003",objeto:"REHABILITACIÓN BATERÍA SANITARIA MUNICIPAL UBICADA EN LA CALLE JOSÉ VELOZ Y ESPAÑA",estado:"Ejecución de Contrato",monto:62072.23,fecha:"2024-05-08",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCO-GADMR-2024-004",objeto:"CONSTRUCCIÓN DEL CERRAMIENTO SECTOR LOURDES MACAJI",estado:"En Recepción",monto:100000.0,fecha:"2024-05-16",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCS-GADMR-2024-006",objeto:"Mantenimiento Preventivo y Correctivo de los equipos del Sistema de Radiodifusión de Radio Ciudad concesionado al GADM de Riobamba",estado:"Ejecución de Contrato",monto:3540.0,fecha:"2024-05-15",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-008",objeto:"ADQUISICIÓN DE UN EQUIPO DE ALMACENAMIENTO MASIVO",estado:"Cancelado",monto:21334.75,fecha:"2024-05-01",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-015",objeto:"ADQUISICIÓN DE UNA BATERÍA SANITARIA TIPO REMOLQUE PARA LA MEJORA DE LOS SERVICIOS BÁSICOS EN LA PLAZA LA ESPERANZA 1",estado:"Ejecución de Contrato",monto:15000.0,fecha:"2024-05-07",tipo:"SIE",cat:"Obra"},
+{anio:2024,codigo:"SIE-GADMR-2024-016",objeto:"ADQUISICIÓN DE UN EQUIPO NAS (1ra conv.)",estado:"Desierta",monto:25444.62,fecha:"2024-05-07",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-018",objeto:"SOPORTE Y MANTENIMIENTO TÉCNICO DEL SISTEMA INSTITUCIONAL INTEGRAL DE INFORMACIÓN DEL GADM RIOBAMBA",estado:"Ejecución de Contrato",monto:18500.0,fecha:"2024-05-16",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-019",objeto:"ADQUISICION DE VEHICULO PARA USO OFICIAL DEL ALCALDE DEL GADM DEL CANTON RIOBAMBA",estado:"En Recepción",monto:54455.36,fecha:"2024-05-27",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-021",objeto:"Provisión e Instalación de Equipos Informáticos para la Implementación del Tablero de Control Video Wall Panel 2X3 – 2",estado:"Ejecución de Contrato",monto:18697.0,fecha:"2024-05-27",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-022",objeto:"Adquisición de equipos para utilizar en protocolos específicos en el Laboratorio de Bromatología",estado:"Finalizada",monto:9980.9,fecha:"2024-05-27",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-024",objeto:"Adquisición de medicina e insumos veterinarios",estado:"Finalizada",monto:49002.31,fecha:"2024-05-23",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-026",objeto:"ALQUILER DE VEHÍCULOS RECOLECTORES DE CARGA LATERAL CON COMPACTADORES PARA RECOLECCIÓN Y TRANSPORTE DE RESIDUOS SÓLIDOS NO PELIGROSOS DENTRO DEL CANTÓN RIOBAMBA",estado:"En Recepción",monto:154224.0,fecha:"2024-05-28",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-17",objeto:"MENAJE Y ACCESORIOS DESCARTABLES PARA LOS PROYECTOS DE LA DIRECCIÓN DE GESTIÓN DESARROLLO SOCIAL Y HUMANO DEL GADMR (1ra conv.)",estado:"Desierta",monto:31013.5,fecha:"2024-05-17",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"VPN-GADMR-2024-002",objeto:"Adquirir vehículos para el fortalecimiento del sistema de recolección de residuos sólidos, a través de la renovación del parque automotor",estado:"Finalizada",monto:0.0,fecha:"2024-05-15",tipo:"VPN",cat:"Adquisición"},
+{anio:2024,codigo:"CDC-GADMR-2024-001",objeto:"CONTRATACIÓN DE FISCALIZACIÓN DE LA EJECUCIÓN DE LOS SISTEMAS DE AGUA POTABLE PARA LA COMUNIDAD CALERA GRANDE PARROQUIA SAN JUAN",estado:"Desierta",monto:15616.0,fecha:"2024-02-22",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-002",objeto:"CONTRATACIÓN DE FISCALIZACIÓN DE LA EJECUCIÓN DE LOS SISTEMAS DE AGUA POTABLE PARA LA COMUNIDAD SHOBOL LLIN LLIN PARROQUIA SAN JUAN",estado:"Desierta",monto:7420.25,fecha:"2024-02-26",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-003",objeto:"CONTRATACIÓN DEL SERVICIO DE CONSULTORÍA PARA EL ANÁLISIS ESPECIALIZADO EN CAMBIO CLIMÁTICO Y RECURSOS HÍDRICOS DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:6000.0,fecha:"2024-02-27",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"COTS-GADMR-2024-001",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE EVENTOS ARTÍSTICOS, CULTURALES Y TURÍSTICOS PARA LA DINAMIZACIÓN DE LA ECONOMÍA EN EL CANTÓN RIOBAMBA 2024",estado:"Fin. mutuo acuerdo",monto:155000.0,fecha:"2024-03-06",tipo:"COTS",cat:"Servicio"},
+{anio:2024,codigo:"COTS-GADMR-2024-002",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE EVENTOS ARTÍSTICOS, CULTURALES Y TURÍSTICOS POR LA CELEBRACIÓN DE LA INDEPENDENCIA DEL CANTÓN RIOBAMBA 2024",estado:"Desierta",monto:243000.0,fecha:"2024-03-12",tipo:"COTS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-001",objeto:"SERVICIO DE PRENSADO DE MANGUERAS HIDRÁULICAS DE MAQUINARIA QUE PERTENECEN AL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:24986.0,fecha:"2024-02-29",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-002",objeto:"SERVICIO DE TORNOS Y SUELDAS ESPECIALES DE LA MAQUINARIA DEL GADM DEL CANTÓN RIOBAMBA",estado:"Desierta",monto:14617.0,fecha:"2024-03-07",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-004",objeto:"Contratación de productos audiovisuales para informar la gestión del Gobierno Autónomo Descentralizado Municipal del cantón Riobamba",estado:"Cancelado",monto:45000.0,fecha:"2024-03-08",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-002",objeto:"LUBRICANTES PARA MAQUINARIA Y VEHÍCULOS QUE PRESTAN SERVICIOS EN EL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:129631.25,fecha:"2024-03-07",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-003",objeto:"ADQUISICIÓN DE FILTROS Y REPUESTOS PARA FLOTA VEHICULAR QUE PERTENECE AL GADM DEL CANTÓN RIOBAMBA (1ra conv.)",estado:"Desierta",monto:40121.5,fecha:"2024-03-11",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"CDC-GADMR-2024-004",objeto:"CONTRATACIÓN DE FISCALIZACIÓN DE LA EJECUCIÓN DE LOS SISTEMAS DE AGUA POTABLE PARA LAS COMUNIDADES SHOBOL LLIN LLIN PARROQUIA SAN JUAN",estado:"Finalizada",monto:7420.25,fecha:"2024-03-20",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"CDC-GADMR-2024-005",objeto:"CONTRATACION DE FISCALIZACION DE LA EJECUCION DE LOS SISTEMAS DE AGUA POTABLE COMUNIDADES CALERA GRANDE POMALO PARROQUIA SAN JUAN",estado:"En Recepción",monto:15616.0,fecha:"2024-03-28",tipo:"CDC",cat:"Servicio"},
+{anio:2024,codigo:"COTO-GADMR-2024-001",objeto:"EJECUCIÓN DEL SISTEMA DE AGUA POTABLE DE CALERA GRANDE POMALO DE LA PARROQUIA SAN JUAN",estado:"Finalizada",monto:316548.06,fecha:"2024-04-03",tipo:"COTO",cat:"Obra"},
+{anio:2024,codigo:"COTS-GADMR-2024-003",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA LOS EVENTOS ARTÍSTICOS, CULTURALES, MUSICALES Y TEATRALES PARA LA PRESERVACIÓN DE LAS TRADICIONES CULTURALES",estado:"Desierta",monto:77910.0,fecha:"2024-04-02",tipo:"COTS",cat:"Servicio"},
+{anio:2024,codigo:"COTS-GADMR-2024-004",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE EVENTOS ARTÍSTICOS, CULTURALES Y TURÍSTICOS PARA FOMENTAR EL TURISMO Y LA ECONOMÍA DEL CANTÓN RAYMI CHAY MAYO 2024",estado:"Finalizada",monto:233000.0,fecha:"2024-04-30",tipo:"COTS",cat:"Servicio"},
+{anio:2024,codigo:"LICSG-GADMR-2024-001",objeto:"Contratación de Póliza de Seguros de Propiedades y Otros Bienes del GADM de Riobamba",estado:"Finalizada",monto:247805.38,fecha:"2024-04-24",tipo:"LICSG",cat:"Servicio"},
+{anio:2024,codigo:"MCO-GADMR-2024-001",objeto:"CONSTRUCCION DE LA INFRAESTRUCTURA DE LA JEFATURA ZONAL AEROPOLICIAL RIOBAMBA PARA EL FORTALECIMIENTO DE LA SEGURIDAD CIUDADANA EN EL CANTON RIOBAMBA",estado:"En Recepción",monto:52890.24,fecha:"2024-04-04",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCO-GADMR-2024-002",objeto:"CONSTRUCCIÓN DE BOVEDAS EMERGENTES EN EL CEMENTERIO GENERAL DE RIOBAMBA",estado:"Finalizada",monto:43720.77,fecha:"2024-04-09",tipo:"MCO",cat:"Obra"},
+{anio:2024,codigo:"MCS-GADMR-2024-003",objeto:"Impresión de soportes comunicacionales a full color para informar y difundir la Gestión del GADM Riobamba",estado:"Ejecución de Contrato",monto:50000.0,fecha:"2024-03-14",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"MCS-GADMR-2024-005",objeto:"Contratación de pautas publicitarias para promocionar e informar la gestión del GADM del cantón Riobamba",estado:"Cancelado",monto:9000.0,fecha:"2024-03-25",tipo:"MCS",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-004",objeto:"CONTRATACIÓN DEL SERVICIO DE INTERNET WIFI PARA 38 COMUNIDADES DE LAS PARROQUIAS RURALES DEL CANTÓN RIOBAMBA (1ra conv.)",estado:"Desierta",monto:60420.0,fecha:"2024-03-18",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-005",objeto:"ADQUISICIÓN PUNTOS LIMPIOS MÓVILES",estado:"Finalizada",monto:16400.0,fecha:"2024-03-27",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-006",objeto:"ADQUISICIÓN DE EQUIPOS PARA OPERATIVOS DE CONTROL EN LA CIUDAD DE RIOBAMBA",estado:"Desierta",monto:15850.0,fecha:"2024-03-26",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-007",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE LOS EVENTOS ARTÍSTICOS, CULTURALES, TURÍSTICOS, PROMOCIONALES: RUEDA DE NEGOCIOS SHOW ROOM DESTINO RIOBAMBA y CONGRESO EXPERIENCIAS SOBRE LA GOBERNANZA E INNOVACIÓN TURÍSTICA",estado:"Finalizada",monto:49869.0,fecha:"2024-03-27",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-009",objeto:"Contratación del Servicio de Internet WIFI para 38 comunidades de las parroquias rurales del cantón Riobamba",estado:"Finalizada",monto:60420.0,fecha:"2024-04-11",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-010",objeto:"Contratación del servicio de mantenimiento preventivo y correctivo del Data Center Matriz y del Registro de la Propiedad del GAD Municipal de Riobamba (1ra conv.)",estado:"Desierta",monto:33997.8,fecha:"2024-04-16",tipo:"SIE",cat:"Servicio"},
+{anio:2024,codigo:"SIE-GADMR-2024-012",objeto:"Adquisición de alimento para perros adultos, cachorros y gatos",estado:"Finalizada",monto:7920.0,fecha:"2024-04-30",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-013",objeto:"Adquisición de equipos para utilizar en protocolos específicos en el Laboratorio de Bromatología (1ra conv.)",estado:"Desierta",monto:9980.9,fecha:"2024-04-26",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"SIE-GADMR-2024-014",objeto:"IMPRESIÓN DE MATERIAL PROMOCIONAL EN VARIOS FORMATOS Y ACABADOS DE ALTA CALIDAD",estado:"Desierta",monto:21945.0,fecha:"2024-05-01",tipo:"SIE",cat:"Adquisición"},
+{anio:2024,codigo:"VPN-GADMR-2024-001",objeto:"ADQUISICIÓN DE VEHÍCULO PARA USO OFICIAL DEL ALCALDE DEL GADM DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:0.0,fecha:"2024-04-08",tipo:"VPN",cat:"Adquisición"},
+{anio:2025,codigo:"CDC-GADMR-2025-001",objeto:"ESTUDIOS Y DISEÑOS DEFINITIVOS PARA EL PARQUE RECREATIVO ARQUEOLÓGICO LOURDES MACAXÍ EN LA CIUDAD DE RIOBAMBA",estado:"Ejecución de Contrato",monto:66244.33,fecha:"2025-02-25",tipo:"CDC",cat:"Servicio"},
+{anio:2025,codigo:"CDC-GADMR-2025-002",objeto:"CONTRATACIÓN DE UNA CONSULTORÍA PARA LOS ESTUDIOS DE EVALUACIÓN, DIAGNÓSTICO Y DISEÑOS DEFINITIVOS DEL SISTEMA DE ALCANTARILLADO SANITARIO Y UNIDADES BÁSICAS SANITARIAS DE LA COMUNIDAD SAN JOSÉ DE GAUSHI, PARROQUIA CALPI, CANTÓN RIOBAMBA",estado:"Desierta",monto:43266.04,fecha:"2025-04-08",tipo:"CDC",cat:"Servicio"},
+{anio:2025,codigo:"CDC-GADMR-2025-003",objeto:"ESTUDIO DE CONSULTORÍA ELÉCTRICA PARA EL PROYECTO DENOMINADO ILUMINACIÓN ORNAMENTAL Y DECORATIVA DE LOS CEMENTERIOS (RIOBAMBA Y PUNÍN)",estado:"Ejecución de Contrato",monto:9535.0,fecha:"2025-04-10",tipo:"CDC",cat:"Servicio"},
+{anio:2025,codigo:"CDC-GADMR-2025-004",objeto:"ESTUDIOS DE LA CONSULTORÍA DEL LEVANTAMIENTO TOPOGRÁFICO, ALTIMÉTRICO Y CATASTRAL DEL CEMENTERIO GENERAL DE RIOBAMBA",estado:"Ejecución de Contrato",monto:24270.0,fecha:"2025-05-20",tipo:"CDC",cat:"Servicio"},
+{anio:2025,codigo:"COTS-GADMR-2025-002",objeto:"Impresión de soportes comunicacionales a full color como parte del componente de productos comunicacionales, para informar y difundir la Gestión del GADM Riobamba",estado:"Ejecución de Contrato",monto:413149.57,fecha:"2025-02-26",tipo:"COTS",cat:"Servicio"},
+{anio:2025,codigo:"COTS-GADMR-2025-003",objeto:"Mantenimiento de la infraestructura del Cementerio General de Riobamba",estado:"Ejecución de Contrato",monto:79999.87,fecha:"2025-04-16",tipo:"COTS",cat:"Servicio"},
+{anio:2025,codigo:"COTS-GADMR-2025-004",objeto:"SERVICIO DE PRODUCCIÓN Y ORGANIZACIÓN DE ACTIVIDADES DEPORTIVAS EN DIVERSAS DISCIPLINAS PARA FOMENTAR EL DEPORTE Y LA RECREACIÓN EN EL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:73700.0,fecha:"2025-04-22",tipo:"COTS",cat:"Servicio"},
+{anio:2025,codigo:"FI-GADMR-2025-001",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE LOS EVENTOS PROMOCIONALES, ARTÍSTICOS, CULTURALES PARA LA DINAMIZACIÓN DE LA ECONOMÍA LOCAL RIOBAMBA 2025",estado:"Adjudicada",monto:221766.5,fecha:"2025-03-17",tipo:"FI",cat:"Servicio"},
+{anio:2025,codigo:"FI-GADMR-2025-002",objeto:"SERVICIO DE ALIMENTACIÓN PARA LOS BENEFICIARIOS DEL PROYECTO WAWATECA DE LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO",estado:"Adjudicada",monto:116085.0,fecha:"2025-05-27",tipo:"FI",cat:"Servicio"},
+{anio:2025,codigo:"MCS-GADMR-2025-001",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE LAS MANIFESTACIONES CULTURALES PARA LA REVITALIZACIÓN DEL TRADICIONAL CARNAVAL Y EL PAWKAR RAYMI EN EL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:26000.0,fecha:"2025-02-05",tipo:"MCS",cat:"Servicio"},
+{anio:2025,codigo:"MCS-GADMR-2025-002",objeto:"ORGANIZACIÓN, PRODUCCION Y PUESTA EN ESCENA DE EVENTOS CULTURALES QUE FOMENTEN LA MÚSICA Y EL ARTE EN LOS NIÑOS Y ADOLESCENTES DEL CANTÓN RIOBAMBA",estado:"Cancelado",monto:17000.0,fecha:"2025-03-13",tipo:"MCS",cat:"Servicio"},
+{anio:2025,codigo:"MCS-GADMR-2025-003",objeto:"ORGANIZACIÓN, PRODUCCION Y PUESTA EN ESCENA DE EVENTOS CULTURALES QUE FOMENTEN LA MÚSICA Y EL ARTE EN LOS NIÑOS Y ADOLESCENTES DEL CANTÓN RIOBAMBA (2da conv.)",estado:"Ejecución de Contrato",monto:17000.0,fecha:"2025-03-14",tipo:"MCS",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-001",objeto:"Insumos, materiales y suministros para la Feria de Comercialización de Ganado en Pie",estado:"Ejecución de Contrato",monto:40226.96,fecha:"2025-02-28",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-002",objeto:"ADQUISICION Y PUESTA EN MARCHA DE UN SISTEMA DE CAMARAS PORTATILES PARA LA OPERATIVIDAD DE LOS AGENTES CIVILES DE TRANSITO DEL GOBIERNO AUTONOMO DESCENTRALIZADO MUNICIPAL DEL CANTON RIOBAMBA",estado:"Ejecución de Contrato",monto:514464.0,fecha:"2025-05-21",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-003",objeto:"ADQUISICIÓN DE NEUMÁTICOS NO CATALOGADOS PARA VEHÍCULOS Y MAQUINARIA QUE PERTENECEN AL GADM DEL CANTON RIOBAMBA",estado:"Ejecución de Contrato",monto:98078.06,fecha:"2025-05-19",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-004",objeto:"SERVICIO MANTENIMIENTO INCLUIDO REPUESTOS PARA LAS HIDROLAVADORAS Y COMPRESOR PERTENECIENTES AL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:13618.94,fecha:"2025-05-14",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-005",objeto:"PRESTACIÓN DE SERVICIOS DE BARRIDO, LIMPIEZA, RECOLECCIÓN, TRANSPORTE Y TRATAMIENTO PARCIAL DE RESIDUOS SÓLIDOS DEL CANTÓN RIOBAMBA",estado:"Desierta",monto:365905.1,fecha:"2025-05-13",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-007",objeto:"ALIMENTOS, MEDICINAS, TRATAMIENTOS, PRODUCTOS DE ASEO, ACCESORIOS PARA CANES Y EQUINOS PARA EL CENTRO LA ALEGRÍA DE LOS MÍOS",estado:"Desierta",monto:21974.0,fecha:"2025-05-27",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-009",objeto:"Renovación y Repotenciación del Servicio de Internet Wi-Fi Gratuito para los Sectores Urbanos y Rurales del Cantón Riobamba",estado:"Ejecución de Contrato",monto:261000.4,fecha:"2025-05-30",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"FI-GADMR-2025-005",objeto:"SERVICIO DE ALIMENTACION PARA LOS BENEFICIARIOS DEL PROYECTO WAWA WASI DE LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO",estado:"Adjudicada",monto:46172.8,fecha:"2025-10-27",tipo:"FI",cat:"Servicio"},
+{anio:2025,codigo:"LICO-GADMR-2025-001",objeto:"CONSTRUCCIÓN DEL COLECTOR BOSQUE TUBASEC ALCANTARILLADO PLUVIAL, CANTÓN RIOBAMBA, PROVINCIA DE CHIMBORAZO",estado:"Adjudicada",monto:2540734.75,fecha:"2025-09-10",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICS-GADMR-2025-001",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE EVENTOS ARTÍSTICOS Y CULTURALES COMO ESTRATEGIA DE FORTALECIMIENTO A LA CULTURA Y DESARROLLO ECONÓMICO DEL CANTÓN RIOBAMBA NOVIEMBRE 2025",estado:"Adjudicada",monto:100000.0,fecha:"2025-09-24",tipo:"LICS",cat:"Servicio"},
+{anio:2025,codigo:"MCO-GADMR-2025-005",objeto:"CONSTRUCCIÓN DEL TECHO PARA LA ESCUELA VICENTE ROCAFUERTE, LICAN",estado:"Adjudicada",monto:22722.58,fecha:"2025-07-31",tipo:"MCO",cat:"Obra"},
+{anio:2025,codigo:"MCO-GADMR-2025-006",objeto:"CONSTRUCCIÓN DEL CENTRO DE CAPACITACIÓN DE LA CABECERA PARROQUIAL DE PUNGALÁ",estado:"Ejecución de Contrato",monto:91948.05,fecha:"2025-07-31",tipo:"MCO",cat:"Obra"},
+{anio:2025,codigo:"SIE-GADMR-2025-034",objeto:"PROVISION E INSTALACIÓN DE LA PLANTA DE TRATAMIENTO 2 DEL SISTEMA DE ALCANTARILLADO SANITARIO PARA LA COMUNIDAD TZIMBUTO QUINCAHUANPARROQUIA LICTO",estado:"Ejecución de Contrato",monto:27900.0,fecha:"2025-07-31",tipo:"SIE",cat:"Obra"},
+{anio:2025,codigo:"SIE-GADMR-2025-036",objeto:"PROVISIÓN E INSTALACIÓN DE LA PLANTA DE TRATAMIENTO DEL SISTEMA DE ALCANTARILLADO SANITARIO DE LA CABECERA PARROQUIAL DE CALPI",estado:"Ejecución de Contrato",monto:118100.0,fecha:"2025-07-31",tipo:"SIE",cat:"Obra"},
+{anio:2025,codigo:"SIE-GADMR-2025-038",objeto:"Organización, producción, difusión y puesta en escena de eventos artísticos, culturales, turísticos y promocionales en el cantón Riobamba, a través de un Festival de Luces y Mapping",estado:"Ejecución de Contrato",monto:48000.0,fecha:"2025-08-04",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-039",objeto:"Adquisición de repuestos y contratación del servicio de mantenimiento correctivo para la maquinaria que pertenecen al Gobierno Autónomo Descentralizado Municipal del Cantón Riobamba",estado:"Ejecución de Contrato",monto:203295.77,fecha:"2025-07-31",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-041",objeto:"MAQUINARIA Y EQUIPO PARA LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO",estado:"Ejecución de Contrato",monto:12967.0,fecha:"2025-08-13",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-043",objeto:"ADQUISICIÓN DE EQUIPO TOPOGRÁFICO PARA LA DIRECCIÓN DE GESTIÓN DE OBRAS PUBLICAS",estado:"Ejecución de Contrato",monto:36270.0,fecha:"2025-08-29",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-044",objeto:"SERVICIO DE ENDEREZADO Y PINTURA PARA VEHÍCULOS DEL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:35600.0,fecha:"2025-09-02",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-047",objeto:"ADQUISICIÓN Y PUESTA EN MARCHA DE HAND HELD PARA LA OPERATIVIDAD DE LOS AGENTES CIVILES DE TRÁNSITO DEL GOBIERNO AUTÓNOMO DESCENTRALIZADO MUNICIPAL DEL CANTÓN RIOBAMBA",estado:"Desierta",monto:446880.0,fecha:"2025-10-02",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-048",objeto:"ADQUISICIÓN E IMPLEMENTACIÓN DE UNA MODERNA INFRAESTRUCTURA DE SERVIDORES VIRTUALIZADOS",estado:"Adjudicada",monto:465681.0,fecha:"2025-10-20",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-049",objeto:"SERVICIO DE RASTREO SATELITAL, VEHÍCULOS, EQUIPO Y MAQUINARIA DEL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:40000.0,fecha:"2025-09-25",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-050",objeto:"MATERIAL DIDÁCTICO PARA DIFERENTES PROYECTOS PARA LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO DEL GADMR",estado:"Ejecución de Contrato",monto:21761.25,fecha:"2025-10-01",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-052",objeto:"ADQUISICIÓN DE REPUESTOS INCLUIDO MANTENIMIENTO DE LOS RECOLECTORES MARCA IVECO MODELO STRALIS 430 HMA 1130 Y HMA 1135 QUE PERTENECEN AL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:185603.29,fecha:"2025-10-28",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-45",objeto:"ADQUISICIÓN DE MATERIALES DE CONSTRUCCION, ELECTRICOS, GASFITERIA, CARPINTERIA, PLOMERIA Y HERRAMIENTAS PARA VARIAS DEPENDENCIAS DEL GADM DE RIOBAMBA",estado:"Ejecución de Contrato",monto:206115.4,fecha:"2025-09-09",tipo:"SIE",cat:"Obra"},
+{anio:2025,codigo:"VPN-GADMR-2025-003",objeto:"ADQUISICIÓN DE MOTOS PARA LOS AGENTES DE CONTROL MUNICIPAL",estado:"Finalizada",monto:0.0,fecha:"2025-08-22",tipo:"VPN",cat:"Adquisición"},
+{anio:2025,codigo:"VPN-GADMR-2025-004",objeto:"ADQUISICIÓN DE MOTOCICLETAS PARA EL CONTROL DE TRANSITO EN VIAS",estado:"Finalizada",monto:0.0,fecha:"2025-08-26",tipo:"VPN",cat:"Adquisición"},
+{anio:2025,codigo:"CDC-GADMR-2025-005",objeto:"IDENTIFICACIÓN, PROSPECCIÓN Y DELIMITACIÓN DE SITIOS ARQUEOLÓGICOS DE LAS PARROQUIAS RURALES: PUNGALÁ, FLORES Y LICTO DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:60000.0,fecha:"2025-07-31",tipo:"CDC",cat:"Servicio"},
+{anio:2025,codigo:"CDC-GADMR-2025-006",objeto:"CONTRATACIÓN DE UNA CONSULTORÍA PARA LOS ESTUDIOS DE EVALUACIÓN, DIAGNÓSTICO Y DISEÑOS DEFINITIVOS DEL SISTEMA DE ALCANTARILLADO SANITARIO Y UNIDADES BÁSICAS SANITARIAS DE LA COMUNIDAD SAN JOSÉ DE GAUSHI, PARROQUIA CALPI (2da conv.)",estado:"Adjudicada",monto:43266.04,fecha:"2025-07-11",tipo:"CDC",cat:"Servicio"},
+{anio:2025,codigo:"FI-GADMR-2025-004",objeto:"ABASTOS, LEGUMBRES, FRUTAS, HORTALIZAS, CARNICOS, LACTEOS Y PAN PARA EL PROYECTO RIOKUNA, CASA DE ACOGIDA PARA MUJERES VÍCTIMAS DE VIOLENCIA Y COCINAS COMUNITARIAS DE LA DIRECCIÓN DE GESTIÓN DESARROLLO SOCIAL Y HUMANO DEL GADMR",estado:"Adjudicada",monto:16795.2,fecha:"2025-07-31",tipo:"FI",cat:"Adquisición"},
+{anio:2025,codigo:"LCC-GADMR-2025-001",objeto:"Estudios de Factibilidad y Diseños Definitivos para la gestión integral de residuos sólidos que incluya el Complejo Ambiental Riobamba (CAR) para el aprovechamiento y disposición final de los RSU y cierre técnico de la actual celda emergente del Cantón Riobamba",estado:"Adjudicada",monto:114400.0,fecha:"2025-07-30",tipo:"LCC",cat:"Servicio"},
+{anio:2025,codigo:"MCO-GADMR-2025-002",objeto:"READECUACION DEL CEMENTERIO DE YARUQUIES",estado:"Ejecución de Contrato",monto:58239.92,fecha:"2025-07-21",tipo:"MCO",cat:"Obra"},
+{anio:2025,codigo:"MCO-GADMR-2025-003",objeto:"CONSTRUCCION DE MURO Y BOVEDAS PARA EL CEMENTERIO DE LA CABECERA PARROQUIA DE SAN JUAN",estado:"Ejecución de Contrato",monto:76070.34,fecha:"2025-07-31",tipo:"MCO",cat:"Obra"},
+{anio:2025,codigo:"MCO-GADMR-2025-004",objeto:"READECUACIÓN DEL PARQUE CENTRAL DE LA PARROQUIA QUIMIAG",estado:"Ejecución de Contrato",monto:24203.98,fecha:"2025-07-31",tipo:"MCO",cat:"Obra"},
+{anio:2025,codigo:"MCS-GADMR-2025-006",objeto:"SERVICIO DE MANTENIMIENTO DE LA CUBIERTA DEL DISPENSARIO MÉDICO MUNICIPAL Y VARIAS ZONAS INTERNAS",estado:"Calificación de Participantes",monto:36702.89,fecha:"2025-07-30",tipo:"MCS",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-025",objeto:"ADQUISICIÓN, INSTALACIÓN Y PUESTA EN MARCHA DE MAQUINARIA PARA EL CENTRO DE REVISIÓN TÉCNICA VEHICULAR DE RIOBAMBA",estado:"Suspendido",monto:591187.66,fecha:"2025-07-11",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-026",objeto:"SERVICIO DE TORNO Y SUELDAS ESPECIALES PARA VEHÍCULOS Y MAQUINARIA DEL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:20581.7,fecha:"2025-07-14",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-027",objeto:"PRENDAS DE SEGURIDAD NO CATALOGADAS PARA EL PERSONAL DEL GADM DE RIOBAMBA",estado:"Adjudicada",monto:79996.84,fecha:"2025-07-22",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-028",objeto:"ADQUISICIÓN DE REPUESTOS Y ACCESORIOS PARA LOS VEHÍCULOS Y MAQUINARIA DE DIFERENTES MARCAS QUE PERTENECEN AL GADM DEL CANTON RIOBAMBA",estado:"Ejecución de Contrato",monto:133314.56,fecha:"2025-07-14",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-029",objeto:"Adquisición e Instalación de Pantallas LEDS exterior-interior para promoción y comunicación de las actividades, eventos y oferta turística del cantón Riobamba",estado:"Ejecución de Contrato",monto:50000.0,fecha:"2025-07-22",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-030",objeto:"ADQUISICIÓN DE LUBRICANTES, GRASA Y ADITIVOS PARA MAQUINARIA Y VEHÍCULOS DEL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:180620.06,fecha:"2025-07-16",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-031",objeto:"ADQUISICIÓN DE PINTURA DE ALTOTRÁFICO Y ELEMENTOS PARA ATENDER CON SEÑALETICA HORIZONTAL AL CANTÓN RIOBAMBA",estado:"Finalizada",monto:79995.0,fecha:"2025-07-24",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-032",objeto:"ADQUISICIÓN DE UNA AMBULANCIA PARA CUMPLIMIENTO DEL CONVENIO ENTRE EL MSP COORDINACIÓN ZONAL 3 Y EL GADM DE RIOBAMBA",estado:"Ejecución de Contrato",monto:79000.0,fecha:"2025-07-29",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-033",objeto:"MAQUINARIA Y EQUIPO DE FISIOTERAPIA PARA LOS DIFERENTES PROYECTOS DE LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO",estado:"Ejecución de Contrato",monto:22175.2,fecha:"2025-07-30",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-035",objeto:"SERVICIO DE MANTENIMIENTO DE CILINDROS Y RECONSTRUCCIÓN DE MANGUERAS DE LOS VEHÍCULOS Y MAQUINARIA DEL GADM DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:59274.35,fecha:"2025-07-30",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-037",objeto:"ADQUISICIÓN DE CEMENTOS PARA OBRAS EN EL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:89856.0,fecha:"2025-07-31",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-040",objeto:"Adquisición de medicina e insumos veterinarios",estado:"Ejecución de Contrato",monto:41505.22,fecha:"2025-07-31",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"FI-GADMR-2025-003",objeto:"ABASTOS, LEGUMBRES, FRUTAS, HORTALIZAS, CÁRNICOS, LÁCTEOS Y PAN PARA EL PROYECTO ENVEJECIMIENTO ACTIVO DE LA DIRECCIÓN DE GESTIÓN DESARROLLO SOCIAL Y HUMANO DEL GADMR",estado:"Adjudicada",monto:89993.7,fecha:"2025-07-04",tipo:"FI",cat:"Servicio"},
+{anio:2025,codigo:"LICSG-GADMR-2025-001",objeto:"Contratación de la Póliza de Fidelidad Pública para los Servidores Caucionados Municipales del GADM de Riobamba, Tipo Blanket",estado:"Adjudicada",monto:19349.32,fecha:"2025-07-02",tipo:"LICSG",cat:"Servicio"},
+{anio:2025,codigo:"LICSG-GADMR-2025-002",objeto:"Contratación de póliza de seguros para bienes y propiedades del GADM del cantón Riobamba",estado:"Ejecución de Contrato",monto:141302.82,fecha:"2025-07-09",tipo:"LICSG",cat:"Servicio"},
+{anio:2025,codigo:"MCO-GADMR-2025-001",objeto:"AMPLIACIÓN DE CHIMENEAS PARA LA EVACUACIÓN Y CONDUCCIÓN DE GASES DENTRO DEL RELLENO SANITARIO",estado:"Ejecución de Contrato",monto:8413.97,fecha:"2025-06-27",tipo:"MCO",cat:"Obra"},
+{anio:2025,codigo:"SIE-GADMR-2025-011",objeto:"ADQUISICIÓN DE ESPECIES ORNAMENTALES PARA EL ADECENTAMIENTO DE ÁREAS VERDES DEL CANTÓN RIOBAMBA",estado:"Finalizada",monto:17853.4,fecha:"2025-06-19",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-012",objeto:"ADQUISICIÓN DE LUBRICANTES, GRASA Y ADITIVOS PARA MAQUINARIA Y VEHICULOS DEL GADM DEL CANTÓN RIOBAMBA (1ra conv.)",estado:"Desierta",monto:180620.06,fecha:"2025-06-17",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-013",objeto:"ALIMENTOS, MEDICINAS, TRATAMIENTOS, PRODUCTOS DE ASEO, ACCESORIOS PARA CANES Y EQUINOS PARA EL CENTRO LA ALEGRÍA DE LOS MÍOS",estado:"Ejecución de Contrato",monto:21974.0,fecha:"2025-06-17",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-014",objeto:"Control de plagas para la dirección de servicios municipales: camal, mercados, plazas y centro comercial para garantizar servicios de calidad",estado:"Ejecución de Contrato",monto:25719.32,fecha:"2025-06-17",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-015",objeto:"ADQUISICIÓN DE MOBILIARIO PARA EL EQUIPAMIENTO DEL GALPÓN DEL CENTRO DE ACOPIO Y DE GESTIÓN INTEGRAL DE RESIDUOS RECICLABLES DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:28100.0,fecha:"2025-06-27",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-016",objeto:"Trabajos de mantenimiento preventivo y correctivo de contenedores metálicos de carga lateral y adquisición de repuestos y accesorios para los contenedores de carga lateral",estado:"Desierta",monto:166920.0,fecha:"2025-06-26",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-017",objeto:"Adquisición de Materiales de ferretería para la Dirección de Servicios Municipales",estado:"Ejecución de Contrato",monto:34257.74,fecha:"2025-06-26",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-018",objeto:"Adquisición de contenedores de carga lateral de 2400 litros de capacidad",estado:"Finalizada",monto:146250.0,fecha:"2025-07-01",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-019",objeto:"ADQUISICIÓN DE CARPAS PARA LOS MERCADOS DE LA CIUDAD DE RIOBAMBA",estado:"Ejecución de Contrato",monto:16000.0,fecha:"2025-07-02",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-020",objeto:"Mantenimiento de señaletica en las parroquias rurales del cantón y parte de la zona urbana",estado:"Ejecución de Contrato",monto:13550.0,fecha:"2025-06-30",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-021",objeto:"SERVICIO DE RECOLECCIÓN, TRANSPORTE TRATAMIENTO Y DISPOSICIÓN FINAL DE LOS DESECHOS SANITARIOS GENERADOS EN DENTRO DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:319992.4,fecha:"2025-07-08",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-022",objeto:"SERVICIO DE ENDEREZADO Y PINTURA PARA VEHÍCULOS DEL GADM DEL CANTÓN RIOBAMBA (1ra conv.)",estado:"Desierta",monto:35600.0,fecha:"2025-07-07",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-023",objeto:"IMPLEMENTACIÓN DE SEÑALETICA DE INFORMACIÓN TURÍSTICA",estado:"Ejecución de Contrato",monto:34110.0,fecha:"2025-07-04",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-024",objeto:"Baterías Sanitarias tipo remolque para los mercados, plazas y Plaza de Comercialización de Ganado en Pie del Cantón Riobamba",estado:"Ejecución de Contrato",monto:25000.0,fecha:"2025-07-07",tipo:"SIE",cat:"Obra"},
+{anio:2025,codigo:"VPN-GADMR-2025-001",objeto:"ADQUISICIÓN DE MOTOS PARA LOS AGENTES DE CONTROL MUNICIPAL",estado:"Finalizada",monto:0.0,fecha:"2025-06-17",tipo:"VPN",cat:"Adquisición"},
+{anio:2025,codigo:"MCS-GADMR-2025-004",objeto:"ORGANIZACIÓN, PRODUCCIÓN Y PUESTA EN ESCENA DE EVENTOS CULTURALES QUE FOMENTEN LA MUSICA Y EL ARTE PARA EL DESARROLLO ECONOMICO DEL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:55460.0,fecha:"2025-06-02",tipo:"MCS",cat:"Servicio"},
+{anio:2025,codigo:"MCS-GADMR-2025-005",objeto:"Promoción, difusión y comunicación de la oferta turística de Riobamba a través de una agencia de comunicación",estado:"Ejecución de Contrato",monto:62600.0,fecha:"2025-06-10",tipo:"MCS",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-006",objeto:"Adquisición de una chipeadora de madera para el Subproceso de Residuos Sólidos",estado:"Finalizada",monto:47050.0,fecha:"2025-06-02",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-008",objeto:"ADQUISICIÓN DE EQUIPOS DE COMPUTO DE ESCRITORIO Y PORTABLES PARA LAS DIFERENTES DEPENDENCIAS DEL GADMR",estado:"Ejecución de Contrato",monto:519671.9,fecha:"2025-06-05",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"VPN-GADMR-2025-002",objeto:"ADQUISICIÓN DE UNA AMBULANCIA PARA CUMPLIMIENTO DEL CONVENIO ENTRE EL MSP COORDINACIÓN ZONAL 3 Y EL GADM DE RIOBAMBA",estado:"Finalizada",monto:0.0,fecha:"2025-06-09",tipo:"VPN",cat:"Adquisición"},
+{anio:2025,codigo:"CPC-GADMR-2025-004",objeto:"ESTUDIO CIENTÍFICO, DIAGNÓSTICO Y ELABORACIÓN DE PROPUESTAS DE INTERVENCIÓN DE BIENES MUEBLES PATRIMONIALES DEL GADM RIOBAMBA",estado:"Desierta",monto:15000.0,fecha:"2025-12-31",tipo:"CPC",cat:"Servicio"},
+{anio:2025,codigo:"FI-GADMR-2025-007",objeto:"ORGANIZACIÓN, PRODUCCIÓN, LOGÍSTICA Y PUESTA EN ESCENA DE LOS EVENTOS OFICIALES DEL GADM RIOBAMBA, SESIONES ITINERANTES EN TERRITORIO URBANO-RURAL Y, DISEÑO E IMPRESIÓN DE INVITACIONES PARA LAS SESIONES SOLEMNES CONMEMORATIVAS DEL GADMR Y MATERIAL PARA SOCIALIZACIONES PARA MESAS DE DIÁLOGO",estado:"Adjudicada",monto:39266.0,fecha:"2025-12-31",tipo:"FI",cat:"Servicio"},
+{anio:2025,codigo:"LICO-GADMR-2025-011",objeto:"CONSTRUCCIÓN DEL ESTADIO DE LA CABECERA PARROQUIAL DE CALPI – FASE 2",estado:"Adjudicada",monto:121109.87,fecha:"2025-12-31",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-014",objeto:"MANTENIMIENTO DE LA CUBIERTA DEL MERCADO SAN FRANCISCO",estado:"Por Adjudicar",monto:119908.83,fecha:"2025-12-31",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-015",objeto:"CONSTRUCCIÓN DEL CENTRO DE CAPACITACIÓN EN LA COMUNIDAD ALAO SAN ANTONIO, PARROQUIA PUNGALÁ",estado:"Adjudicada",monto:124649.22,fecha:"2025-12-30",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-017",objeto:"CONSTRUCCION DE UNA BATERIA SANITARIA EN LA COMUNIDAD DE TAMBO GUASHA, PARROQUIA SAN JUAN",estado:"Adjudicada",monto:30725.56,fecha:"2025-12-31",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-018",objeto:"CONSTRUCCIÓN DEL CERRAMIENTO Y GRADERIO DEL ESTADIO COMUNIDAD BAYUSHI SAN VICENTE, PARROQUIA CALPI",estado:"Adjudicada",monto:39831.54,fecha:"2025-12-31",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-020",objeto:"CONSTRUCCIÓN DE UNA BATERÍA EN EL ESTADIO DE LA CABECERA PARROQUIAL DE CUBIJÍES",estado:"Adjudicada",monto:45955.68,fecha:"2025-12-31",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-022",objeto:"READECUACION DE LA PISCINA DE LA CABECERA PARROQUIAL DE CUBIJIES",estado:"Adjudicada",monto:190221.67,fecha:"2025-12-31",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-023",objeto:"REACONDICIONAMIENTO DEL ESTADIO DE LA COMUNIDAD BASHALAN DE LA PARROQUIA PUNÍN",estado:"Adjudicada",monto:57969.32,fecha:"2025-12-31",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-024",objeto:"CONSTRUCCIÓN DE UN CUERPO DE BÓVEDAS Y CERRAMIENTO PARA EL CEMENTERIO DE LA PARROQUIA FLORES",estado:"Adjudicada",monto:93555.63,fecha:"2025-12-31",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-025",objeto:"IMPLEMENTACION DE JUEGOS INFANTILES Y GIMNASIOS AL AIRE LIBRE PARA LAS PARROQUIAS RURALES DEL CANTON RIOBAMBA",estado:"Adjudicada",monto:24559.28,fecha:"2025-12-31",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICSG-GADMR-2025-003",objeto:"CONTRATACIÓN DE PÓLIZA DE SEGURO PARA VEHÍCULOS LIVIANOS, PESADOS, MOTOS, Y MAQUINARIA PESADA DEL GADM DE RIOBAMBA",estado:"Ejecución de Contrato",monto:150476.56,fecha:"2025-12-31",tipo:"LICSG",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-074",objeto:"MAQUINARIA Y EQUIPO PARA LOS PROYECTOS ENVEJECIMIENTO ACTIVO PARROQUIA PUNGALÁ Y LAS WAWATECAS DE LA DIRECCIÓN DE GESTIÓN DESARROLLO SOCIAL Y HUMANO DEL GADMR",estado:"Ejecución de Contrato",monto:20998.0,fecha:"2025-12-31",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-075",objeto:"PRESTACIÓN DE SERVICIOS DE BARRIDO, LIMPIEZA, RECOLECCIÓN, TRANSPORTE Y TRATAMIENTO PARCIAL DE RESIDUOS SÓLIDOS DEL CANTÓN RIOBAMBA",estado:"Adjudicada",monto:721517.44,fecha:"2025-12-31",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-076",objeto:"Mantenimiento de un caldero marca YORK SHIPLEY de 50 BHP instalado en el cuarto de máquinas del camal, mantenimiento de un Compresor tipo tornillo marca COMPAIR fabricación alemana, mantenimiento del equipo cortador de patas hidráulico marca JARVIS del camal municipal de Riobamba",estado:"Ejecución de Contrato",monto:12990.0,fecha:"2025-12-31",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-077",objeto:"Adquisición de tres camiones recolectores de carga posterior y contenedores de 1100 litros de capacidad, para mejorar el sistema de recolección de residuos sólidos dentro de las parroquias rurales del cantón Riobamba",estado:"Adjudicada",monto:704000.0,fecha:"2025-12-31",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-078",objeto:"Adquisición de básculas para el pesaje de canales faenadas para regulación y control de productos y subproductos cárnicos",estado:"Adjudicada",monto:18425.0,fecha:"2025-12-31",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-079",objeto:"Organización, producción y puesta en escena de eventos que fomenten la cultura, turismo y dinamización económica en el cantón Riobamba",estado:"Ejecución de Contrato",monto:47000.0,fecha:"2025-12-31",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-080",objeto:"ADQUISICIÓN DE MATERIALES DE FERRETERÍA PARA TRABAJOS DE LAS CUADRILLAS MUNICIPALES DEL GADM RIOBAMBA",estado:"Ejecución de Contrato",monto:169967.91,fecha:"2025-12-31",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"CPC-GADMR-2025-001",objeto:"CONTRATACIÓN DE UNA CONSULTORÍA PARA LOS ESTUDIOS DE EVALUACIÓN, DIAGNOSTICO Y DISEÑOS DEFINITIVOS DEL SISTEMA DE AGUA POTABLE DE LA CABECERA PARROQUIAL DE LICÁN",estado:"Adjudicada",monto:131967.91,fecha:"2025-12-30",tipo:"CPC",cat:"Servicio"},
+{anio:2025,codigo:"CPC-GADMR-2025-002",objeto:"FISCALIZACIÓN PARA LA CONSTRUCCIÓN DEL COLECTOR BOSQUE TUBASEC (ALCANTARILLADO PLUVIAL) DEL CANTÓN RIOBAMBA, PROVINCIA DE CHIMBORAZO",estado:"Adjudicada",monto:91020.0,fecha:"2025-12-29",tipo:"CPC",cat:"Servicio"},
+{anio:2025,codigo:"CPC-GADMR-2025-003",objeto:"Contrata de una Consultoría para el Asesoramiento Técnico en la implementación de un CHATBOOT gubernamental para el GADMR",estado:"Ejecución de Contrato",monto:119478.77,fecha:"2025-12-30",tipo:"CPC",cat:"Servicio"},
+{anio:2025,codigo:"LICO-GADMR-2025-007",objeto:"MANTENIMIENTO DE LOS ARCOS DE BELLAVISTA, LA TRINIDAD Y POSTES PATRIMONIALES DEL BARRIO BELLAVISTA",estado:"Adjudicada",monto:20000.0,fecha:"2025-12-22",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-009",objeto:"CONSTRUCCION DE BOVEDAS PARA EL CEMENTERIO DE LA CABECERA PARROQUIAL DE SAN LUIS",estado:"Adjudicada",monto:37209.54,fecha:"2025-12-18",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-010",objeto:"CONSTRUCCIÓN CERRAMIENTO DE LA PLAZA DE RASTRO DE LA PARROQUIA DE LICTO",estado:"Adjudicada",monto:114776.54,fecha:"2025-12-23",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-012",objeto:"MEJORAMIENTO DE LA INFRAESTRUCTURA BÁSICA DE USO PÚBLICO COLISEO DEL GAD PARROQUIAL DE PUNÍN",estado:"Adjudicada",monto:57487.23,fecha:"2025-12-30",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-013",objeto:"MEJORAMIENTO DEL SISTEMA DE AGUA DE CONSUMO HUMANO DE LA CABECERA PARROQUIAL, PARROQUIA QUIMIAG FASE 1",estado:"Adjudicada",monto:75557.75,fecha:"2025-12-30",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-016",objeto:"READECUACION DEL PARQUE DE LA COMUNIDAD CUNDUANA, LICAN",estado:"Adjudicada",monto:52905.27,fecha:"2025-12-30",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-019",objeto:"CONSTRUCCIÓN DEL BOULEVARD TURÍSTICO DE LA CABECERA PARROQUIAL DE FLORES",estado:"Adjudicada",monto:42172.12,fecha:"2025-12-30",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"SIE-GADMR-2025-066",objeto:"Trabajos de mantenimiento preventivo y correctivo de contenedores metálicos de carga lateral y adquisición de repuestos y accesorios para los contenedores de carga lateral",estado:"Ejecución de Contrato",monto:166920.0,fecha:"2025-12-18",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-067",objeto:"ADQUISICIÓN DE MEZCLA ASFALTICA EN CALIENTE Y EMULSIÓN INCLUYE TRANSPORTE",estado:"Ejecución de Contrato",monto:608060.0,fecha:"2025-12-23",tipo:"SIE",cat:"Obra"},
+{anio:2025,codigo:"SIE-GADMR-2025-068",objeto:"ADQUISICIÓN DE CEMENTO PARA EL ALCANTARILLADO SANITARIO PARA LA COMUNIDAD CUNCUN CACHIPATA",estado:"Ejecución de Contrato",monto:15370.0,fecha:"2025-12-29",tipo:"SIE",cat:"Obra"},
+{anio:2025,codigo:"SIE-GADMR-2025-069",objeto:"ADQUISICIÓN DE REPUESTOS INCLUIDO MANTENIMIENTO DEL RECOLECTOR MARCA DAF LAVA CONTENEDOR HMA 1089 QUE PERTENECEN AL GADM DEL CANTÓN RIOBAMBA",estado:"Suspendido",monto:116228.12,fecha:"2025-12-22",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-070",objeto:"IMPLEMENTACIÓN DE SEÑALETICA PARA LA GENERACIÓN DE RUTAS TURÍSTICAS EN EL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:22500.0,fecha:"2025-12-30",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-071",objeto:"ADQUISICIÓN DE MATERIALES PETREOS ENTREGADOS EN MINA PARA VARIAS OBRAS DEL CANTÓN RIOBAMBA",estado:"Suspendido",monto:158000.0,fecha:"2025-12-24",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-073",objeto:"ADQUISICIÓN DE TUBERIA DE ALCANTARILLADO SANITARIO PARA LA COMUNIDAD TUNSHI SAN JAVIER PARROQUIA LICTO",estado:"Ejecución de Contrato",monto:13190.0,fecha:"2025-12-30",tipo:"SIE",cat:"Obra"},
+{anio:2025,codigo:"VPN-GADMR-2025-007",objeto:"ADQUISICIÓN DE UNA BUSETA PARA GENERACIÓN DE OPERATIVOS DE CONTROL APRESTADORES DE SERVICIOS TURÍSTICOS EN EL CANTÓN RIOBAMBA Y PARTICIPACIÓN EN EVENTOS",estado:"Finalizada",monto:0.0,fecha:"2025-12-18",tipo:"VPN",cat:"Adquisición"},
+{anio:2025,codigo:"VPN-GADMR-2025-008",objeto:"ADQUISICIÓN DE TANQUERO DE 3 MIL GALONES PARA LA PARROQUIA A FLORES",estado:"Finalizada",monto:0.0,fecha:"2025-12-22",tipo:"VPN",cat:"Adquisición"},
+{anio:2025,codigo:"VPN-GADMR-2025-009",objeto:"ADQUISICIÓN DE EQUIPO CAMINERO PARA PARROQUIAS",estado:"Finalizada",monto:0.0,fecha:"2025-12-29",tipo:"VPN",cat:"Adquisición"},
+{anio:2025,codigo:"FI-GADMR-2025-006",objeto:"ALIMENTOS Y BEBIDAS: ABASTOS, LEGUMBRES, FRUTAS, HORTALIZAS, CÁRNICOS, LÁCTEOS Y PAN PARA EL PROYECTO ENVEJECIMIENTO ACTIVO PARROQUIA PUNGALÁ DE LA DIRECCIÓN DE GESTIÓN DESARROLLO SOCIAL Y HUMANO DEL GADMR",estado:"Adjudicada",monto:19108.0,fecha:"2025-12-02",tipo:"FI",cat:"Servicio"},
+{anio:2025,codigo:"LICB-GADMR-2025-001",objeto:"Elaboración e instalación de estructuras que fortalezcan los eventos culturales que desarrolla el GADMR para la dinamización económica del cantón Riobamba",estado:"Desierta",monto:99980.7,fecha:"2025-11-24",tipo:"LICS",cat:"Servicio"},
+{anio:2025,codigo:"LICO-GADMR-2025-003",objeto:"READECUACIÓN DEL MERCADO GENERAL JUAN BERNARDO DÁVALOS",estado:"Adjudicada",monto:1432857.05,fecha:"2025-11-24",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-004",objeto:"MANTENIMIENTO E ILUMINACIÓN DEL PARQUE MALDONADO, CONSERVACIÓN INTEGRAL DE LAS FUENTES METÁLICAS, BANCAS, PRETIL DE PIEDRA Y MONUMENTO A PEDRO VICENTE MALDONADO FASE 1",estado:"Adjudicada",monto:37346.58,fecha:"2025-11-28",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-005",objeto:"CONSTRUCCIÓN DEL CERRAMIENTO LOURDES MACAJÍ ETAPA II",estado:"Adjudicada",monto:199700.27,fecha:"2025-12-08",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-006",objeto:"CONSTRUCCIÓN DE MÓDULOS ARTESANALES EN LA PARROQUIA YARUQUÍES",estado:"Adjudicada",monto:29998.9,fecha:"2025-12-08",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICO-GADMR-2025-008",objeto:"REHABILITACIÓN Y REESTRUCTURACIÓN DEL MERCADO MARIANO BORJA LA MERCED",estado:"Adjudicada",monto:996517.72,fecha:"2025-12-15",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICS-GADMR-2025-004",objeto:"CONTRATACIÓN DEL SERVICIO DE ACTIVIDADES ARTÍSTICAS Y CULTURALES EN EL MARCO DE LA NAVIDAD 2025",estado:"Ejecución de Contrato",monto:300000.0,fecha:"2025-11-25",tipo:"LICS",cat:"Servicio"},
+{anio:2025,codigo:"LICS-GADMR-2025-006",objeto:"Organización, producción y puesta en escena de manifestaciones culturales para la revitalización del arte con enfoque intercultural para la atención prioritaria en el cantón Riobamba",estado:"Adjudicada",monto:140000.0,fecha:"2025-12-15",tipo:"LICS",cat:"Servicio"},
+{anio:2025,codigo:"LICS-GADMR-2025-007",objeto:"CONTRATACIÓN DEL SERVICIO DE MANTENIMIENTO CORRECTIVO, REPOSICIÓN E INSTALACIÓN DE CÉSPED SINTÉTICO EN SEIS ESCENARIOS DEPORTIVOS DEL CANTÓN RIOBAMBA, LOCALIZADOS EN LOS BARRIOS VILLA MARÍA, 21 DE ABRIL, PUCARÁ, PRIMAVERA Y EN LAS CIUDADELAS CEMENTO CHIMBORAZO Y GALÁPAGOS",estado:"Ejecución de Contrato",monto:149421.4,fecha:"2025-12-17",tipo:"LICS",cat:"Servicio"},
+{anio:2025,codigo:"LICS-GADMR-2025-008",objeto:"SERVICIO DE MANTENIMIENTO DE LA INFRAESTRUCTURA DEL EDIFICIO CENTRAL Y ADECUACIONES EN EL SALÓN PEDRO VICENTE MALDONADO",estado:"Adjudicada",monto:165034.85,fecha:"2025-12-17",tipo:"LICS",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-056",objeto:"ADQUISICIÓN DE MOBILIARIO NO DEPRECIABLE Y DE LARGA DURACIÓN PARA LA REPOTENCIACIÓN DE LOS DIFERENTES PROYECTOS DE LA DIRECCIÓN DE GESTIÓN DE DESARROLLO SOCIAL Y HUMANO",estado:"Ejecución de Contrato",monto:44372.5,fecha:"2025-12-17",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-057",objeto:"Adquisición de UPS",estado:"Ejecución de Contrato",monto:26900.0,fecha:"2025-12-03",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-058",objeto:"CONTRATACIÓN DE SERVICIO DE INTERNET BACKUP",estado:"Ejecución de Contrato",monto:24000.0,fecha:"2025-12-01",tipo:"SIE",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-059",objeto:"Arrendamiento de licencias de software tipo CAD",estado:"Ejecución de Contrato",monto:68423.42,fecha:"2025-11-27",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-061",objeto:"ADQUISICIÓN DE PROYECTORES Y ESCANERS",estado:"Adjudicada",monto:25685.65,fecha:"2025-12-08",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-064",objeto:"ADQUISICIÓN DE MAQUINARIA Y EQUIPOS PARA EL CAMAL MUNICIPAL",estado:"Ejecución de Contrato",monto:18490.0,fecha:"2025-12-17",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-065",objeto:"REPOTENCIACIÓN E IMPLEMENTACIÓN DE MAQUINARIA Y EQUIPO DE FISIOTERAPIA PARA LOS PROYECTOS ENVEJECIMIENTO ACTIVO DE LAS PARROQUIAS FLORES, CALPI, SAN JUAN Y PUNGALÁ",estado:"Ejecución de Contrato",monto:27500.0,fecha:"2025-12-18",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"VPN-GADMR-2025-005",objeto:"ADQUISICIÓN DE TRES CAMIONES RECOLECTORES DE CARGA POSTERIOR Y CONTENEDORES DE 1100 LITROS DE CAPACIDAD, PARA MEJORAR EL SISTEMA DE RECOLECCIÓN DE RESIDUOS",estado:"Finalizada",monto:0.0,fecha:"2025-12-01",tipo:"VPN",cat:"Adquisición"},
+{anio:2025,codigo:"VPN-GADMR-2025-006",objeto:"ADQUISICIÓN DE CAMIÓN Y AUTOBUSES A FIN DE MEJORAR LA OPERATIVIDAD DE LA DIRECCIÓN DE MOVILIDAD, TRÁNSITO Y TRANSPORTE",estado:"Finalizada",monto:0.0,fecha:"2025-12-10",tipo:"VPN",cat:"Adquisición"},
+{anio:2025,codigo:"LICO-GADMR-2025-002",objeto:"CONSTRUCCIÓN DE BÓVEDAS EN EL CEMENTERIO GENERAL DE RIOBAMBA",estado:"Adjudicada",monto:279417.96,fecha:"2025-11-17",tipo:"LICO",cat:"Obra"},
+{anio:2025,codigo:"LICS-GADMR-2025-002",objeto:"ORGANIZACIÓN Y PRODUCCIÓN DE ACTIVIDADES DEPORTIVAS MULTIDISCIPLINARIAS ORIENTADAS A PROMOVER EL DEPORTE Y LA RECREACIÓN EN EL CANTÓN RIOBAMBA",estado:"Ejecución de Contrato",monto:100000.0,fecha:"2025-11-19",tipo:"LICS",cat:"Servicio"},
+{anio:2025,codigo:"LICS-GADMR-2025-003",objeto:"Organización, producción y puesta en escena de manifestaciones culturales para la revitalización del arte con enfoque intercultural para la atención prioritaria en el cantón Riobamba (1ra conv.)",estado:"Cancelado",monto:140000.0,fecha:"2025-11-21",tipo:"LICS",cat:"Servicio"},
+{anio:2025,codigo:"SIE-GADMR-2025-053",objeto:"ADQUISICIÓN DE MOTOCICLETAS PARA EL CONTROL DE TRANSITO EN VÍAS",estado:"Ejecución de Contrato",monto:157800.0,fecha:"2025-11-10",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-054",objeto:"ADQUISICIÓN, INSTALACIÓN Y PUESTA EN MARCHA DE EQUIPOS DE ACONDICIONAMIENTO ACÚSTICO, SISTEMA DE ILUMINACIÓN ESCÉNICA, SISTEMA DE AUDIO, VIDEO, PROYECCIÓN, Y SISTEMA DE TRAMOYA PARA EL CENTRO DE ARTE Y CULTURA",estado:"Suspendido",monto:249999.49,fecha:"2025-11-21",tipo:"SIE",cat:"Adquisición"},
+{anio:2025,codigo:"SIE-GADMR-2025-055",objeto:"ADQUISICIÓN DE MOTOS PARA LOS AGENTES DE CONTROL MUNICIPAL",estado:"Desierta",monto:37500.0,fecha:"2025-11-17",tipo:"SIE",cat:"Adquisición"},
+{anio:2026,codigo:"CPC-GADMR-2026-001",objeto:"SERVICIOS ESPECIALIZADOS PARA EVALUACIÓN DEL SISTEMA EXISTENTE DE LA PTAR PARA EL TRATAMIENTO DE LIXIVIADOS DE LA CELDA EMERGENTE DEL GOBIERNO AUTÓNOMO DESCENTRALIZADO MUNICIPAL DEL CANTÓN RIOBAMBA, Y DISEÑO DE LA NUEVA PROPUESTA PARA DESCARGA EN EL RIO CHAMBO",estado:"Calificación de Participantes",monto:24918.27,fecha:"2026-04-14",tipo:"CPC",cat:"Servicio"},
+{anio:2026,codigo:"FI-GADMR-2026-001",objeto:"PRESTACIÓN DEL SERVICIO DE ALIMENTACION PARA LOS BENEFICIARIOS DEL PROYECTO WAWA WASI DE LA DIRECCION DE GESTION DE DESARROLLO SOCIAL E INCLUSIÓN",estado:"Adjudicada",monto:127659.84,fecha:"2026-02-24",tipo:"FI",cat:"Servicio"},
+{anio:2026,codigo:"LICB-GADMR-2026-001",objeto:"ADQUISICIÓN DE BIENES CULTURALES PARA EL CANTÓN RIOBAMBA",estado:"Calificación de Participantes",monto:200000.0,fecha:"2026-04-01",tipo:"LICS",cat:"Servicio"},
+{anio:2026,codigo:"LICO-GADMR-2026-001",objeto:"AMPLIACION DEL PUENTE DE INGRESO A LOS BARRIOS LA VICTORIA Y SAN JOSE DE CHIBUNGA",estado:"Calificación de Participantes",monto:149990.83,fecha:"2026-04-06",tipo:"LICO",cat:"Obra"},
+{anio:2026,codigo:"LICO-GADMR-2026-002",objeto:"EJECUCIÓN DE LA OBRA MANTENIMIENTO DEL SISTEMA DE ILUMINACION EXTERIOR DE LAS FACHADAS DE LA IGLESIA INMACULADA CONCEPCIÓN Y RESTAURACIÓN DE LAS PUERTAS PATRIMONIALES DE MADERA",estado:"Calificación de Participantes",monto:20000.0,fecha:"2026-04-13",tipo:"LICO",cat:"Obra"},
+{anio:2026,codigo:"SIE-GADMR-2026-0001",objeto:"ADQUISICIÓN DE MOTOS PARA LOS AGENTES DE CONTROL MUNICIPAL",estado:"Ejecución de Contrato",monto:37500.0,fecha:"2026-02-12",tipo:"SIE",cat:"Adquisición"},
+{anio:2026,codigo:"SIE-GADMR-2026-002",objeto:"Adquisición de una buseta para generación de operativos de control a prestadores de servicios turísticos en el cantón Riobamba y participación en eventos de promoción turística local y nacional",estado:"Desierta",monto:30427.0,fecha:"2026-02-12",tipo:"SIE",cat:"Adquisición"},
+{anio:2026,codigo:"SIE-GADMR-2026-004",objeto:"ADQUISICIÓN DE CAMIÓN Y AUTOBUSES A FIN DE MEJORAR LA OPERATIVIDAD DE LA DIRECCIÓN DE MOVILIDAD, TRÁNSITO Y TRANSPORTE",estado:"Cancelado",monto:202970.0,fecha:"2026-02-20",tipo:"SIE",cat:"Adquisición"},
+{anio:2026,codigo:"SIE-GADMR-2026-005",objeto:"PRESTACIÓN DEL SERVICIO DE ARRENDAMIENTO DE LICENCIAS MICROSOFT OFFICE 365",estado:"Oferta Inicial",monto:24353.38,fecha:"2026-04-14",tipo:"SIE",cat:"Adquisición"}
+];
+
+
+const YEARS=[2023,2024,2025,2026];
+const CAT_COLOR={Obra:'#0F3460',Adquisición:'#3F6B45',Servicio:'#9A6B16'};
+const CAT_ICON={Obra:'🏗',Adquisición:'📦',Servicio:'📋'};
+const POR_PAG=15;
+
+let tabData={}, tabPage={}, tabSortCol={}, tabSortDir={};
+let chartsBuilt={};
+
+function fmtM(v){return '$'+(v/1e6).toFixed(2)+'M';}
+function fmtK(v){if(v>=1e6)return '$'+(v/1e6).toFixed(2)+'M';if(v>=1e3)return '$'+(v/1e3).toFixed(0)+'K';return '$'+v.toFixed(0);}
+function fmt(v){if(v===0)return '<span style="color:#9AA1AD">S/D</span>';if(!v)return '—';return '$'+v.toLocaleString('es-EC',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+function catBadge(c){
+  const m={Obra:'cb-obra',Adquisición:'cb-adq',Servicio:'cb-serv'};
+  return '<span class="cat-badge '+(m[c]||'cb-serv')+'">'+c+'</span>';
+}
+
+function badgeE(e){
+  const m={'Finalizada':'b-fin','Ejecución de Contrato':'b-ejec','Desierta':'b-des',
+    'Cancelado':'b-can','Adjudicada':'b-adj','En Recepción':'b-rec',
+    'Fin. mutuo acuerdo':'b-adj','Adjudicado - Registro de Contratos':'b-fin',
+    'Suspendido':'b-rec','Por Adjudicar':'b-adj','Oferta Inicial':'b-fin',
+    'Calificación de Participantes':'b-adj'};
+  const lbl={'Ejecución de Contrato':'En Ejecución','Fin. mutuo acuerdo':'Fin.Mutuo',
+    'Adjudicado - Registro de Contratos':'Adjudicado','Calificación de Participantes':'Calificación'};
+  return '<span class="badge '+(m[e]||'b-otr')+'">'+(lbl[e]||e)+'</span>';
+}
+
+function statsFor(arr){
+  const r={total:arr.length,monto:0,fin:0,ejec:0,des:0,can:0,adj:0,
+    cats:{Obra:{n:0,m:0},Adquisición:{n:0,m:0},Servicio:{n:0,m:0}}};
+  arr.forEach(function(d){
+    r.monto+=d.monto||0;
+    var e=d.estado;
+    if(e==='Finalizada'||e==='Adjudicado - Registro de Contratos')r.fin++;
+    else if(e==='Adjudicada')r.adj++;
+    else if(e==='Ejecución de Contrato')r.ejec++;
+    else if(e==='Desierta')r.des++;
+    else if(e==='Cancelado')r.can++;
+    if(r.cats[d.cat]){r.cats[d.cat].n++;r.cats[d.cat].m+=d.monto||0;}
+  });
+  return r;
+}
+
+function buildCatCards(containerId, arr){
+  var s=statsFor(arr);
+  var maxM=Math.max(s.cats.Obra.m,s.cats.Adquisición.m,s.cats.Servicio.m)||1;
+  var html='';
+  ['Obra','Adquisición','Servicio'].forEach(function(cat){
+    var c=s.cats[cat];
+    var pct=((c.m/maxM)*100).toFixed(1);
+    var mPct=s.monto>0?((c.m/s.monto)*100).toFixed(1):0;
+    var nPct=s.total>0?((c.n/s.total)*100).toFixed(1):0;
+    var key=cat==='Adquisición'?'adq':cat==='Servicio'?'serv':'obra';
+    var finN=arr.filter(function(d){return d.cat===cat&&(d.estado==='Finalizada'||d.estado==='Adjudicado - Registro de Contratos');}).length;
+    var adjN=arr.filter(function(d){return d.cat===cat&&d.estado==='Adjudicada';}).length;
+    var ejecN=arr.filter(function(d){return d.cat===cat&&d.estado==='Ejecución de Contrato';}).length;
+    var desN=arr.filter(function(d){return d.cat===cat&&d.estado==='Desierta';}).length;
+    var canN=arr.filter(function(d){return d.cat===cat&&d.estado==='Cancelado';}).length;
+    var recN=arr.filter(function(d){return d.cat===cat&&d.estado==='En Recepción';}).length;
+    var mutN=arr.filter(function(d){return d.cat===cat&&d.estado==='Fin. mutuo acuerdo';}).length;
+    var suspN=arr.filter(function(d){return d.cat===cat&&(d.estado==='Suspendido'||d.estado==='Por Adjudicar'||d.estado==='Oferta Inicial'||d.estado==='Calificación de Participantes');}).length;
+    html+='<div class="cat-card c-'+key+'">';
+    html+='<span class="cat-icon">'+CAT_ICON[cat]+'</span>';
+    html+='<div class="cat-label">'+cat+'</div>';
+    html+='<div class="cat-num">'+c.n+'</div>';
+    html+='<div class="cat-monto">'+fmtM(c.m)+'</div>';
+    html+='<div class="cat-sub">'+nPct+'% de procesos · '+mPct+'% del presupuesto</div>';
+    html+='<div class="cat-pct-bar"><div class="cat-pct-fill" style="width:'+pct+'%"></div></div>';
+    html+='<div class="cat-stats-row">';
+    if(finN>0)  html+='<div class="cat-stat-item"><span>Finalizados</span><strong>'+finN+'</strong></div>';
+    if(adjN>0)  html+='<div class="cat-stat-item"><span>Adjudicados</span><strong>'+adjN+'</strong></div>';
+    if(ejecN>0) html+='<div class="cat-stat-item"><span>En ejecución</span><strong>'+ejecN+'</strong></div>';
+    if(recN>0)  html+='<div class="cat-stat-item"><span>En recepción</span><strong>'+recN+'</strong></div>';
+    if(mutN>0)  html+='<div class="cat-stat-item"><span>Mutuo acuerdo</span><strong>'+mutN+'</strong></div>';
+    if(desN>0)  html+='<div class="cat-stat-item"><span>Desiertos</span><strong>'+desN+'</strong></div>';
+    if(canN>0)  html+='<div class="cat-stat-item"><span>Cancelados</span><strong>'+canN+'</strong></div>';
+    if(suspN>0) html+='<div class="cat-stat-item"><span>Suspendidos/Pendientes</span><strong>'+suspN+'</strong></div>';
+    html+='</div></div>';
+  });
+  document.getElementById(containerId).innerHTML=html;
+}
+
+function initResumen(){
+  var s=statsFor(DB);
+  document.getElementById('r-total').textContent=s.total;
+  document.getElementById('r-monto').textContent=fmtM(s.monto);
+  document.getElementById('r-fin').textContent=(s.fin+s.adj);
+  document.getElementById('r-ejec').textContent=s.ejec;
+  document.getElementById('r-obra').textContent=s.cats.Obra.n;
+  document.getElementById('r-adq').textContent=s.cats.Adquisición.n;
+  document.getElementById('hdr-total').textContent=s.total+' procesos registrados';
+  document.getElementById('mf-monto').textContent=fmtM(s.monto);
+  document.getElementById('mf-txt').textContent=s.total+' procesos publicados en SOCE · 2023–2026 · Cantón Riobamba';
+
+  YEARS.forEach(function(y){
+    var n=DB.filter(function(d){return d.anio===y;}).length;
+    document.getElementById('nb-'+y).textContent=n;
+  });
+
+  buildCatCards('cat-row-resumen', DB);
+
+  var yc=document.getElementById('year-summary');
+  var yhtml='';
+  YEARS.forEach(function(y){
+    var yr=DB.filter(function(d){return d.anio===y;});
+    var sy=statsFor(yr);
+    yhtml+='<div class="ys-card">';
+    yhtml+='<div class="ys-anio">'+y+'</div>';
+    yhtml+='<div class="ys-total">'+yr.length+' proc. · '+fmtM(sy.monto)+'</div>';
+    yhtml+='<div class="ys-cats">';
+    ['Obra','Adquisición','Servicio'].forEach(function(cat){
+      var c=sy.cats[cat];
+      var catArr=yr.filter(function(d){return d.cat===cat;});
+      var finN=catArr.filter(function(d){return d.estado==='Finalizada'||d.estado==='Adjudicado - Registro de Contratos';}).length;
+      var adjN=catArr.filter(function(d){return d.estado==='Adjudicada';}).length;
+      var ejecN=catArr.filter(function(d){return d.estado==='Ejecución de Contrato';}).length;
+      var recN=catArr.filter(function(d){return d.estado==='En Recepción';}).length;
+      var desN=catArr.filter(function(d){return d.estado==='Desierta';}).length;
+      var canN=catArr.filter(function(d){return d.estado==='Cancelado';}).length;
+      var otrosN=c.n - finN - adjN - ejecN - recN - desN - canN;
+      var estados=[];
+      if(ejecN>0) estados.push('<span class="ys-est ys-est-ejec">Ejec. '+ejecN+'</span>');
+      if(finN>0)  estados.push('<span class="ys-est ys-est-fin">Fin. '+finN+'</span>');
+      if(adjN>0)  estados.push('<span class="ys-est ys-est-adj">Adj. '+adjN+'</span>');
+      if(recN>0)  estados.push('<span class="ys-est ys-est-rec">Recep. '+recN+'</span>');
+      if(desN>0)  estados.push('<span class="ys-est ys-est-des">Desiert. '+desN+'</span>');
+      if(canN>0)  estados.push('<span class="ys-est ys-est-can">Cancel. '+canN+'</span>');
+      if(otrosN>0)estados.push('<span class="ys-est ys-est-otr">Otros '+otrosN+'</span>');
+      yhtml+='<div class="ys-cat-block">';
+      yhtml+='<div class="ys-cat-row">';
+      yhtml+='<span class="ys-cat-name"><span class="ys-cat-dot" style="background:'+CAT_COLOR[cat]+'"></span><strong>'+cat+'</strong></span>';
+      yhtml+='<span class="ys-cat-val">'+c.n+' · '+fmtK(c.m)+'</span>';
+      yhtml+='</div>';
+      if(estados.length>0){
+        yhtml+='<div class="ys-est-row">'+estados.join('')+'</div>';
+      }
+      yhtml+='</div>';
+    });
+    yhtml+='</div></div>';
+  });
+  yc.innerHTML=yhtml;
+}
+
+function initCharts(){
+  var labels=['2023','2024','2025','2026'];
+  var montoO=YEARS.map(function(y){return DB.filter(function(d){return d.anio===y&&d.cat==='Obra';}).reduce(function(s,d){return s+(d.monto||0);},0)/1e6;});
+  var montoA=YEARS.map(function(y){return DB.filter(function(d){return d.anio===y&&d.cat==='Adquisición';}).reduce(function(s,d){return s+(d.monto||0);},0)/1e6;});
+  var montoS=YEARS.map(function(y){return DB.filter(function(d){return d.anio===y&&d.cat==='Servicio';}).reduce(function(s,d){return s+(d.monto||0);},0)/1e6;});
+  var countO=YEARS.map(function(y){return DB.filter(function(d){return d.anio===y&&d.cat==='Obra';}).length;});
+  var countA=YEARS.map(function(y){return DB.filter(function(d){return d.anio===y&&d.cat==='Adquisición';}).length;});
+  var countS=YEARS.map(function(y){return DB.filter(function(d){return d.anio===y&&d.cat==='Servicio';}).length;});
+
+  // Líneas monto
+  new Chart(document.getElementById('chart-linea-monto'),{
+    type:'line',
+    data:{labels:labels,datasets:[
+      {label:'Obra',data:montoO,borderColor:'#0F3460',backgroundColor:'rgba(15,52,96,.07)',tension:.4,pointRadius:6,pointBackgroundColor:'#0F3460',pointBorderColor:'#fff',pointBorderWidth:2,fill:true,borderWidth:2.5},
+      {label:'Adquisición',data:montoA,borderColor:'#3F6B45',backgroundColor:'rgba(63,107,69,.07)',tension:.4,pointRadius:6,pointBackgroundColor:'#3F6B45',pointBorderColor:'#fff',pointBorderWidth:2,fill:true,borderWidth:2.5},
+      {label:'Servicio',data:montoS,borderColor:'#9A6B16',backgroundColor:'rgba(154,107,22,.07)',tension:.4,pointRadius:6,pointBackgroundColor:'#9A6B16',pointBorderColor:'#fff',pointBorderWidth:2,fill:true,borderWidth:2.5}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ' '+ctx.dataset.label+': $'+ctx.parsed.y.toFixed(2)+'M';}}}},
+      scales:{
+        x:{grid:{color:'rgba(220,214,200,.4)'},ticks:{font:{family:'JetBrains Mono',size:11},color:'#6B7280'}},
+        y:{grid:{color:'rgba(220,214,200,.4)'},ticks:{font:{family:'JetBrains Mono',size:11},color:'#6B7280',callback:function(v){return '$'+v.toFixed(1)+'M';}}}
+      }
+    }
+  });
+
+  // Barras count
+  new Chart(document.getElementById('chart-barras-count'),{
+    type:'bar',
+    data:{labels:labels,datasets:[
+      {label:'Obra',data:countO,backgroundColor:'rgba(15,52,96,.82)',borderRadius:2},
+      {label:'Adquisición',data:countA,backgroundColor:'rgba(63,107,69,.82)',borderRadius:2},
+      {label:'Servicio',data:countS,backgroundColor:'rgba(154,107,22,.82)',borderRadius:2}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:true,position:'bottom',labels:{font:{family:'JetBrains Mono',size:10},color:'#6B7280',boxWidth:10,padding:12}}},
+      scales:{x:{grid:{display:false},ticks:{font:{family:'JetBrains Mono',size:11},color:'#6B7280'}},
+        y:{grid:{color:'rgba(220,214,200,.4)'},ticks:{font:{family:'JetBrains Mono',size:11},color:'#6B7280'}}}
+    }
+  });
+
+  // Donut estados
+  var estados={};
+  DB.forEach(function(d){
+    var k=d.estado==='Adjudicado - Registro de Contratos'?'Adjudicada':d.estado;
+    estados[k]=(estados[k]||0)+1;
+  });
+  var estOrden=['Finalizada','Ejecución de Contrato','Adjudicada','Desierta','Cancelado','En Recepción','Fin. mutuo acuerdo','Suspendido','Por Adjudicar','Oferta Inicial','Calificación de Participantes'];
+  var estColors=['#3F6B45','#0F3460','#9A6B16','#9AA1AD','#9B2C2C','#4a2080','#C9A227','#5a3080','#1a5a5a','#1a5a3a','#7a4a30'];
+  var estLabels=estOrden.filter(function(e){return estados[e];});
+  var estData=estLabels.map(function(e){return estados[e];});
+  var estCols=estOrden.reduce(function(acc,e,i){if(estados[e])acc.push(estColors[i]);return acc;},[]);
+
+  new Chart(document.getElementById('chart-donut-estado'),{
+    type:'doughnut',
+    data:{labels:estLabels,datasets:[{data:estData,backgroundColor:estCols,borderWidth:1,borderColor:'#FAF8F3'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'60%',
+      plugins:{legend:{display:true,position:'right',labels:{font:{family:'JetBrains Mono',size:10},color:'#6B7280',boxWidth:9,padding:8}},
+        tooltip:{callbacks:{label:function(ctx){return ' '+ctx.label+': '+ctx.parsed+' ('+((ctx.parsed/DB.length)*100).toFixed(1)+'%)';}}}
+      }
+    }
+  });
+}
+
+// ─── PANELES POR AÑO ───
+function buildYearPanel(y){
+  if(document.getElementById('panel-'+y)) return;
+  var mainEl=document.querySelector('main');
+  var div=document.createElement('div');
+  div.className='tab-panel';
+  div.id='panel-'+y;
+  var arr=DB.filter(function(d){return d.anio===y;});
+  var s=statsFor(arr);
+
+  div.innerHTML=
+    '<div class="sec-ey">Indicadores '+y+'</div>'+
+    '<div class="kpi-totales">'+
+    '<div class="kpi-tot-card"><div class="kpi-tot-label">Procesos</div><div class="kpi-tot-val">'+s.total+'</div><div class="kpi-tot-sub">publicados '+y+'</div></div>'+
+    '<div class="kpi-tot-card"><div class="kpi-tot-label">Presupuesto</div><div class="kpi-tot-val">'+fmtM(s.monto)+'</div><div class="kpi-tot-sub">referencial sin IVA</div></div>'+
+    '<div class="kpi-tot-card"><div class="kpi-tot-label">Finalizados/Adj.</div><div class="kpi-tot-val">'+(s.fin+s.adj)+'</div><div class="kpi-tot-sub">completados</div></div>'+
+    '<div class="kpi-tot-card"><div class="kpi-tot-label">En ejecución</div><div class="kpi-tot-val">'+s.ejec+'</div><div class="kpi-tot-sub">contratos activos</div></div>'+
+    '<div class="kpi-tot-card"><div class="kpi-tot-label">Obras</div><div class="kpi-tot-val">'+s.cats.Obra.n+'</div><div class="kpi-tot-sub">'+fmtM(s.cats.Obra.m)+'</div></div>'+
+    '<div class="kpi-tot-card"><div class="kpi-tot-label">Adquisiciones</div><div class="kpi-tot-val">'+s.cats.Adquisición.n+'</div><div class="kpi-tot-sub">'+fmtM(s.cats.Adquisición.m)+'</div></div>'+
+    '</div>'+
+    '<div class="sec-ey">Por categoría</div>'+
+    '<div class="cat-kpi-row" id="cat-row-'+y+'"></div>'+
+    '<div class="sec-ey">Evolución mensual '+y+'</div>'+
+    '<div class="chart-grid">'+
+    '<div class="chart-card full"><div class="chart-hd"><div><h3>Procesos publicados por <em>mes</em></h3></div>'+
+    '<div class="legend"><div class="legend-item"><div class="legend-line" style="background:var(--obra)"></div>Obra</div>'+
+    '<div class="legend-item"><div class="legend-line" style="background:var(--adq)"></div>Adquisición</div>'+
+    '<div class="legend-item"><div class="legend-line" style="background:var(--serv)"></div>Servicio</div></div></div>'+
+    '<div class="chart-wrap tall"><canvas id="chart-mes-'+y+'"></canvas></div></div>'+
+    '<div class="chart-card"><div class="chart-hd"><div><h3>Distribución por <em>categoría</em></h3></div></div>'+
+    '<div class="chart-wrap"><canvas id="chart-cat-'+y+'"></canvas></div></div>'+
+    '<div class="chart-card"><div class="chart-hd"><div><h3>Top 8 por <em>monto</em></h3></div></div>'+
+    '<div class="chart-wrap"><canvas id="chart-top-'+y+'"></canvas></div></div>'+
+    '</div>'+
+    '<div class="sec-ey">Listado completo</div>'+
+    '<div class="tabla-section">'+
+    '<div class="tabla-toolbar">'+
+    '<input class="t-search" id="ts-'+y+'" placeholder="Buscar..." oninput="filtrarY('+y+')">'+
+    '<select class="t-sel" id="se-'+y+'" onchange="filtrarY('+y+')">'+
+    '<option value="">Todos los estados</option><option>Finalizada</option><option>Ejecución de Contrato</option>'+
+    '<option>Adjudicada</option><option>Desierta</option><option>Cancelado</option>'+
+    '<option>En Recepción</option><option>Suspendido</option></select>'+
+    '<select class="t-sel" id="sc-'+y+'" onchange="filtrarY('+y+')">'+
+    '<option value="">Todas categorías</option><option>Obra</option><option>Adquisición</option><option>Servicio</option></select>'+
+    '<span class="t-count" id="tc-'+y+'"></span>'+
+    '<button class="t-csv" onclick="expY('+y+')">⬇ CSV</button>'+
+    '</div>'+
+    '<table><thead><tr>'+
+    '<th>Código</th><th>Objeto del Proceso</th><th>Categoría</th>'+
+    '<th>Estado</th><th style="text-align:right">Presupuesto</th><th>Publicación</th>'+
+    '</tr></thead><tbody id="tb-'+y+'"></tbody></table>'+
+    '<div class="pag" id="pag-'+y+'">'+
+    '<span class="pag-info" id="pi-'+y+'"></span>'+
+    '<div class="pag-btns" id="pb-'+y+'"></div>'+
+    '</div></div>';
+
+  mainEl.appendChild(div);
+  tabPage[y]=1;
+  tabSortCol[y]='fecha';
+  tabSortDir[y]=-1;
+  tabData[y]=arr.slice().sort(function(a,b){return b.fecha.localeCompare(a.fecha);});
+  buildCatCards('cat-row-'+y, arr);
+  renderY(y);
+  setTimeout(function(){buildYCharts(y);},80);
+}
+
+function buildYCharts(y){
+  if(chartsBuilt[y])return;
+  chartsBuilt[y]=true;
+  var arr=DB.filter(function(d){return d.anio===y;});
+  var meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  var mesO=new Array(12).fill(0);var mesA=new Array(12).fill(0);var mesS=new Array(12).fill(0);
+  arr.forEach(function(d){
+    var m=parseInt(d.fecha.split('-')[1])-1;
+    if(d.cat==='Obra')mesO[m]++;
+    else if(d.cat==='Adquisición')mesA[m]++;
+    else mesS[m]++;
+  });
+
+  new Chart(document.getElementById('chart-mes-'+y),{
+    type:'line',
+    data:{labels:meses,datasets:[
+      {label:'Obra',data:mesO,borderColor:'#0F3460',backgroundColor:'rgba(15,52,96,.06)',tension:.4,pointRadius:4,pointBackgroundColor:'#0F3460',fill:true,borderWidth:2},
+      {label:'Adquisición',data:mesA,borderColor:'#3F6B45',backgroundColor:'rgba(63,107,69,.06)',tension:.4,pointRadius:4,pointBackgroundColor:'#3F6B45',fill:true,borderWidth:2},
+      {label:'Servicio',data:mesS,borderColor:'#9A6B16',backgroundColor:'rgba(154,107,22,.06)',tension:.4,pointRadius:4,pointBackgroundColor:'#9A6B16',fill:true,borderWidth:2}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:'rgba(220,214,200,.4)'},ticks:{font:{family:'JetBrains Mono',size:10},color:'#6B7280'}},
+        y:{grid:{color:'rgba(220,214,200,.4)'},ticks:{font:{family:'JetBrains Mono',size:10},color:'#6B7280',stepSize:1}}}}
+  });
+
+  var cats=['Obra','Adquisición','Servicio'];
+  new Chart(document.getElementById('chart-cat-'+y),{
+    type:'doughnut',
+    data:{labels:cats,datasets:[{data:cats.map(function(c){return arr.filter(function(d){return d.cat===c;}).length;}),
+      backgroundColor:['rgba(15,52,96,.85)','rgba(63,107,69,.85)','rgba(154,107,22,.85)'],borderWidth:1,borderColor:'#FAF8F3'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{legend:{display:true,position:'bottom',labels:{font:{family:'JetBrains Mono',size:10},color:'#6B7280',boxWidth:9,padding:9}},
+        tooltip:{callbacks:{label:function(ctx){return ' '+ctx.label+': '+ctx.parsed;}}}}}
+  });
+
+  var top=arr.filter(function(d){return d.monto>0;}).slice().sort(function(a,b){return b.monto-a.monto;}).slice(0,8);
+  new Chart(document.getElementById('chart-top-'+y),{
+    type:'bar',
+    data:{labels:top.map(function(d){return d.codigo.replace(/-?GADMR?-?/gi,'').replace(/[-_]?20\d\d[-_]?/g,'').slice(0,14);}),
+      datasets:[{data:top.map(function(d){return d.monto/1e3;}),
+        backgroundColor:top.map(function(d){return d.cat==='Obra'?'rgba(15,52,96,.82)':d.cat==='Adquisición'?'rgba(63,107,69,.82)':'rgba(154,107,22,.82)';}),
+        borderRadius:2}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ' $'+ctx.parsed.x.toFixed(0)+'K';}}}},
+      scales:{x:{grid:{color:'rgba(220,214,200,.4)'},ticks:{font:{family:'JetBrains Mono',size:9},color:'#6B7280',callback:function(v){return '$'+v+'K';}}},
+        y:{grid:{display:false},ticks:{font:{family:'JetBrains Mono',size:9},color:'#6B7280'}}}}
+  });
+}
+
+function filtrarY(y){
+  var q=(document.getElementById('ts-'+y)||{}).value||'';q=q.toLowerCase();
+  var est=(document.getElementById('se-'+y)||{}).value||'';
+  var cat=(document.getElementById('sc-'+y)||{}).value||'';
+  var arr=DB.filter(function(d){
+    if(d.anio!==y)return false;
+    var mQ=!q||d.codigo.toLowerCase().indexOf(q)>=0||d.objeto.toLowerCase().indexOf(q)>=0;
+    var mE=!est||d.estado===est;
+    var mC=!cat||d.cat===cat;
+    return mQ&&mE&&mC;
+  });
+  var col=tabSortCol[y]||'fecha';var dir=tabSortDir[y]||-1;
+  arr.sort(function(a,b){
+    var va=a[col]||'';var vb=b[col]||'';
+    if(typeof va==='number')return(va-vb)*dir;
+    return va.toString().localeCompare(vb.toString())*dir;
+  });
+  tabData[y]=arr;tabPage[y]=1;renderY(y);
+}
+
+function renderY(y){
+  var data=tabData[y]||[];
+  var pg=tabPage[y]||1;
+  var ini=(pg-1)*POR_PAG;
+  var slice=data.slice(ini,ini+POR_PAG);
+  var tb=document.getElementById('tb-'+y);if(!tb)return;
+  tb.innerHTML=slice.map(function(d){
+    return '<tr onclick="verDetalle(\''+d.codigo.replace(/'/g,"\\'")+'\')">' +
+      '<td class="td-cod">'+d.codigo+'</td>'+
+      '<td class="td-obj">'+d.objeto+'</td>'+
+      '<td>'+catBadge(d.cat)+'</td>'+
+      '<td>'+badgeE(d.estado)+'</td>'+
+      '<td class="td-monto">'+fmt(d.monto)+'</td>'+
+      '<td class="td-fecha">'+d.fecha+'</td>'+
+      '</tr>';
+  }).join('');
+  var tc=document.getElementById('tc-'+y);if(tc)tc.textContent=data.length+' resultados';
+  var total=Math.ceil(data.length/POR_PAG)||1;
+  var pi=document.getElementById('pi-'+y);if(pi)pi.textContent=(ini+1)+'–'+Math.min(ini+POR_PAG,data.length)+' de '+data.length;
+  var h='<button class="pag-btn" onclick="irPag('+y+','+(pg-1)+')" '+(pg===1?'disabled':'')+'>‹</button>';
+  for(var p=1;p<=total;p++){
+    if(total<=7||p===1||p===total||Math.abs(p-pg)<=1)
+      h+='<button class="pag-btn '+(p===pg?'active':'')+'" onclick="irPag('+y+','+p+')">'+p+'</button>';
+    else if(Math.abs(p-pg)===2)h+='<span style="padding:0 3px;font-family:var(--mono);font-size:10px;color:var(--ink-4)">…</span>';
+  }
+  h+='<button class="pag-btn" onclick="irPag('+y+','+(pg+1)+')" '+(pg===total?'disabled':'')+'>›</button>';
+  var pb=document.getElementById('pb-'+y);if(pb)pb.innerHTML=h;
+}
+
+function irPag(y,p){
+  var t=Math.ceil((tabData[y]||[]).length/POR_PAG)||1;
+  if(p<1||p>t)return;
+  tabPage[y]=p;renderY(y);
+}
+
+function expY(y){
+  var data=tabData[y]||[];
+  var cols=['Código','Año','Objeto','Categoría','Tipo','Estado','Presupuesto_USD','Fecha'];
+  var rows=data.map(function(d){
+    return ['"'+d.codigo+'"',d.anio,'"'+d.objeto.replace(/"/g,'""')+'"',d.cat,d.tipo,'"'+d.estado+'"',d.monto||0,d.fecha].join(',');
+  });
+  var blob=new Blob(['\uFEFF'+[cols.join(',')].concat(rows).join('\n')],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='gadmr_'+y+'.csv';a.click();
+}
+
+function verDetalle(codigo){
+  var d=null;
+  for(var i=0;i<DB.length;i++){if(DB[i].codigo===codigo){d=DB[i];break;}}
+  if(!d)return;
+  document.getElementById('p-cod').textContent=d.codigo;
+  document.getElementById('p-title').textContent=d.objeto;
+  document.getElementById('p-body').innerHTML=
+    '<div class="p-sec"><div class="p-sec-title">Identificación</div>'+
+    '<div class="p-row"><span class="p-key">Código</span><span class="p-val mono">'+d.codigo+'</span></div>'+
+    '<div class="p-row"><span class="p-key">Año</span><span class="p-val mono">'+d.anio+'</span></div>'+
+    '<div class="p-row"><span class="p-key">Tipo</span><span class="p-val mono">'+d.tipo+'</span></div>'+
+    '<div class="p-row"><span class="p-key">Categoría</span><span class="p-val">'+catBadge(d.cat)+'</span></div>'+
+    '</div>'+
+    '<div class="p-sec"><div class="p-sec-title">Estado y fecha</div>'+
+    '<div class="p-row"><span class="p-key">Estado</span><span class="p-val">'+badgeE(d.estado)+'</span></div>'+
+    '<div class="p-row"><span class="p-key">Publicación</span><span class="p-val mono">'+d.fecha+'</span></div>'+
+    '</div>'+
+    '<div class="p-sec"><div class="p-sec-title">Presupuesto</div>'+
+    '<div class="p-row"><span class="p-key">Sin IVA</span><span class="p-val mono" style="font-size:17px;font-weight:700;color:var(--navy)">'+fmt(d.monto)+'</span></div>'+
+    '</div>'+
+    '<div class="p-sec"><div class="p-sec-title">Objeto completo</div>'+
+    '<p style="font-size:12.5px;line-height:1.65;color:var(--ink)">'+d.objeto+'</p>'+
+    '</div>'+
+    '<div class="p-sec"><div class="p-sec-title">Enlace SOCE</div>'+
+    '<div class="p-row"><span class="p-key">Portal SERCOP</span>'+
+    '<a class="p-link" href="https://portal.compraspublicas.gob.ec/sercop/proc_contratacion/view_proc_contratacion?codigo='+encodeURIComponent(d.codigo)+'" target="_blank">Abrir en SOCE ↗</a>'+
+    '</div></div>';
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('panel-det').classList.add('open');
+}
+
+function cerrar(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('panel-det').classList.remove('open');
+}
+
+var activeTab='resumen';
+function setTab(t){
+  activeTab=t;
+  document.querySelectorAll('.tnav-btn').forEach(function(b,i){
+    var ids=['resumen','2023','2024','2025','2026','tipos','infra'];
+    b.classList.toggle('active',ids[i]===t);
+  });
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+  if(t==='resumen'){
+    document.getElementById('panel-resumen').classList.add('active');
+  } else if(t==='tipos'){
+    buildTiposPanel();
+    document.getElementById('panel-tipos').classList.add('active');
+  } else if(t==='infra'){
+    buildInfraPanel();
+    document.getElementById('panel-infra').classList.add('active');
+  } else {
+    var y=parseInt(t);
+    buildYearPanel(y);
+    document.getElementById('panel-'+y).classList.add('active');
+  }
+}
+
+
+var INFRA_SUBCATS=[
+{name:"Vialidad y Asfalto",icon:"🛣",codigos:["COTO-GADMR-2023-004","COTO-GADMR-2024-007","COTO-GADMR-2024-011","SIE-GADMR-2024-092","SIE-GADMR-2024-074","COTO-GADMR-2024-002","SIE-GADMR-2024-033","LICO-GADMR-2025-001","SIE-GADMR-2025-067","LICO-GADMR-2026-001"]},
+{name:"Agua y Saneamiento",icon:"💧",codigos:["LICO-GADMR-001-2023","LICO-GADMR-002-2023","SIE-GADMR-016-2023","COTO-GADMR-001-2023","SIE-GADMR-002-2023","MCO-GADMR-2024-018","MCO-GADMR-2024-011","MCO-GADMR-2024-10","COTO-GADMR-2024-001","SIE-GADMR-2025-034","SIE-GADMR-2025-036","LICO-GADMR-2025-013","SIE-GADMR-2025-068","SIE-GADMR-2025-073"]},
+{name:"Mercados y Plazas",icon:"🏪",codigos:["COTO-GADMR-2023-003","COTO-GADMR-2024-008","COTO-GADMR-2024-009","COTO-GADMR-2024-004","SIE-GADMR-2024-015","SIE-GADMR-2025-024","LICO-GADMR-2025-014","LICO-GADMR-2025-010","LICO-GADMR-2025-003","LICO-GADMR-2025-008"]},
+{name:"Cementerios",icon:"⬛",codigos:["MCO-GADMR-2023-008","MCO-GADMR-2023-010","MCO-GADMR-2023-012","MCO-GADMR-2024-009","MCO-GADMR-2024-002","MCO-GADMR-2025-002","MCO-GADMR-2025-003","LICO-GADMR-2025-024","LICO-GADMR-2025-009","LICO-GADMR-2025-002"]},
+{name:"Parques y Espacios",icon:"🌳",codigos:["MCO-GADMR-005-2023","COTO-GADMR-2023-005","MCO-GADMR-2023-011","COTO-GADMR-2024-06","COTO-GADMR-2024-005","MCO-GADMR-2024-012","MCO-GADMR-2024-005","MCO-GADMR-2025-004","LICO-GADMR-2025-022","LICO-GADMR-2025-025","LICO-GADMR-2025-016","LICO-GADMR-2025-019","LICO-GADMR-2025-004"]},
+{name:"Estadios y Deportivo",icon:"🏟",codigos:["MCO-GADMR-2023-009","MCO-GADMR-2024-014","MCO-GADMR-2024-013","COTO-GADMR-2024-003","LICO-GADMR-2025-011","LICO-GADMR-2025-018","LICO-GADMR-2025-020","LICO-GADMR-2025-023","LICO-GADMR-2025-012"]},
+{name:"Edificaciones",icon:"🏛",codigos:["MCO-GADMR-006-2023","MCO-GADMR-001-2023","MCO-GADMR-003-2023","MCO-GADMR-004-2023","COTO-GADMR-2023-006","MCB-GADMR-2023-001","COTO-GADMR-2024-010","MCO-GADMR-2024-016","MCO-GADMR-2024-008","MCO-GADMR-2024-003","MCO-GADMR-2024-004","MCO-GADMR-2024-001","MCO-GADMR-2025-005","MCO-GADMR-2025-006","LICO-GADMR-2025-015","LICO-GADMR-2025-017","LICO-GADMR-2025-005","LICO-GADMR-2025-006","LICO-GADMR-2026-002"]},
+{name:"Iluminación",icon:"💡",codigos:["LICO-GADMR-2025-007"]},
+{name:"Materiales para Obra",icon:"🧱",codigos:["SIE-GADMR-018-2023","SIE-GADMR-2023-050","SIE-GADMR-2024-104","SIE-GADMR-2024-034","SIE-GADMR-2025-45"]},
+{name:"Otros",icon:"🔧",codigos:["MCO-GADMR-2024-017","MCO-GADMR-2024-006","MCO-GADMR-2025-001"]}
+];
+
+function buildInfraPanel(){
+  if(document.getElementById('infra-hero-kpis').children.length > 0) return;
+
+  var infraDB = DB.filter(function(d){ return d.cat==='Obra'; });
+  var total = infraDB.length;
+  var monto = infraDB.reduce(function(s,d){return s+(d.monto||0);},0);
+  var ejec  = infraDB.filter(function(d){return d.estado==='Ejecución de Contrato';}).length;
+  var fin   = infraDB.filter(function(d){return d.estado==='Finalizada'||d.estado==='Adjudicado - Registro de Contratos'||d.estado==='Adjudicada';}).length;
+
+  // Hero KPIs
+  document.getElementById('infra-hero-kpis').innerHTML =
+    '<div class="infra-hero-kpi"><span class="val">'+total+'</span><span class="lbl">Proyectos</span></div>' +
+    '<div class="infra-hero-kpi"><span class="val">'+fmtM(monto)+'</span><span class="lbl">Inversión ref.</span></div>' +
+    '<div class="infra-hero-kpi"><span class="val">'+ejec+'</span><span class="lbl">En ejecución</span></div>' +
+    '<div class="infra-hero-kpi"><span class="val">'+fin+'</span><span class="lbl">Finalizados</span></div>';
+
+  // Timeline por año
+  var maxMonto = Math.max.apply(null, [2023,2024,2025,2026].map(function(y){
+    return infraDB.filter(function(d){return d.anio===y;}).reduce(function(s,d){return s+(d.monto||0);},0);
+  }));
+  var tlHtml = '';
+  [2023,2024,2025,2026].forEach(function(y){
+    var yr = infraDB.filter(function(d){return d.anio===y;});
+    if(!yr.length) return;
+    var mY = yr.reduce(function(s,d){return s+(d.monto||0);},0);
+    var eY = yr.filter(function(d){return d.estado==='Ejecución de Contrato';}).length;
+    var fY = yr.filter(function(d){return d.estado==='Finalizada'||d.estado==='Adjudicado - Registro de Contratos'||d.estado==='Adjudicada';}).length;
+    var dY = yr.filter(function(d){return d.estado==='Desierta';}).length;
+    var tipos = {};
+    yr.forEach(function(d){tipos[d.tipo]=(tipos[d.tipo]||0)+1;});
+    var tiposHtml = Object.keys(tipos).sort(function(a,b){return tipos[b]-tipos[a];}).map(function(t){
+      return '<span class="infra-tipo-pip">'+t+' '+tipos[t]+'</span>';
+    }).join('');
+    tlHtml +=
+      '<div class="infra-anio-row">' +
+      '<div class="infra-anio-label">'+y+'</div>' +
+      '<div class="infra-anio-content">' +
+        '<div class="infra-anio-kpis">' +
+          '<div class="infra-anio-kpi"><strong>'+yr.length+'</strong>proyectos</div>' +
+          '<div class="infra-anio-kpi"><strong>'+fmtM(mY)+'</strong>inversión</div>' +
+          '<div class="infra-anio-kpi"><strong>'+eY+'</strong>en ejecución</div>' +
+          '<div class="infra-anio-kpi"><strong>'+fY+'</strong>finalizados</div>' +
+          '<div class="infra-anio-kpi"><strong>'+dY+'</strong>desiertos</div>' +
+        '</div>' +
+        '<div class="infra-anio-bar"><div class="infra-anio-bar-fill" style="width:'+((mY/maxMonto)*100).toFixed(1)+'%"></div></div>' +
+        '<div class="infra-anio-tipos">'+tiposHtml+'</div>' +
+      '</div></div>';
+  });
+  document.getElementById('infra-timeline').innerHTML = tlHtml;
+
+  // Cards por subcategoría
+  var grid = document.getElementById('infra-subcats');
+  INFRA_SUBCATS.forEach(function(sc){
+    var procs = infraDB.filter(function(d){ return sc.codigos.indexOf(d.codigo)>=0; });
+    if(!procs.length) return;
+    procs.sort(function(a,b){return (b.monto||0)-(a.monto||0);});
+    var monto = procs.reduce(function(s,d){return s+(d.monto||0);},0);
+    var maxP = Math.max.apply(null, procs.map(function(d){return d.monto||0;}));
+    var avgP = monto/procs.length;
+    var finN = procs.filter(function(d){return d.estado==='Finalizada'||d.estado==='Adjudicado - Registro de Contratos'||d.estado==='Adjudicada';}).length;
+    var ejecN = procs.filter(function(d){return d.estado==='Ejecución de Contrato';}).length;
+    var desN = procs.filter(function(d){return d.estado==='Desierta';}).length;
+    var otN = procs.length - finN - ejecN - desN;
+
+    var estHtml = '';
+    if(ejecN>0) estHtml += '<span class="ys-est ys-est-ejec">Ejec. '+ejecN+'</span>';
+    if(finN>0)  estHtml += '<span class="ys-est ys-est-fin">Fin. '+finN+'</span>';
+    if(desN>0)  estHtml += '<span class="ys-est ys-est-des">Desiert. '+desN+'</span>';
+    if(otN>0)   estHtml += '<span class="ys-est ys-est-otr">Otros '+otN+'</span>';
+
+    var tableRows = procs.map(function(d){
+      return '<tr onclick="verDetalle(\''+d.codigo.replace(/'/g,"\\'")+'\')">'+
+        '<td class="td-cod" style="font-size:10px">'+d.codigo+'</td>'+
+        '<td style="font-size:11px;max-width:260px;line-height:1.35">'+d.objeto+'</td>'+
+        '<td><span class="tipo-anio-pip">'+d.tipo+'</span></td>'+
+        '<td>'+badgeE(d.estado)+'</td>'+
+        '<td class="td-monto" style="font-size:10px">'+fmt(d.monto)+'</td>'+
+        '<td class="td-fecha" style="font-size:9px">'+d.fecha.slice(0,7)+'</td>'+
+        '</tr>';
+    }).join('');
+
+    var card = document.createElement('div');
+    card.className = 'isc-card';
+    var scId = sc.name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-]/g,'');
+    card.innerHTML =
+      '<div class="isc-hdr">'+
+        '<div class="isc-icon">'+sc.icon+'</div>'+
+        '<div class="isc-hdr-info">'+
+          '<div class="isc-name">'+sc.name+'</div>'+
+          '<div class="isc-meta">'+procs.length+' proyectos</div>'+
+        '</div>'+
+        '<div class="isc-monto-big">'+fmtM(monto)+'</div>'+
+      '</div>'+
+      '<div class="isc-body">'+
+        '<div class="isc-kpi-row">'+
+          '<div class="isc-kpi"><div class="isc-kpi-lbl">Total ref.</div><div class="isc-kpi-val">'+fmtM(monto)+'</div></div>'+
+          '<div class="isc-kpi"><div class="isc-kpi-lbl">Promedio</div><div class="isc-kpi-val">'+fmtK(avgP)+'</div></div>'+
+          '<div class="isc-kpi"><div class="isc-kpi-lbl">Mayor proc.</div><div class="isc-kpi-val">'+fmtK(maxP)+'</div></div>'+
+        '</div>'+
+        '<div class="tipo-estados" style="margin-bottom:10px">'+estHtml+'</div>'+
+      '</div>'+
+      '<div class="isc-table-wrap" id="isc-tbl-'+scId+'">'+
+        '<table><thead><tr>'+
+          '<th>Código</th><th>Objeto</th><th>Tipo</th><th>Estado</th><th style="text-align:right">Monto</th><th>Fecha</th>'+
+        '</tr></thead><tbody>'+tableRows+'</tbody></table>'+
+      '</div>'+
+      '<button class="isc-expand" id="isc-btn-'+scId+'" onclick="toggleISC(\''+scId+'\','+procs.length+')">'+
+        '▼ Ver '+procs.length+' proyectos'+
+      '</button>';
+    grid.appendChild(card);
+  });
+
+  // Gráficas
+  setTimeout(function(){
+    var subcatNames = INFRA_SUBCATS.map(function(sc){return sc.name;});
+    var subcatMontos = INFRA_SUBCATS.map(function(sc){
+      return infraDB.filter(function(d){return sc.codigos.indexOf(d.codigo)>=0;}).reduce(function(s,d){return s+(d.monto||0);},0)/1e6;
+    });
+    var subcatColors = ['#0F3460','#1a5fa0','#2d6a7a','#3F6B45','#6B8F4A','#9A6B16','#C9A227','#9B2C2C','#5a3080','#888'];
+
+    new Chart(document.getElementById('chart-infra-subcat'),{
+      type:'bar',
+      data:{labels:subcatNames,datasets:[{data:subcatMontos,backgroundColor:subcatColors,borderRadius:2}]},
+      options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){return ' $'+ctx.parsed.x.toFixed(2)+'M';}}}},
+        scales:{x:{grid:{color:'rgba(220,214,200,.4)'},ticks:{font:{family:'JetBrains Mono',size:9},color:'#6B7280',callback:function(v){return '$'+v+'M';}}},
+          y:{grid:{display:false},ticks:{font:{family:'JetBrains Mono',size:9},color:'#6B7280'}}}}
+    });
+
+    var years=[2023,2024,2025,2026];
+    var montosPorAnio=years.map(function(y){return infraDB.filter(function(d){return d.anio===y;}).reduce(function(s,d){return s+(d.monto||0);},0)/1e6;});
+    var countPorAnio=years.map(function(y){return infraDB.filter(function(d){return d.anio===y;}).length;});
+
+    new Chart(document.getElementById('chart-infra-anio'),{
+      type:'bar',
+      data:{labels:['2023','2024','2025','2026'],datasets:[
+        {label:'Monto (M)',data:montosPorAnio,backgroundColor:'rgba(15,52,96,.82)',borderRadius:2,yAxisID:'y'},
+        {label:'N.° proyectos',data:countPorAnio,backgroundColor:'rgba(201,162,39,.7)',borderRadius:2,yAxisID:'y1',type:'line',pointRadius:5,pointBackgroundColor:'#C9A227',borderColor:'#C9A227',borderWidth:2,fill:false}
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:true,position:'bottom',labels:{font:{family:'JetBrains Mono',size:10},color:'#6B7280',boxWidth:10,padding:10}}},
+        scales:{
+          x:{grid:{display:false},ticks:{font:{family:'JetBrains Mono',size:11},color:'#6B7280'}},
+          y:{grid:{color:'rgba(220,214,200,.4)'},ticks:{font:{family:'JetBrains Mono',size:10},color:'#6B7280',callback:function(v){return '$'+v.toFixed(1)+'M';}}},
+          y1:{position:'right',grid:{display:false},ticks:{font:{family:'JetBrains Mono',size:10},color:'#C9A227'}}
+        }}
+    });
+  },80);
+}
+
+function toggleISC(id, n){
+  var wrap = document.getElementById('isc-tbl-'+id);
+  var btn  = document.getElementById('isc-btn-'+id);
+  if(wrap.classList.contains('open')){
+    wrap.classList.remove('open');
+    btn.textContent='▼ Ver '+n+' proyectos';
+  } else {
+    wrap.classList.add('open');
+    btn.textContent='▲ Ocultar listado';
+  }
+}
+
+// ─── TIPOS PANEL ───
+var TIPO_NOMBRES = {
+  SIE:'Subasta Inversa Electrónica', MCO:'Menor Cuantía Obras',
+  MCS:'Menor Cuantía Servicios', CDC:'Contratación Directa Consultoría',
+  LICO:'Licitación Obras', COTO:'Cotización Obras',
+  COTS:'Cotización Servicios', VPN:'Variación de Precios/Cantidades',
+  FI:'Ferias Inclusivas', LICS:'Licitación Servicios',
+  LICSG:'Licitación Seguros', LCC:'Lista Corta Consultoría',
+  CPC:'Concurso Público de Consultoría'
+};
+
+function buildTiposPanel(){
+  if(document.getElementById('tipos-grid').children.length > 0) return;
+
+  // Agrupar por tipo
+  var grupos = {};
+  DB.forEach(function(d){
+    if(!grupos[d.tipo]) grupos[d.tipo]=[];
+    grupos[d.tipo].push(d);
+  });
+
+  // KPIs top
+  var tiposArr = Object.keys(grupos).sort(function(a,b){return grupos[b].length - grupos[a].length;});
+  var kpiHtml = '';
+  var totalTipos = tiposArr.length;
+  var tipoMayor = tiposArr[0];
+  var montoTotal = DB.reduce(function(s,d){return s+(d.monto||0);},0);
+  kpiHtml += '<div class="kpi-tot-card"><div class="kpi-tot-label">Tipos distintos</div><div class="kpi-tot-val">'+totalTipos+'</div><div class="kpi-tot-sub">modalidades de contratación</div></div>';
+  kpiHtml += '<div class="kpi-tot-card"><div class="kpi-tot-label">Tipo más usado</div><div class="kpi-tot-val">'+tipoMayor+'</div><div class="kpi-tot-sub">'+grupos[tipoMayor].length+' procesos</div></div>';
+  kpiHtml += '<div class="kpi-tot-card"><div class="kpi-tot-label">Mayor inversión</div>';
+  var tipoMaxMonto = tiposArr.reduce(function(mx,t){
+    var m=grupos[t].reduce(function(s,d){return s+(d.monto||0);},0);
+    var mm=grupos[mx].reduce(function(s,d){return s+(d.monto||0);},0);
+    return m>mm?t:mx;
+  }, tiposArr[0]);
+  kpiHtml += '<div class="kpi-tot-val">'+tipoMaxMonto+'</div><div class="kpi-tot-sub">'+fmtM(grupos[tipoMaxMonto].reduce(function(s,d){return s+(d.monto||0);},0))+'</div></div>';
+  kpiHtml += '<div class="kpi-tot-card"><div class="kpi-tot-label">Obras (LICO+COTO+MCO)</div><div class="kpi-tot-val">'+(
+    (grupos['LICO']||[]).length+(grupos['COTO']||[]).length+(grupos['MCO']||[]).length)+'</div><div class="kpi-tot-sub">procesos de construcción directa</div></div>';
+  kpiHtml += '<div class="kpi-tot-card"><div class="kpi-tot-label">SIE procesos</div><div class="kpi-tot-val">'+(grupos['SIE']||[]).length+'</div><div class="kpi-tot-sub">'+fmtM((grupos['SIE']||[]).reduce(function(s,d){return s+(d.monto||0);},0))+'</div></div>';
+  kpiHtml += '<div class="kpi-tot-card"><div class="kpi-tot-label">Consultoría (CDC+CPC+LCC)</div><div class="kpi-tot-val">'+(
+    (grupos['CDC']||[]).length+(grupos['CPC']||[]).length+(grupos['LCC']||[]).length)+'</div><div class="kpi-tot-sub">estudios y consultorías</div></div>';
+  document.getElementById('tipos-kpis-top').innerHTML = kpiHtml;
+
+  // Cards por tipo
+  var grid = document.getElementById('tipos-grid');
+  tiposArr.forEach(function(tipo){
+    var procs = grupos[tipo];
+    var monto = procs.reduce(function(s,d){return s+(d.monto||0);},0);
+    var finN = procs.filter(function(d){return d.estado==='Finalizada'||d.estado==='Adjudicado - Registro de Contratos';}).length;
+    var adjN = procs.filter(function(d){return d.estado==='Adjudicada';}).length;
+    var ejecN = procs.filter(function(d){return d.estado==='Ejecución de Contrato';}).length;
+    var desN = procs.filter(function(d){return d.estado==='Desierta';}).length;
+    var canN = procs.filter(function(d){return d.estado==='Cancelado';}).length;
+    var otrosN = procs.length - finN - adjN - ejecN - desN - canN;
+
+    // Años presentes
+    var anios = {};
+    procs.forEach(function(d){ anios[d.anio]=(anios[d.anio]||0)+1; });
+
+    // Categorías presentes
+    var catCount = {Obra:0,Adquisición:0,Servicio:0};
+    procs.forEach(function(d){ catCount[d.cat]++; });
+
+    var card = document.createElement('div');
+    card.className = 'tipo-card';
+    card.id = 'tipo-card-'+tipo;
+
+    var estadosHtml = '';
+    if(finN>0) estadosHtml += '<span class="ys-est ys-est-fin">Fin. '+finN+'</span>';
+    if(adjN>0) estadosHtml += '<span class="ys-est ys-est-adj">Adj. '+adjN+'</span>';
+    if(ejecN>0) estadosHtml += '<span class="ys-est ys-est-ejec">Ejec. '+ejecN+'</span>';
+    if(desN>0) estadosHtml += '<span class="ys-est ys-est-des">Desiert. '+desN+'</span>';
+    if(canN>0) estadosHtml += '<span class="ys-est ys-est-can">Cancel. '+canN+'</span>';
+    if(otrosN>0) estadosHtml += '<span class="ys-est ys-est-otr">Otros '+otrosN+'</span>';
+
+    var catHtml = '';
+    ['Obra','Adquisición','Servicio'].forEach(function(cat){
+      if(catCount[cat]>0){
+        catHtml += catBadge(cat)+' <span style="font-family:var(--mono);font-size:9px;color:var(--ink-3)">'+catCount[cat]+'</span> ';
+      }
+    });
+
+    var aniosHtml = Object.keys(anios).sort().map(function(y){
+      return '<span class="tipo-anio-pip">'+y+' ·'+anios[y]+'</span>';
+    }).join('');
+
+    // Tabla listado completo (colapsada por defecto si > 5)
+    var expanded = procs.length <= 5;
+    var tableRows = procs.slice().sort(function(a,b){return b.fecha.localeCompare(a.fecha);}).map(function(d){
+      return '<tr onclick="verDetalle(\''+d.codigo.replace(/'/g,"\\'")+'\')">' +
+        '<td class="td-cod" style="font-size:10px">'+d.codigo+'</td>' +
+        '<td style="font-size:11px;max-width:240px;line-height:1.35">'+d.objeto+'</td>' +
+        '<td>'+badgeE(d.estado)+'</td>' +
+        '<td class="td-monto" style="font-size:10px">'+fmt(d.monto)+'</td>' +
+        '</tr>';
+    }).join('');
+
+    card.innerHTML =
+      '<div class="tipo-card-hdr">' +
+        '<span class="tipo-code">'+tipo+'</span>' +
+        '<span class="tipo-fullname">'+(TIPO_NOMBRES[tipo]||'')+'</span>' +
+        '<span class="tipo-count">'+procs.length+'</span>' +
+      '</div>' +
+      '<div class="tipo-card-body">' +
+        '<div class="tipo-kpi-row">' +
+          '<div class="tipo-kpi"><div class="tipo-kpi-label">Monto ref.</div><div class="tipo-kpi-val">'+fmtM(monto)+'</div></div>' +
+          '<div class="tipo-kpi"><div class="tipo-kpi-label">Promedio</div><div class="tipo-kpi-val">'+fmtK(monto/procs.length)+'</div></div>' +
+          '<div class="tipo-kpi"><div class="tipo-kpi-label">Máximo</div><div class="tipo-kpi-val">'+fmtK(Math.max.apply(null,procs.map(function(d){return d.monto||0;})))+'</div></div>' +
+        '</div>' +
+        '<div class="tipo-cat-row">'+catHtml+'</div>' +
+        '<div class="tipo-estados">'+estadosHtml+'</div>' +
+        '<div class="tipo-anios" style="margin-top:8px">'+aniosHtml+'</div>' +
+      '</div>' +
+      '<div class="tipo-full-table" id="tbl-wrap-'+tipo+'" style="'+(expanded?'':'display:none')+'">' +
+        '<table><thead><tr><th>Código</th><th>Objeto</th><th>Estado</th><th style="text-align:right">Monto</th></tr></thead>' +
+        '<tbody>'+tableRows+'</tbody></table>' +
+      '</div>' +
+      '<button class="tipo-expand-btn" id="btn-exp-'+tipo+'" onclick="toggleTipo(\''+tipo+'\')">' +
+        (expanded ? '▲ Ocultar listado' : '▼ Ver '+procs.length+' procesos') +
+      '</button>';
+
+    grid.appendChild(card);
+  });
+}
+
+function toggleTipo(tipo){
+  var wrap = document.getElementById('tbl-wrap-'+tipo);
+  var btn = document.getElementById('btn-exp-'+tipo);
+  var procs = DB.filter(function(d){return d.tipo===tipo;});
+  if(wrap.style.display==='none'){
+    wrap.style.display='block';
+    btn.textContent='▲ Ocultar listado';
+  } else {
+    wrap.style.display='none';
+    btn.textContent='▼ Ver '+procs.length+' procesos';
+  }
+}
+
+// INIT
+initResumen();
+initCharts();
+
+</script>
+</body>
+</html>
